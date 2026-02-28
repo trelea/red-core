@@ -12,7 +12,7 @@ export default function GetAQuote() {
     <section className="relative overflow-hidden bg-[#C70017]">
       {/* Background image overlay on right side */}
       <div
-        className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-60"
+        className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-90"
         style={{
           backgroundImage: "url('/get-a-qupte-img.png')",
           maskImage:
