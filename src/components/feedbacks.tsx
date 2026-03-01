@@ -48,9 +48,9 @@ export default function Feedbacks() {
   const autoplayPlugin = useRef(Autoplay({ delay: 5000 }));
 
   return (
-    <section className="bg-white py-16">
-      <div className="container mx-auto px-4 lg:px-[120px]">
-        <h2 className="mb-10 text-[24px] font-bold text-[#1E2C32]">
+    <section className="bg-white py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-[120px] xl:px-[160px]">
+        <h2 className="mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]">
           Feedbacks:
         </h2>
 
@@ -74,8 +74,8 @@ export default function Feedbacks() {
           </CarouselContent>
 
           <div className="mt-8 flex items-center justify-center gap-4">
-            <CarouselPrevious className="static translate-y-0 size-14 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] [&_svg]:size-11 [&_svg]:stroke-[3.5]" />
-            <CarouselNext className="static translate-y-0 size-14 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] [&_svg]:size-11 [&_svg]:stroke-[3.5]" />
+            <CarouselPrevious className="static translate-y-0 size-10 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] sm:size-14 [&_svg]:size-7 [&_svg]:stroke-[3.5] sm:[&_svg]:size-11" />
+            <CarouselNext className="static translate-y-0 size-10 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] sm:size-14 [&_svg]:size-7 [&_svg]:stroke-[3.5] sm:[&_svg]:size-11" />
           </div>
         </Carousel>
       </div>

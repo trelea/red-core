@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
+import ProjectGallery from '@/components/project-gallery';
 
 export const metadata: Metadata = {
   title: 'Slab Cutting',
@@ -12,7 +13,7 @@ export default function SlabCuttingPage() {
   return (
     <>
       <Hero
-        variant="simple"
+        variant="background"
         title={
           <>
             <span className="font-bold">Slab</span>
@@ -38,6 +39,15 @@ export default function SlabCuttingPage() {
           src: '/slab-cutting-img.png',
           alt: 'Slab cutting with walk-behind concrete saw',
         }}
+      />
+      <ProjectGallery
+        images={[
+          { src: '/slab-cutting-assets/image 9.png', alt: 'Slab cutting with walk-behind concrete saw' },
+          { src: '/slab-cutting-assets/image 10.png', alt: 'Slab cutting with walk-behind concrete saw' },
+          { src: '/slab-cutting-assets/image 11.png', alt: 'Slab cutting with walk-behind concrete saw' },
+          { src: '/slab-cutting-assets/image 12.png', alt: 'Slab cutting with walk-behind concrete saw' },
+          { src: '/slab-cutting-assets/image 13.png', alt: 'Slab cutting with walk-behind concrete saw' },
+        ]}
       />
       <GetAQuote />
     </>

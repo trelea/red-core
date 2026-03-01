@@ -1,36 +1,39 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { MapPinIcon, PhoneIcon, MailIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { scrollToSection } from '@/lib/scroll-to-section';
 
 const navLinks = [
-  { label: 'About us', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Cooperations', href: '/cooperations' },
-  { label: 'Contacts', href: '/contacts' },
+  { label: 'About us', href: '/#about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Cooperations', href: '/#quote' },
+  { label: 'Contacts', href: '/#contacts' },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1E2C32] text-white">
-      <div className="container mx-auto px-4 py-20 lg:px-[120px]">
+    <footer id="contacts" className="bg-[#1E2C32] text-white">
+      <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-[120px] lg:py-20 xl:px-[160px]">
         {/* Logo */}
-        <Link href="/" className="mb-24 inline-block">
+        <Link href="/" className="mb-12 inline-block lg:mb-24">
           <Image
             src="/logo.png"
             alt="Redcore"
             width={308}
             height={58}
-            className="h-[58px] w-auto"
+            className="h-[40px] w-auto sm:h-[50px] lg:h-[58px]"
           />
         </Link>
 
         {/* 3-Column Layout */}
-        <div className="grid gap-12 lg:grid-cols-[280px_1fr_1fr]">
+        <div className="grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-[280px_1fr_1fr] lg:gap-12">
           {/* Left: Contact Info */}
-          <div className="flex flex-col gap-6">
+          <div className="order-2 flex flex-col gap-6 lg:order-none">
             <div className="flex items-start gap-2.5">
               <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#C70017]" />
               <span className="text-base leading-normal">
@@ -58,20 +61,24 @@ export default function Footer() {
           </div>
 
           {/* Center: Navigation */}
-          <nav className="flex flex-col gap-5 lg:pl-16">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-base text-white transition-colors hover:text-white/70"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="order-3 flex flex-col gap-5 lg:order-none lg:pl-16">
+            {navLinks.map((link) => {
+              const id = link.href.replace('/#', '');
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => scrollToSection(e, id)}
+                  className="text-base text-white transition-colors hover:text-white/70"
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Right: Free Consultation Form */}
-          <div className="flex flex-col gap-6">
+          <div className="order-1 flex flex-col gap-6 lg:order-none">
             <p className="text-base">Free consultation:</p>
             <form className="flex flex-col gap-5">
               <Input
@@ -89,12 +96,18 @@ export default function Footer() {
                 placeholder='Email'
                 className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base font-medium text-white placeholder:text-white/50 focus-visible:border-white focus-visible:ring-0"
               />
+              <Button
+                type="submit"
+                className="mt-2 h-auto w-full rounded-sm bg-[#C70017] px-8 py-4 text-[14.6px] font-bold text-white shadow-sm hover:bg-[#a50013] lg:w-[184px]"
+              >
+                SUBMIT
+              </Button>
             </form>
           </div>
         </div>
 
         {/* Bottom Row: Social + Submit */}
-        <div className="mt-20 flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-10 flex flex-col items-start gap-8 lg:mt-20 lg:flex-row lg:items-end lg:justify-between">
           {/* Social */}
           <div className="flex flex-col gap-3">
             <p className="text-[15.7px]">Follow us on Social media</p>
@@ -154,13 +167,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="h-auto w-[184px] rounded-none bg-[#C70017] px-8 py-4 text-[14.6px] font-bold text-white hover:bg-[#a50013]"
-          >
-            SUBMIT
-          </Button>
         </div>
 
       </div>
@@ -168,7 +174,7 @@ export default function Footer() {
       <Separator className="bg-white/10" />
 
       {/* Copyright */}
-      <div className="container mx-auto px-4 py-8 lg:px-[120px]">
+      <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-[120px] xl:px-[160px]">
         <p className="text-center text-base text-[#c9c9c9]">
           Copyrights @ Red Core Company {new Date().getFullYear()}
         </p>

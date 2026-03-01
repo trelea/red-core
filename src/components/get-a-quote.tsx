@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function GetAQuote() {
   return (
-    <section className="relative overflow-hidden bg-[#C70017]">
+    <section id="quote" className="relative overflow-hidden bg-[#C70017]">
       {/* Background image overlay on right side */}
       <div
         className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-90"
@@ -30,15 +30,15 @@ export default function GetAQuote() {
         }}
       />
 
-      <div className="container relative mx-auto px-4 py-20 lg:px-[120px]">
-        <div className="flex flex-col gap-12 lg:flex-row lg:gap-36">
+      <div className="container relative mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-[120px] lg:py-20 xl:px-[160px]">
+        <div className="flex flex-col gap-8 sm:gap-10 lg:flex-row lg:gap-16 xl:gap-24">
           {/* Left: Heading & Description */}
           <div className="flex w-full flex-col text-white lg:w-[387px] lg:shrink-0">
             <div className="flex flex-col gap-6">
-              <h2 className="text-[42px] font-bold uppercase leading-none tracking-tight sm:text-[53px]">
+              <h2 className="text-[32px] font-bold uppercase leading-none tracking-tight sm:text-[42px] lg:text-[53px]">
                 Get a Quote
               </h2>
-              <p className="text-[24px] font-normal sm:text-[27.7px]">
+              <p className="text-[20px] font-normal sm:text-[24px] lg:text-[27.7px]">
                 24/7 Fast Estimate
               </p>
             </div>
@@ -64,7 +64,7 @@ export default function GetAQuote() {
             <CardContent className="p-0">
               <form className="flex flex-col gap-8">
                 {/* Input Grid: 2 cols x 2 rows */}
-                <div className="grid grid-cols-1 gap-x-[102px] gap-y-[45px] sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-8 lg:gap-x-16 lg:gap-y-10">
                   <div className="flex flex-col gap-2">
                     <Label
                       htmlFor="fullName"
@@ -103,7 +103,7 @@ export default function GetAQuote() {
                     <Input
                       id="email"
                       type="email"
-                      defaultValue="redcoreconcrete@gmail.com"
+                      placeholder="yourname@example.com"
                       className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base font-medium text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
@@ -134,7 +134,7 @@ export default function GetAQuote() {
                   <Textarea
                     id="project"
                     placeholder="Describe your project"
-                    className="h-[192px] resize-none rounded-none border-white bg-transparent px-6 py-5 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-none border-white bg-transparent px-6 py-5 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
                   />
                 </div>
 

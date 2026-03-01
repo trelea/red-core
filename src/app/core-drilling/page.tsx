@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
+import ProjectGallery from '@/components/project-gallery';
 
 export const metadata: Metadata = {
   title: 'Core Drilling',
@@ -12,7 +13,7 @@ export default function CoreDrillingPage() {
   return (
     <>
       <Hero
-        variant="simple"
+        variant="background"
         title={
           <>
             <span className="font-bold">Core</span>
@@ -36,6 +37,15 @@ export default function CoreDrillingPage() {
           src: '/core-drilling-img.png',
           alt: 'Core drilling into concrete wall',
         }}
+      />
+      <ProjectGallery
+        images={[
+          { src: '/core-drilling-assets/image 9.png', alt: 'Core drilling on site' },
+          { src: '/core-drilling-assets/image 10.png', alt: 'Core drilling equipment in use' },
+          { src: '/core-drilling-assets/image 11.png', alt: 'Core drilling project' },
+          { src: '/core-drilling-assets/image 12.png', alt: 'Concrete core drilling work' },
+          { src: '/core-drilling-assets/image 13.png', alt: 'Core drilling result' },
+        ]}
       />
       <GetAQuote />
     </>

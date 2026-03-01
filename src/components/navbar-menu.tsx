@@ -10,7 +10,6 @@ import {
   BrickWallIcon,
   HandIcon,
   HammerIcon,
-  ChevronDownIcon,
 } from 'lucide-react';
 import {
   NavigationMenu,
@@ -30,7 +29,8 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useState } from 'react';
+import { scrollToSection, scrollToId } from '@/lib/scroll-to-section';
+import { useState, useEffect } from 'react';
 
 const services = [
   {
@@ -59,184 +59,190 @@ const services = [
   },
   {
     label: 'Small Demolition',
-    href: '/small-demolation',
+    href: '/small-demolition',
     description: 'Controlled removal of concrete without damaging surroundings.',
     icon: HammerIcon,
   },
 ];
 
 const navLinks = [
-  { label: 'About us', href: '/about' },
-  { label: 'Get a quote', href: '/quote' },
-  { label: 'Contacts', href: '/contacts' },
+  { label: 'About us', href: '/#about' },
+  { label: 'Get a quote', href: '/#quote' },
+  { label: 'Contacts', href: '/#contacts' },
 ];
 
-export default function NavbarMenu() {
+export function NavbarDesktopMenu() {
+  return (
+    <NavigationMenu className="hidden lg:flex">
+      <NavigationMenuList className="gap-4 xl:gap-8">
+        <NavigationMenuItem>
+          <button
+            type="button"
+            onClick={(e) => scrollToSection(e, 'about')}
+            className="text-[15px] font-normal text-white transition-colors hover:text-white/70"
+          >
+            About us
+          </button>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="!h-auto !bg-transparent !p-0 !text-white text-[15px] font-normal hover:!bg-transparent hover:!text-white/70 focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white/70 [&>svg]:hidden">
+            Services
+          </NavigationMenuTrigger>
+          <NavigationMenuContent className="bg-[#1E2C32]/80 backdrop-blur-md">
+            <div className="grid w-[550px] grid-cols-2 gap-1.5 p-3 lg:w-[650px] xl:w-[720px]">
+              {services.map((service, i) => (
+                <NavigationMenuLink asChild key={service.href}>
+                  <Link
+                    href={service.href}
+                    className={`group flex flex-col gap-2 rounded-lg p-3 text-left transition-all hover:bg-white/[0.07] ${i === services.length - 1 ? 'col-span-2' : ''}`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded bg-[#C70017] text-white">
+                        <service.icon className="size-3.5 stroke-white" />
+                      </div>
+                      <span className="text-[15px] font-semibold text-white">
+                        {service.label}
+                      </span>
+                    </div>
+                    <span className="pl-[38px] text-[12px] leading-relaxed text-white/60 transition-colors group-hover:text-white/80">
+                      {service.description}
+                    </span>
+                  </Link>
+                </NavigationMenuLink>
+              ))}
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        {navLinks.slice(1).map((link) => {
+          const id = link.href.replace('/#', '');
+          return (
+            <NavigationMenuItem key={link.href}>
+              <button
+                type="button"
+                onClick={(e) => scrollToSection(e, id)}
+                className="text-[15px] font-normal text-white transition-colors hover:text-white/70"
+              >
+                {link.label}
+              </button>
+            </NavigationMenuItem>
+          );
+        })}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+
+export function NavbarMobileMenu() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      setTimeout(() => scrollToId(hash), 100);
+      history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   return (
-    <>
-      {/* Desktop Navigation */}
-      <NavigationMenu className="hidden md:flex">
-        <NavigationMenuList className="gap-8">
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link
-                href="/about"
-                className="text-[15px] font-normal text-white transition-colors hover:bg-transparent hover:text-white/70 focus:bg-transparent"
-              >
-                About us
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="!bg-transparent !text-white text-[15px] font-normal hover:!bg-transparent hover:!text-white/70 focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white/70">
-              Services
-            </NavigationMenuTrigger>
-            <NavigationMenuContent className="bg-[#1E2C32]/80 backdrop-blur-md">
-              <div className="grid w-[650px] grid-cols-2 gap-1.5 p-3">
-                {services.map((service, i) => (
-                  <NavigationMenuLink asChild key={service.href}>
-                    <Link
-                      href={service.href}
-                      className={`group flex flex-col gap-2 rounded-lg p-3 text-left transition-all hover:bg-white/[0.07] ${i === services.length - 1 ? 'col-span-2' : ''}`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded bg-[#C70017] text-white">
-                          <service.icon className="size-3.5 stroke-white" />
-                        </div>
-                        <span className="text-[15px] font-semibold text-white">
-                          {service.label}
-                        </span>
-                      </div>
-                      <span className="pl-[38px] text-[12px] leading-relaxed text-white/60 transition-colors group-hover:text-white/80">
-                        {service.description}
-                      </span>
-                    </Link>
-                  </NavigationMenuLink>
-                ))}
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          {navLinks.slice(1).map((link) => (
-            <NavigationMenuItem key={link.href}>
-              <NavigationMenuLink asChild>
-                <Link
-                  href={link.href}
-                  className="text-[15px] font-normal text-white transition-colors hover:bg-transparent hover:text-white/70 focus:bg-transparent"
-                >
-                  {link.label}
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
-
-      {/* Mobile Menu */}
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/10 hover:text-white md:hidden"
-          >
-            <MenuIcon className="size-5" />
-            <span className="sr-only">Toggle menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent
-          side="right"
-          className="w-80 overflow-y-auto bg-[#1E2C32] text-white"
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-white hover:bg-white/10 hover:text-white"
         >
-          <SheetHeader>
-            <SheetTitle>
-              <Image
-                src="/logo.png"
-                alt="Redcore"
-                width={160}
-                height={30}
-                className="h-8 w-auto"
-              />
-            </SheetTitle>
-          </SheetHeader>
-          <Separator className="bg-white/10" />
-          <nav className="flex flex-col gap-1 px-4">
-            <SheetClose asChild>
-              <Button
-                variant="ghost"
-                className="justify-start text-white hover:bg-white/10 hover:text-white"
-                asChild
-              >
-                <Link href="/about">About us</Link>
-              </Button>
-            </SheetClose>
-
+          <MenuIcon className="size-5" />
+          <span className="sr-only">Toggle menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="right"
+        className="w-[calc(100vw-40px)] overflow-y-auto bg-[#1E2C32] text-white sm:w-80"
+      >
+        <SheetHeader>
+          <SheetTitle>
+            <Image
+              src="/logo.png"
+              alt="Redcore"
+              width={160}
+              height={30}
+              className="h-8 w-auto"
+            />
+          </SheetTitle>
+        </SheetHeader>
+        <Separator className="bg-white/10" />
+        <nav className="flex flex-col gap-1 px-4">
+          <SheetClose asChild>
             <Button
               variant="ghost"
-              className="justify-between text-white hover:bg-white/10 hover:text-white"
-              onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+              className="justify-start text-white hover:bg-white/10 hover:text-white"
+              onClick={(e) => scrollToSection(e, 'about')}
             >
-              Services
-              <ChevronDownIcon
-                className={`size-4 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`}
-              />
+              About us
             </Button>
-            {mobileServicesOpen && (
-              <div className="ml-2 flex flex-col gap-1 border-l border-white/10 pl-3">
-                {services.map((service) => (
-                  <SheetClose asChild key={service.href}>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="justify-start gap-3 text-white/80 hover:bg-white/10 hover:text-white"
-                      asChild
-                    >
-                      <Link href={service.href}>
-                        <service.icon className="size-4 text-[#C70017]" />
-                        {service.label}
-                      </Link>
-                    </Button>
-                  </SheetClose>
-                ))}
-              </div>
-            )}
+          </SheetClose>
 
-            <SheetClose asChild>
-              <Button
-                variant="ghost"
-                className="justify-start text-white hover:bg-white/10 hover:text-white"
-                asChild
-              >
-                <Link href="/quote">Get a quote</Link>
-              </Button>
-            </SheetClose>
-            <SheetClose asChild>
-              <Button
-                variant="ghost"
-                className="justify-start text-white hover:bg-white/10 hover:text-white"
-                asChild
-              >
-                <Link href="/contacts">Contacts</Link>
-              </Button>
-            </SheetClose>
-          </nav>
-          <Separator className="bg-white/10" />
-          <div className="px-4">
-            <SheetClose asChild>
-              <a
-                href="tel:+14136662026"
-                className="flex items-center justify-center gap-2 bg-[#2E4048] px-5 py-3 text-lg font-bold text-white transition-colors hover:bg-[#3a5260]"
-              >
-                <PhoneIcon className="size-4" />
-                (413)-666-2026
-              </a>
-            </SheetClose>
-          </div>
-        </SheetContent>
-      </Sheet>
-    </>
+          <Button
+            variant="ghost"
+            className="justify-start text-white hover:bg-white/10 hover:text-white"
+            onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+          >
+            Services
+          </Button>
+          {mobileServicesOpen && (
+            <div className="ml-2 flex flex-col gap-1 border-l border-white/10 pl-3">
+              {services.map((service) => (
+                <SheetClose asChild key={service.href}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start gap-3 text-white/80 hover:bg-white/10 hover:text-white"
+                    asChild
+                  >
+                    <Link href={service.href}>
+                      <service.icon className="size-4 text-[#C70017]" />
+                      {service.label}
+                    </Link>
+                  </Button>
+                </SheetClose>
+              ))}
+            </div>
+          )}
+
+          <SheetClose asChild>
+            <Button
+              variant="ghost"
+              className="justify-start text-white hover:bg-white/10 hover:text-white"
+              onClick={(e) => scrollToSection(e, 'quote')}
+            >
+              Get a quote
+            </Button>
+          </SheetClose>
+          <SheetClose asChild>
+            <Button
+              variant="ghost"
+              className="justify-start text-white hover:bg-white/10 hover:text-white"
+              onClick={(e) => scrollToSection(e, 'contacts')}
+            >
+              Contacts
+            </Button>
+          </SheetClose>
+        </nav>
+        <Separator className="bg-white/10" />
+        <div className="px-4">
+          <SheetClose asChild>
+            <a
+              href="tel:+14136662026"
+              className="flex items-center justify-center gap-2 bg-[#2E4048] px-5 py-3 text-lg font-bold text-white transition-colors hover:bg-[#3a5260]"
+            >
+              <PhoneIcon className="size-4" />
+              (413)-666-2026
+            </a>
+          </SheetClose>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

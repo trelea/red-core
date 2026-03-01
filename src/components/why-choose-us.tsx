@@ -43,28 +43,28 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-white py-16">
-      <div className="container mx-auto px-4 lg:px-[120px]">
-        <h2 className="mb-10 text-[24px] font-bold text-[#1E2C32]">
+    <section className="bg-white py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-[120px] xl:px-[160px]">
+        <h2 className="mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]">
           Why choose us?
         </h2>
 
-        <div className="grid grid-cols-2 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-24">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-12 xl:gap-16">
           {features.map((feature) => (
             <Card
               key={feature.title}
               className="border-0 bg-transparent shadow-none"
             >
-              <CardHeader className="flex flex-col items-center gap-6 p-0">
-                <div className="flex size-[48px] items-center justify-center rounded-sm bg-[#C70017] shadow-md">
+              <CardHeader className="flex flex-col items-center gap-3 p-0 sm:gap-6">
+                <div className="flex size-10 items-center justify-center rounded-sm bg-[#C70017] shadow-md sm:size-[48px]">
                   <feature.icon className="size-5 text-white" />
                 </div>
-                <CardTitle className="whitespace-pre-line text-center text-[24px] font-bold leading-[1.2] text-[#1E2C32]">
+                <CardTitle className="whitespace-pre-line text-center text-[18px] font-bold leading-[1.2] text-[#1E2C32] sm:text-[20px] lg:text-[24px]">
                   {feature.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-6">
-                <p className="text-center text-[14px] leading-[1.4] text-[#1E2C32]">
+              <CardContent className="p-0 pt-3 sm:pt-6">
+                <p className="mx-auto max-w-[280px] text-center text-[14px] leading-[1.4] text-[#1E2C32] sm:max-w-none">
                   {feature.description}
                 </p>
               </CardContent>
