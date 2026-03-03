@@ -5,7 +5,7 @@ import { NavbarDesktopMenu, NavbarMobileMenu } from '@/components/navbar-menu';
 
 export default function Navbar() {
   return (
-    <header className="w-full bg-[#1E2C32]">
+    <header className="fixed top-0 left-0 z-50 w-full bg-[#1E2C32] shadow-md shadow-black/20">
       <div className="container mx-auto flex items-center justify-between px-4 py-5 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         <Link href="/" className="shrink-0">
           <Image
