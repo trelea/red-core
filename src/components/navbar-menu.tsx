@@ -2,15 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  MenuIcon,
-  PhoneIcon,
-  CircleDotIcon,
-  AxeIcon,
-  BrickWallIcon,
-  HandIcon,
-  HammerIcon,
-} from 'lucide-react';
+import { MenuIcon, PhoneIcon } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -37,31 +29,31 @@ const services = [
     label: 'Core Drilling',
     href: '/core-drilling',
     description: 'Precision drilling of round holes in concrete, brick, and stone.',
-    icon: CircleDotIcon,
+    icon: '/icons/core-drilling-icon.svg',
   },
   {
     label: 'Slab Cutting',
     href: '/slab-cutting',
     description: 'Cutting concrete slabs to access underground pipes or utilities.',
-    icon: AxeIcon,
+    icon: '/icons/slab-cutting-icon.svg',
   },
   {
     label: 'Wall Saw Cutting',
     href: '/wall-saw-cutting',
     description: 'Heavy-duty cutting for doorways, windows, and structural openings.',
-    icon: BrickWallIcon,
+    icon: '/icons/wall-saw-cutting-icon.svg',
   },
   {
     label: 'Hand Saw Cutting',
     href: '/hand-saw-cutting',
     description: 'Compact precision cutting for tight or indoor areas.',
-    icon: HandIcon,
+    icon: '/icons/hand-saw-cutting-icon.svg',
   },
   {
     label: 'Small Demolition',
     href: '/small-demolition',
     description: 'Controlled removal of concrete without damaging surroundings.',
-    icon: HammerIcon,
+    icon: '/icons/small-demolition-icon.svg',
   },
 ];
 
@@ -98,14 +90,20 @@ export function NavbarDesktopMenu() {
                     className={`group flex flex-col gap-2 rounded-lg p-3 text-left transition-all hover:bg-white/[0.07] ${i === services.length - 1 ? 'col-span-2' : ''}`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="flex size-7 shrink-0 items-center justify-center rounded bg-[#C70017] text-white">
-                        <service.icon className="size-3.5 stroke-white" />
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded bg-[#C70017]">
+                        <Image
+                          src={service.icon}
+                          alt={service.label}
+                          width={20}
+                          height={20}
+                          className="size-5 brightness-0 invert"
+                        />
                       </div>
                       <span className="text-[15px] font-semibold text-white">
                         {service.label}
                       </span>
                     </div>
-                    <span className="pl-[38px] text-[12px] leading-relaxed text-white/60 transition-colors group-hover:text-white/80">
+                    <span className="pl-[46px] text-[12px] leading-relaxed text-white/60 transition-colors group-hover:text-white/80">
                       {service.description}
                     </span>
                   </Link>
@@ -202,7 +200,13 @@ export function NavbarMobileMenu() {
                     asChild
                   >
                     <Link href={service.href}>
-                      <service.icon className="size-4 text-[#C70017]" />
+                      <Image
+                        src={service.icon}
+                        alt={service.label}
+                        width={20}
+                        height={20}
+                        className="size-5"
+                      />
                       {service.label}
                     </Link>
                   </Button>
@@ -244,5 +248,17 @@ export function NavbarMobileMenu() {
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+export function MobileServicesLink() {
+  return (
+    <button
+      type="button"
+      onClick={(e) => scrollToSection(e, 'services', 'top')}
+      className="flex items-center justify-center rounded-sm bg-[#2E4048] p-2.5 text-[14px] font-bold text-white shadow-md transition-colors hover:bg-[#3a5260] sm:px-3"
+    >
+      Services
+    </button>
   );
 }

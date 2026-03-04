@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { PhoneIcon } from 'lucide-react';
-import { NavbarDesktopMenu, NavbarMobileMenu } from '@/components/navbar-menu';
+import { NavbarDesktopMenu, NavbarMobileMenu, MobileServicesLink } from '@/components/navbar-menu';
 
 export default function Navbar() {
   return (
@@ -30,8 +30,9 @@ export default function Navbar() {
           (413)-666-2026
         </a>
 
-        {/* Mobile: phone + hamburger grouped on right */}
+        {/* Mobile: services + phone + hamburger grouped on right */}
         <div className="flex items-center gap-2 lg:hidden">
+          <MobileServicesLink />
           <a
             href="tel:+14136662026"
             rel="nofollow"

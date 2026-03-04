@@ -1,45 +1,39 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import {
-  CrosshairIcon,
-  ScanLineIcon,
-  ConstructionIcon,
-  WrenchIcon,
-  HammerIcon,
-  ChevronRightIcon,
-} from 'lucide-react';
+import { ChevronRightIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const services = [
   {
-    icon: CrosshairIcon,
+    icon: '/icons/core-drilling-icon.svg',
     title: 'Core Drilling',
     href: '/core-drilling',
     description:
       'Precision drilling of perfectly round holes in concrete, brick, and stone.',
   },
   {
-    icon: ScanLineIcon,
+    icon: '/icons/slab-cutting-icon.svg',
     title: 'Slab Cutting',
     href: '/slab-cutting',
     description:
       'Cutting concrete slabs and floors to access underground pipes or utilities.',
   },
   {
-    icon: ConstructionIcon,
+    icon: '/icons/wall-saw-cutting-icon.svg',
     title: 'Wall Saw Cutting',
     href: '/wall-saw-cutting',
     description:
       'Heavy-duty cutting for doorways, windows, and large structural openings.',
   },
   {
-    icon: WrenchIcon,
+    icon: '/icons/hand-saw-cutting-icon.svg',
     title: 'Hand Saw Cutting',
     href: '/hand-saw-cutting',
     description:
       'Compact precision cutting for tight or indoor areas where large machines cannot fit.',
   },
   {
-    icon: HammerIcon,
+    icon: '/icons/small-demolition-icon.svg',
     title: 'Small Demolition',
     href: '/small-demolition',
     description:
@@ -63,9 +57,15 @@ export default function OurServices() {
               className={index === services.length - 1 ? 'sm:col-span-2' : ''}
             >
               <Card className="group h-auto min-h-[140px] cursor-pointer rounded-[8px] border-0 bg-[#F5F5F5] text-[#1E2C32] shadow-xs transition-colors duration-300 hover:bg-[#1E2C32] hover:text-white sm:min-h-[180px] lg:min-h-[200px]">
-                <CardContent className="flex h-full flex-col justify-center gap-4 px-4 py-4 sm:gap-6 sm:px-6 lg:px-10 lg:py-0">
+                <CardContent className="flex h-full flex-col justify-center gap-4 px-4 py-4 sm:gap-6 sm:px-6 lg:px-10">
                   <div className="flex items-center gap-4 sm:gap-6">
-                    <service.icon className="size-8 shrink-0 stroke-[1.5] text-[#C70017] transition-colors duration-300 sm:size-10 lg:size-[50px]" />
+                    <Image
+                      src={service.icon}
+                      alt={service.title}
+                      width={50}
+                      height={50}
+                      className="size-8 shrink-0 sm:size-10 lg:size-[50px]"
+                    />
                     <h3 className="flex-1 text-[20px] font-bold leading-none sm:text-[24px] lg:text-[32px]">
                       {service.title}
                     </h3>
