@@ -25,8 +25,9 @@ export default function Navbar() {
         <a
           href="tel:+14136662026"
           rel="nofollow"
-          className="hidden shrink-0 items-center justify-center rounded-sm bg-[#2E4048] px-3 py-2.5 text-[14px] font-bold text-white shadow-md transition-colors hover:bg-[#3a5260] lg:flex xl:px-5 xl:py-[15px] xl:text-[18px]"
+          className="hidden shrink-0 items-center justify-center gap-3 rounded-sm bg-[#2E4048] px-3 py-2.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#3a5260] lg:flex xl:px-5 xl:py-[15px] xl:text-[16px]"
         >
+          <PhoneIcon className="size-4 xl:size-5" />
           (413)-666-2026
         </a>
 

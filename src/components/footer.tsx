@@ -44,11 +44,11 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-2">
               <a
-                href="tel:+13434567434"
+                href="tel:+14136662026"
                 className="flex items-center gap-2.5 text-base transition-colors hover:text-white/80"
               >
                 <PhoneIcon className="size-4 shrink-0 text-[#C70017]" />
-                343 45674 34
+                (413)-666-2026
               </a>
               <a
                 href="mailto:redcoreusa@gmail.com"
