@@ -1,20 +1,15 @@
-import {
-  BadgeCheckIcon,
-  BadgeDollarSignIcon,
-  Clock4Icon,
-  ShieldCheckIcon,
-} from 'lucide-react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const features = [
   {
-    icon: BadgeCheckIcon,
+    icon: '/icons/Quality is our priority icon.svg',
     title: 'Quality is\nour priority',
     description:
       'Our experience, professional-grade equipment and proven techniques.',
   },
   {
-    icon: BadgeDollarSignIcon,
+    icon: '/icons/Best price in our area icon.svg',
     title: 'Best price\nin our area',
     description: (
       <>
@@ -24,7 +19,7 @@ const features = [
     ),
   },
   {
-    icon: Clock4Icon,
+    icon: '/icons/Always available icon.svg',
     title: 'Always\navailable',
     description: (
       <>
@@ -34,7 +29,7 @@ const features = [
     ),
   },
   {
-    icon: ShieldCheckIcon,
+    icon: '/icons/Safety First Operations icon.svg',
     title: 'Safety-First\nOperations',
     description:
       'We perform every job with strict safety practices to protect people, property, and the job site at all times',
@@ -56,9 +51,13 @@ export default function WhyChooseUs() {
               className="border-0 bg-transparent shadow-none"
             >
               <CardHeader className="flex flex-col items-center gap-3 p-0 sm:gap-6">
-                <div className="flex size-10 items-center justify-center rounded-sm bg-[#C70017] shadow-md sm:size-[48px]">
-                  <feature.icon className="size-5 text-white" />
-                </div>
+                <Image
+                  src={feature.icon}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="size-14 drop-shadow-sm sm:size-16"
+                />
                 <CardTitle className="whitespace-pre-line text-center text-[18px] font-bold leading-[1.2] text-[#1E2C32] sm:text-[20px] lg:text-[24px]">
                   {feature.title}
                 </CardTitle>

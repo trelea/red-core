@@ -37,9 +37,9 @@ export default function Footer() {
             <div className="flex items-start gap-2.5">
               <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#C70017]" />
               <span className="text-base leading-normal">
-                467 Silver Street,
+                321 Springfield St,
                 <br />
-                Agawam, WA
+                Agawam, MA
               </span>
             </div>
             <div className="flex flex-col gap-2">
