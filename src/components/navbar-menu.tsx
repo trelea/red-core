@@ -78,7 +78,7 @@ export function NavbarDesktopMenu() {
           </button>
         </NavigationMenuItem>
 
-        <span className="text-[10px] text-white/20">&#9670;</span>
+        <span className="inline-block size-[5px] rounded-[1px] bg-[#C70017]" />
 
         <NavigationMenuItem>
           <NavigationMenuTrigger className="group/svc relative !h-auto !bg-transparent !p-0 py-1 !text-white/90 text-[14px] font-medium uppercase tracking-[0.08em] hover:!bg-transparent hover:!text-white focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white [&>svg]:hidden xl:text-[15px]">
@@ -122,7 +122,7 @@ export function NavbarDesktopMenu() {
           const id = link.href.replace('/#', '');
           return (
             <span key={link.href} className="contents">
-              <span className="text-[10px] text-white/20">&#9670;</span>
+              <span className="inline-block size-[5px] rounded-[1px] bg-[#C70017]" />
               <NavigationMenuItem>
                 <button
                   type="button"
