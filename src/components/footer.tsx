@@ -35,7 +35,7 @@ export default function Footer() {
           {/* Left: Contact Info */}
           <div className="order-2 flex flex-col gap-6 lg:order-none">
             <div className="flex items-start gap-2.5">
-              <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#C70017]" />
+              <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#7BB8D4]" />
               <span className="text-base leading-normal">
                 321 Springfield St,
                 <br />
@@ -47,14 +47,14 @@ export default function Footer() {
                 href="tel:+14136662026"
                 className="flex items-center gap-2.5 text-base transition-colors hover:text-white/80"
               >
-                <PhoneIcon className="size-4 shrink-0 text-[#C70017]" />
+                <PhoneIcon className="size-4 shrink-0 text-[#7BB8D4]" />
                 (413)-666-2026
               </a>
               <a
                 href="mailto:redcoreusa@gmail.com"
                 className="flex items-center gap-2.5 text-base transition-colors hover:text-white/80"
               >
-                <MailIcon className="size-[17px] shrink-0 text-[#C70017]" />
+                <MailIcon className="size-[17px] shrink-0 text-[#7BB8D4]" />
                 redcoreusa@gmail.com
               </a>
             </div>
@@ -98,7 +98,7 @@ export default function Footer() {
               />
               <Button
                 type="submit"
-                className="mt-2 h-auto w-full rounded-sm bg-[#C70017] px-8 py-4 text-[14.6px] font-bold text-white shadow-sm hover:bg-[#a50013] lg:w-[184px]"
+                className="mt-2 h-auto w-full rounded-sm bg-[#3A7A94] px-8 py-4 text-[14.6px] font-bold text-white shadow-sm hover:bg-[#4E96B0] lg:w-[184px]"
               >
                 SUBMIT
               </Button>
@@ -115,7 +115,7 @@ export default function Footer() {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="text-[#C70017] transition-colors hover:text-[#a50013]"
+                className="text-[#7BB8D4] transition-colors hover:text-[#A0D4EC]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -128,7 +128,7 @@ export default function Footer() {
               <a
                 href="#"
                 aria-label="Instagram"
-                className="text-[#C70017] transition-colors hover:text-[#a50013]"
+                className="text-[#7BB8D4] transition-colors hover:text-[#A0D4EC]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -141,7 +141,7 @@ export default function Footer() {
               <a
                 href="#"
                 aria-label="YouTube"
-                className="text-[#C70017] transition-colors hover:text-[#a50013]"
+                className="text-[#7BB8D4] transition-colors hover:text-[#A0D4EC]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -154,7 +154,7 @@ export default function Footer() {
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="text-[#C70017] transition-colors hover:text-[#a50013]"
+                className="text-[#7BB8D4] transition-colors hover:text-[#A0D4EC]"
               >
                 <svg
                   viewBox="0 0 24 24"
