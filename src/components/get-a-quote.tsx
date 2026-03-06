@@ -12,7 +12,7 @@ export default function GetAQuote() {
     <section id="quote" className="relative overflow-hidden bg-[#C70017]">
       {/* Background image overlay on right side */}
       <div
-        className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-90"
+        className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-40"
         style={{
           backgroundImage: "url('/get-a-qupte-img.png')",
           maskImage:
@@ -45,7 +45,7 @@ export default function GetAQuote() {
 
             <Separator className="my-8 bg-white/20" />
 
-            <div className="mt-auto text-base font-medium leading-[22.4px] text-white">
+            <div className="mt-auto text-lg font-medium leading-[28px] text-white">
               <p>
                 Project pricing depends on several factors, including concrete
                 thickness, type of service required, scope of work, site
@@ -68,7 +68,7 @@ export default function GetAQuote() {
                   <div className="flex flex-col gap-2">
                     <Label
                       htmlFor="fullName"
-                      className="text-sm font-semibold text-white/80"
+                      className="text-base font-bold text-white/90"
                     >
                       Full Name
                     </Label>
@@ -76,13 +76,13 @@ export default function GetAQuote() {
                       id="fullName"
                       type="text"
                       placeholder="John Doe"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label
                       htmlFor="phone"
-                      className="text-sm font-semibold text-white/80"
+                      className="text-base font-bold text-white/90"
                     >
                       Phone
                     </Label>
@@ -90,13 +90,13 @@ export default function GetAQuote() {
                       id="phone"
                       type="tel"
                       placeholder="(000) 000-0000"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label
                       htmlFor="email"
-                      className="text-sm font-semibold text-white/80"
+                      className="text-base font-bold text-white/90"
                     >
                       Email
                     </Label>
@@ -104,13 +104,13 @@ export default function GetAQuote() {
                       id="email"
                       type="email"
                       placeholder="yourname@example.com"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base font-medium text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label
                       htmlFor="location"
-                      className="text-sm font-semibold text-white/80"
+                      className="text-base font-bold text-white/90"
                     >
                       Your location
                     </Label>
@@ -118,7 +118,7 @@ export default function GetAQuote() {
                       id="location"
                       type="text"
                       placeholder="City, State"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                 </div>
@@ -127,14 +127,14 @@ export default function GetAQuote() {
                 <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="project"
-                    className="text-sm font-semibold text-white/80"
+                    className="text-base font-bold text-white/90"
                   >
                     Project details
                   </Label>
                   <Textarea
                     id="project"
                     placeholder="Describe your project"
-                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-none border-white bg-transparent px-6 py-5 text-base text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-0"
+                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-none border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                   />
                 </div>
 

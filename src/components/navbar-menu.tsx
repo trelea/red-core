@@ -66,22 +66,27 @@ const navLinks = [
 export function NavbarDesktopMenu() {
   return (
     <NavigationMenu className="hidden lg:flex">
-      <NavigationMenuList className="gap-4 xl:gap-8">
+      <NavigationMenuList className="gap-3 xl:gap-5">
         <NavigationMenuItem>
           <button
             type="button"
             onClick={(e) => scrollToSection(e, 'about')}
-            className="text-[15px] font-normal text-white transition-colors hover:text-white/70"
+            className="group/link relative py-1 text-[11px] font-medium uppercase tracking-[0.05em] text-white/90 transition-all duration-200 hover:scale-110 hover:text-white xl:text-[12px]"
           >
             About us
+            <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/link:w-full" />
           </button>
         </NavigationMenuItem>
 
+        <span className="text-[10px] text-white/20">&#9670;</span>
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="!h-auto !bg-transparent !p-0 !text-white text-[15px] font-normal hover:!bg-transparent hover:!text-white/70 focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white/70 [&>svg]:hidden">
+          <NavigationMenuTrigger className="group/svc relative !h-auto !bg-transparent !p-0 py-1 !text-white/90 text-[14px] font-medium uppercase tracking-[0.08em] hover:!bg-transparent hover:!text-white focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white [&>svg]:hidden xl:text-[15px]">
             Services
+            <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/svc:w-full" />
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-[#1E2C32]/80 backdrop-blur-md">
+          <NavigationMenuContent className="overflow-hidden rounded-lg border border-white/10 bg-[#1E2C32]/90 backdrop-blur-md">
+            <div className="h-[2px] bg-[#C70017]" />
             <div className="grid w-[550px] grid-cols-2 gap-1.5 p-3 lg:w-[650px] xl:w-[720px]">
               {services.map((service, i) => (
                 <NavigationMenuLink asChild key={service.href}>
@@ -116,15 +121,19 @@ export function NavbarDesktopMenu() {
         {navLinks.slice(1).map((link) => {
           const id = link.href.replace('/#', '');
           return (
-            <NavigationMenuItem key={link.href}>
-              <button
-                type="button"
-                onClick={(e) => scrollToSection(e, id)}
-                className="text-[15px] font-normal text-white transition-colors hover:text-white/70"
-              >
-                {link.label}
-              </button>
-            </NavigationMenuItem>
+            <span key={link.href} className="contents">
+              <span className="text-[10px] text-white/20">&#9670;</span>
+              <NavigationMenuItem>
+                <button
+                  type="button"
+                  onClick={(e) => scrollToSection(e, id)}
+                  className="group/link relative py-1 text-[11px] font-medium uppercase tracking-[0.05em] text-white/90 transition-all duration-200 hover:scale-110 hover:text-white xl:text-[12px]"
+                >
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/link:w-full" />
+                </button>
+              </NavigationMenuItem>
+            </span>
           );
         })}
       </NavigationMenuList>

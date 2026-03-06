@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { oswald, inter } from '@/lib/fonts';
 import { scrollToSection } from '@/lib/scroll-to-section';
+import { PhoneIcon, ClipboardListIcon } from 'lucide-react';
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -54,15 +55,17 @@ export default function Hero({
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'contacts')}
-                className={cn(inter.className, 'inline-flex items-center justify-center rounded-sm bg-[#C70017] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] sm:px-[50px] sm:py-[15px]')}
+                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#C70017] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] sm:px-[50px] sm:py-[15px]')}
               >
+                <PhoneIcon className="h-5 w-5" />
                 Contact Us
               </button>
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(inter.className, 'inline-flex items-center justify-center rounded-sm bg-[#1E2C32] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 sm:px-[50px] sm:py-[15px]')}
+                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#1E2C32] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 sm:px-[50px] sm:py-[15px]')}
               >
+                <ClipboardListIcon className="h-5 w-5" />
                 Get a Quote
               </button>
             </div>
@@ -100,15 +103,17 @@ export default function Hero({
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'contacts')}
-                className={cn(inter.className, 'inline-flex items-center justify-center rounded-sm bg-[#C70017] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
+                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#C70017] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
               >
+                <PhoneIcon className="h-5 w-5" />
                 Contact Us
               </button>
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(inter.className, 'inline-flex items-center justify-center rounded-sm bg-[#1E2C32] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
+                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#1E2C32] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
               >
+                <ClipboardListIcon className="h-5 w-5" />
                 Get a Quote
               </button>
             </div>
