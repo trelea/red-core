@@ -76,7 +76,7 @@ export default function GetAQuote() {
                       id="fullName"
                       type="text"
                       placeholder="John Doe"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -90,7 +90,7 @@ export default function GetAQuote() {
                       id="phone"
                       type="tel"
                       placeholder="(000) 000-0000"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -104,7 +104,7 @@ export default function GetAQuote() {
                       id="email"
                       type="email"
                       placeholder="yourname@example.com"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -118,7 +118,7 @@ export default function GetAQuote() {
                       id="location"
                       type="text"
                       placeholder="City, State"
-                      className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
+                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                     />
                   </div>
                 </div>
@@ -134,7 +134,7 @@ export default function GetAQuote() {
                   <Textarea
                     id="project"
                     placeholder="Describe your project"
-                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-none border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
+                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-md border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
                   />
                 </div>
 
