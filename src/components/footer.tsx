@@ -1,12 +1,22 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPinIcon, PhoneIcon, MailIcon } from 'lucide-react';
+import { MapPinIcon, PhoneIcon, MailIcon, CheckCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { scrollToSection } from '@/lib/scroll-to-section';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
 
 const navLinks = [
   { label: 'About us', href: '/#about' },
@@ -16,6 +26,41 @@ const navLinks = [
 ];
 
 export default function Footer() {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setStatus('idle');
+
+    const form = e.currentTarget;
+    const data = {
+      fullName: (form.elements.namedItem('contactName') as HTMLInputElement).value,
+      phone: (form.elements.namedItem('contactPhone') as HTMLInputElement).value,
+      email: (form.elements.namedItem('contactEmail') as HTMLInputElement).value,
+    };
+
+    try {
+      const res = await fetch('/api/contact-us', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <footer id="contacts" className="bg-[#1E2C32] text-white">
       <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-[120px] lg:py-20 xl:px-[160px]">
@@ -80,27 +125,40 @@ export default function Footer() {
           {/* Right: Free Consultation Form */}
           <div className="order-1 flex flex-col gap-6 lg:order-none">
             <p className="text-base">Free consultation:</p>
-            <form className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <Input
+                id="contactName"
+                name="contactName"
                 type="text"
                 placeholder="Full Name"
+                required
                 className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base text-white placeholder:text-white/50 focus-visible:border-white focus-visible:ring-0"
               />
               <Input
+                id="contactPhone"
+                name="contactPhone"
                 type="tel"
                 placeholder="Phone"
+                required
                 className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base text-white placeholder:text-white/50 focus-visible:border-white focus-visible:ring-0"
               />
               <Input
+                id="contactEmail"
+                name="contactEmail"
                 type="email"
-                placeholder='Email'
+                placeholder="Email"
+                required
                 className="h-auto rounded-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 text-base font-medium text-white placeholder:text-white/50 focus-visible:border-white focus-visible:ring-0"
               />
+              {status === 'error' && (
+                <span className="text-sm font-medium text-red-300">Something went wrong. Try again.</span>
+              )}
               <Button
                 type="submit"
-                className="mt-2 h-auto w-full rounded-sm bg-[#3A7A94] px-8 py-4 text-[14.6px] font-bold text-white shadow-sm hover:bg-[#4E96B0] lg:w-[184px]"
+                disabled={loading}
+                className="mt-2 h-auto w-full rounded-sm bg-[#3A7A94] px-8 py-4 text-[14.6px] font-bold text-white shadow-sm hover:bg-[#4E96B0] disabled:opacity-50 lg:w-[184px]"
               >
-                SUBMIT
+                {loading ? 'SENDING...' : 'SUBMIT'}
               </Button>
             </form>
           </div>
@@ -179,6 +237,28 @@ export default function Footer() {
           Copyrights @ Red Core Company {new Date().getFullYear()}
         </p>
       </div>
+      <Dialog open={status === 'success'} onOpenChange={(open) => !open && setStatus('idle')}>
+        <DialogContent className="border-0 bg-[#1E2C32] text-white sm:max-w-md">
+          <DialogHeader className="items-center gap-4">
+            <div className="flex size-16 items-center justify-center rounded-full bg-[#3A7A94]/20">
+              <CheckCircleIcon className="size-8 text-[#7BB8D4]" />
+            </div>
+            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight">
+              Thank You!
+            </DialogTitle>
+            <DialogDescription className="text-center text-base text-white/70">
+              Your consultation request has been received. We&apos;ll get in touch with you as soon as possible.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4 sm:justify-center">
+            <DialogClose asChild>
+              <Button className="bg-[#3A7A94] px-8 py-3 text-sm font-bold uppercase text-white hover:bg-[#4E96B0]">
+                Got it
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </footer>
   );
 }
