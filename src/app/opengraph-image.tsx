@@ -1,11 +1,16 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 export const alt =
   "Red Core - Professional Concrete Cutting & Core Drilling Services";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage() {
+  const logoData = await readFile(join(process.cwd(), "public/logo.png"));
+  const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -13,102 +18,143 @@ export default function OgImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           backgroundColor: "#1E2C32",
-          padding: "60px",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Subtle grid pattern overlay */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            opacity: 0.03,
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+            display: "flex",
+          }}
+        />
+
+        {/* Red accent bar — left edge */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: 6,
+            height: "100%",
+            backgroundColor: "#C8102E",
+            display: "flex",
+          }}
+        />
+
+        {/* Content */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            gap: "24px",
+            justifyContent: "space-between",
+            padding: "64px 80px",
+            width: "100%",
+            height: "100%",
           }}
         >
-          <div
-            style={{
-              fontSize: 72,
-              fontWeight: 800,
-              color: "#ffffff",
-              letterSpacing: "-2px",
-              textAlign: "center",
-              lineHeight: 1.1,
-            }}
-          >
-            RED CORE
+          {/* Top: Logo */}
+          <div style={{ display: "flex" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoBase64}
+              alt="Red Core"
+              height={56}
+            />
           </div>
-          <div
-            style={{
-              width: 120,
-              height: 4,
-              backgroundColor: "#3A7A94",
-              borderRadius: 2,
-            }}
-          />
-          <div
-            style={{
-              fontSize: 28,
-              color: "#7BB8D4",
-              textAlign: "center",
-              fontWeight: 600,
-              lineHeight: 1.4,
-            }}
-          >
-            Professional Concrete Cutting
-          </div>
-          <div
-            style={{
-              fontSize: 28,
-              color: "#7BB8D4",
-              textAlign: "center",
-              fontWeight: 600,
-              lineHeight: 1.4,
-            }}
-          >
-            & Core Drilling Services
-          </div>
+
+          {/* Middle: Headline */}
           <div
             style={{
               display: "flex",
+              flexDirection: "column",
               gap: "16px",
-              marginTop: "20px",
-              flexWrap: "wrap",
-              justifyContent: "center",
             }}
           >
-            {[
-              "Core Drilling",
-              "Slab Cutting",
-              "Wall Saw",
-              "Hand Saw",
-              "Demolition",
-            ].map((service) => (
-              <div
-                key={service}
-                style={{
-                  padding: "8px 20px",
-                  border: "2px solid #3A7A94",
-                  borderRadius: 4,
-                  color: "#ffffff",
-                  fontSize: 18,
-                  fontWeight: 500,
-                }}
-              >
-                {service}
-              </div>
-            ))}
+            <div
+              style={{
+                fontSize: 52,
+                fontWeight: 700,
+                color: "#ffffff",
+                letterSpacing: "-1.5px",
+                lineHeight: 1.15,
+              }}
+            >
+              Concrete Cutting &
+            </div>
+            <div
+              style={{
+                fontSize: 52,
+                fontWeight: 700,
+                color: "#ffffff",
+                letterSpacing: "-1.5px",
+                lineHeight: 1.15,
+              }}
+            >
+              Core Drilling Services
+            </div>
+            <div
+              style={{
+                width: 64,
+                height: 3,
+                backgroundColor: "#C8102E",
+                marginTop: "8px",
+                display: "flex",
+              }}
+            />
           </div>
+
+          {/* Bottom: Services + Location */}
           <div
             style={{
-              fontSize: 18,
-              color: "#c9c9c9",
-              marginTop: "16px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
             }}
           >
-            Agawam, MA · (413)-666-2026
+            <div
+              style={{
+                display: "flex",
+                gap: "24px",
+              }}
+            >
+              {["Core Drilling", "Slab Cutting", "Wall Saw", "Hand Saw", "Demolition"].map(
+                (service) => (
+                  <div
+                    key={service}
+                    style={{
+                      fontSize: 15,
+                      color: "rgba(255,255,255,0.5)",
+                      fontWeight: 500,
+                      letterSpacing: "0.5px",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {service}
+                  </div>
+                )
+              )}
+            </div>
+            <div
+              style={{
+                fontSize: 15,
+                color: "#7BB8D4",
+                fontWeight: 500,
+                letterSpacing: "0.5px",
+              }}
+            >
+              Agawam, MA
+            </div>
           </div>
         </div>
       </div>
