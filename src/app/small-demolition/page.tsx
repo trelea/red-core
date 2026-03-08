@@ -3,15 +3,41 @@ import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
 import ProjectGallery from '@/components/project-gallery';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+
 export const metadata: Metadata = {
-  title: 'Small Demolition',
+  title: 'Small Demolition Services in Agawam & Springfield MA',
+  description:
+    'Professional small demolition services in Agawam, Springfield, and Western Massachusetts. Controlled removal of concrete sections without damaging surrounding structures for renovations and repairs.',
+  alternates: {
+    canonical: `${siteUrl}/small-demolition`,
+  },
+  openGraph: {
+    title: 'Small Demolition Services | Red Core',
+    description:
+      'Controlled removal of concrete sections without damaging surrounding structures. Serving Agawam, Springfield, and Western MA.',
+    url: `${siteUrl}/small-demolition`,
+  },
+};
+
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Small Demolition',
   description:
     'Controlled removal of concrete sections without damaging surrounding structures. Clean and safe process for renovations and repairs.',
+  provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
+  areaServed: 'Agawam, Springfield, Western Massachusetts',
+  url: `${siteUrl}/small-demolition`,
 };
 
 export default function SmallDemolitionPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
       <Hero
         variant="background"
         title={

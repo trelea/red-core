@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     "concrete removal",
     "structural openings",
     "utility access cutting",
+    "concrete cutting Agawam MA",
+    "core drilling Massachusetts",
+    "concrete services Springfield",
+    "concrete cutting near me",
+    "concrete contractor Western MA",
   ],
   authors: [{ name: "Red Core" }],
   creator: "Red Core",
@@ -95,6 +100,46 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${siteUrl}/#business`,
+  name: "Red Core",
+  description:
+    "Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, hand saw cutting, and controlled demolition for residential and commercial projects.",
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  image: `${siteUrl}/og-image.png`,
+  telephone: "+14136662026",
+  email: "redcoreusa@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "321 Springfield St",
+    addressLocality: "Agawam",
+    addressRegion: "MA",
+    addressCountry: "US",
+  },
+  areaServed: [
+    { "@type": "City", name: "Agawam, MA" },
+    { "@type": "City", name: "Springfield, MA" },
+    { "@type": "State", name: "Massachusetts" },
+  ],
+  serviceType: [
+    "Core Drilling",
+    "Slab Cutting",
+    "Wall Saw Cutting",
+    "Hand Saw Cutting",
+    "Small Demolition",
+  ],
+  priceRange: "$$",
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    opens: "07:00",
+    closes: "18:00",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -102,6 +147,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
