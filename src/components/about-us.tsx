@@ -32,7 +32,7 @@ const gridItems = (
         <MapPinIcon className="size-[15px] shrink-0 text-[#C70017]" />
         <div className="text-[14px] leading-normal text-white sm:text-[16px] lg:text-[18px] xl:text-[20px]">
           <p>Our location:</p>
-          <p className="font-bold">467 Silver Street, Agawam, WA</p>
+          <p className="font-bold">321 Springfield St, Agawam, MA</p>
         </div>
       </CardContent>
     </Card>
