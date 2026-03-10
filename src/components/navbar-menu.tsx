@@ -171,10 +171,10 @@ export function NavbarMobileMenu() {
         <SheetHeader>
           <SheetTitle>
             <Image
-              src="/logo.png"
-              alt="Redcore"
-              width={160}
-              height={30}
+              src="/logo.svg"
+              alt="Red Core Inc."
+              width={280}
+              height={39}
               className="h-8 w-auto"
             />
           </SheetTitle>

@@ -42,7 +42,7 @@ export function GetAQuoteTemplate({
                   <tr>
                     <td style={{ backgroundColor: '#1E2C32', padding: '24px 40px' }}>
                       <img
-                        src={`${BASE_URL}/logo.png`}
+                        src={`${BASE_URL}/logo.svg`}
                         alt="Red Core"
                         width={160}
                         height={30}

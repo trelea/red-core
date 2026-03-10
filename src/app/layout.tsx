@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -110,7 +111,7 @@ const localBusinessJsonLd = {
   description:
     "Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, hand saw cutting, and controlled demolition for residential and commercial projects.",
   url: siteUrl,
-  logo: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.svg`,
   image: `${siteUrl}/og-image.png`,
   telephone: "+14136662026",
   email: "redcoreusa@gmail.com",
@@ -136,9 +137,9 @@ const localBusinessJsonLd = {
   priceRange: "$$",
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    opens: "07:00",
-    closes: "18:00",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: "00:00",
+    closes: "23:59",
   },
 };
 
@@ -158,11 +159,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className="pt-[70px] sm:pt-[78px]">
-          <Navbar />
-          {children}
-          <Footer />
-        </main>
+        <TooltipProvider>
+          <main className="pt-[70px] sm:pt-[112px]">
+            <Navbar />
+            {children}
+            <Footer />
+          </main>
+        </TooltipProvider>
 
       </body>
     </html>

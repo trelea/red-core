@@ -67,10 +67,10 @@ export default function Footer() {
         {/* Logo */}
         <Link href="/" className="mb-12 inline-block lg:mb-24">
           <Image
-            src="/logo.png"
-            alt="Redcore"
-            width={308}
-            height={58}
+            src="/logo.svg"
+            alt="Red Core Inc."
+            width={280}
+            height={39}
             className="h-[40px] w-auto sm:h-[50px] lg:h-[58px]"
           />
         </Link>
@@ -102,6 +102,15 @@ export default function Footer() {
                 <MailIcon className="size-[17px] shrink-0 text-[#7BB8D4]" />
                 redcoreusa@gmail.com
               </a>
+            </div>
+            <div className="mt-2 flex items-center gap-2">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-green-500" />
+              </span>
+              <span className="text-sm font-medium text-white/90">
+                24/7 Calls, Bookings &amp; Field Visits
+              </span>
             </div>
           </div>
 
@@ -234,7 +243,7 @@ export default function Footer() {
       {/* Copyright */}
       <div className="container mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-[120px] xl:px-[160px]">
         <p className="text-center text-base text-[#c9c9c9]">
-          Copyrights @ Red Core Company {new Date().getFullYear()}
+          © {new Date().getFullYear()} REDCORE Concrete Services Inc. Springfield, MA | Concrete Cutting &amp; Core Drilling
         </p>
       </div>
       <Dialog open={status === 'success'} onOpenChange={(open) => !open && setStatus('idle')}>
