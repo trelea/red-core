@@ -160,7 +160,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TooltipProvider>
-          <main className="pt-[70px] sm:pt-[112px]">
+          <main className="pt-[96px] sm:pt-[112px]">
             <Navbar />
             {children}
             <Footer />

@@ -23,14 +23,15 @@ export default function TopBar() {
   }
 
   return (
-    <div className="hidden border-b border-white/[0.06] bg-[#172428] py-1.5 sm:block">
-      <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-        <Badge className="gap-2 border-0 bg-green-500/10 px-2.5 py-0.5 text-[15px] font-medium text-green-400 hover:bg-green-500/15">
-          <span className="relative flex size-2.5">
+    <div className="border-b border-white/[0.06] bg-[#172428] py-1 sm:py-1.5">
+      <div className="container mx-auto flex items-center justify-between px-3 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+        <Badge className="gap-1.5 border-0 bg-green-500/10 px-2 py-0.5 text-sm font-medium text-green-400 hover:bg-green-500/15 sm:gap-2 sm:px-2.5 sm:text-[15px]">
+          <span className="relative flex size-1.5 sm:size-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-green-400" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-green-400 sm:size-2.5" />
           </span>
-          Open 24/7
+          <span className="sm:hidden">24/7</span>
+          <span className="hidden sm:inline">Booking Available 24/7</span>
         </Badge>
 
         <Tooltip>
@@ -38,9 +39,9 @@ export default function TopBar() {
             <button
               type="button"
               onClick={copyAddress}
-              className="flex items-center gap-2 text-[15px] font-medium text-white/90 transition-colors hover:text-white"
+              className="flex items-center gap-1.5 text-sm font-medium text-white/90 transition-colors hover:text-white sm:gap-2 sm:text-[15px]"
             >
-              <Mail className="size-4" />
+              <Mail className="size-3 sm:size-3.5" />
               redcoreusa@gmail.com
             </button>
           </TooltipTrigger>
