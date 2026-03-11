@@ -30,8 +30,8 @@ export default function TopBar() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex size-1.5 rounded-full bg-green-400 sm:size-2.5" />
           </span>
-          <span className="sm:hidden">24/7</span>
-          <span className="hidden sm:inline">Booking Available 24/7</span>
+          <span className="sm:hidden">Available for booking 24/7</span>
+          <span className="hidden sm:inline">Available for booking 24/7</span>
         </Badge>
 
         <Tooltip>
