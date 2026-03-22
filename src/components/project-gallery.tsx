@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useRef, useCallback } from "react";
-import Image from "next/image";
-import { ChevronRight, ChevronLeft, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { oswald } from "@/lib/fonts";
+import { useState, useRef, useCallback } from 'react';
+import Image from 'next/image';
+import { ChevronRight, ChevronLeft, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { oswald } from '@/lib/fonts';
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   images: {
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function ProjectGallery({ images }: Props) {
-  const displayImages = images.slice(0, 5);
+  const displayImages = images;
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   // Touch swipe state
@@ -30,12 +30,16 @@ export default function ProjectGallery({ images }: Props) {
 
   function goToPrevious() {
     if (selectedIndex === null) return;
-    setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
+    setSelectedIndex(
+      selectedIndex === 0 ? images.length - 1 : selectedIndex - 1,
+    );
   }
 
   function goToNext() {
     if (selectedIndex === null) return;
-    setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
+    setSelectedIndex(
+      selectedIndex === images.length - 1 ? 0 : selectedIndex + 1,
+    );
   }
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
@@ -66,7 +70,7 @@ export default function ProjectGallery({ images }: Props) {
         <h2
           className={cn(
             oswald.className,
-            "mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]"
+            'mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]',
           )}
         >
           Project gallery:
@@ -94,7 +98,7 @@ export default function ProjectGallery({ images }: Props) {
             <span
               className={cn(
                 oswald.className,
-                "text-[24px] font-bold text-[#1E2C32]"
+                'text-[24px] font-bold text-[#1E2C32]',
               )}
             >
               More photos
@@ -115,7 +119,9 @@ export default function ProjectGallery({ images }: Props) {
           className="!inset-0 !h-full !w-full !max-w-none !translate-x-0 !translate-y-0 !rounded-none !border-none !bg-black/80 !p-0 !gap-0"
         >
           <DialogTitle className="sr-only">
-            {selectedIndex !== null ? images[selectedIndex].alt : "Image preview"}
+            {selectedIndex !== null
+              ? images[selectedIndex].alt
+              : 'Image preview'}
           </DialogTitle>
 
           <DialogClose className="absolute right-4 top-4 z-20 flex size-10 items-center justify-center rounded-full bg-white/20 text-white transition-colors hover:bg-white/40">
@@ -166,10 +172,10 @@ export default function ProjectGallery({ images }: Props) {
                     type="button"
                     onClick={() => setSelectedIndex(index)}
                     className={cn(
-                      "relative h-12 w-16 overflow-hidden rounded-sm border-2 transition-opacity sm:h-16 sm:w-24",
+                      'relative h-12 w-16 overflow-hidden rounded-sm border-2 transition-opacity sm:h-16 sm:w-24',
                       selectedIndex === index
-                        ? "border-white opacity-100"
-                        : "border-transparent opacity-50 hover:opacity-80"
+                        ? 'border-white opacity-100'
+                        : 'border-transparent opacity-50 hover:opacity-80',
                     )}
                   >
                     <Image

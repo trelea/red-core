@@ -3,7 +3,8 @@ import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
 import ProjectGallery from '@/components/project-gallery';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
 
 export const metadata: Metadata = {
   title: 'Core Drilling Services in Agawam & Springfield MA',
@@ -50,8 +51,8 @@ export default function CoreDrillingPage() {
         description={
           <>
             <p>
-              Precision drilling of perfectly round holes in concrete, brick, and
-              stone. Used for pipes, cables, ventilation, and utility lines.
+              Precision drilling of perfectly round holes in concrete, brick,
+              and stone. Used for pipes, cables, ventilation, and utility lines.
             </p>
             <p className="mt-6">
               <strong>We drill for:</strong> plumbing lines, electrical
@@ -66,11 +67,34 @@ export default function CoreDrillingPage() {
       />
       <ProjectGallery
         images={[
-          { src: '/core-drilling-assets/image 9.png', alt: 'Core drilling on site' },
-          { src: '/core-drilling-assets/image 10.png', alt: 'Core drilling equipment in use' },
-          { src: '/core-drilling-assets/image 11.png', alt: 'Core drilling project' },
-          { src: '/core-drilling-assets/image 12.png', alt: 'Concrete core drilling work' },
-          { src: '/core-drilling-assets/image 13.png', alt: 'Core drilling result' },
+          {
+            src: '/core-drilling-assets/image 9.png',
+            alt: 'Core drilling on site',
+          },
+          {
+            src: '/core-drilling-assets/image 10.png',
+            alt: 'Core drilling equipment in use',
+          },
+          {
+            src: '/core-drilling-assets/image 11.png',
+            alt: 'Core drilling project',
+          },
+          {
+            src: '/core-drilling-assets/image 12.png',
+            alt: 'Concrete core drilling work',
+          },
+          {
+            src: '/core-drilling-assets/image 13.png',
+            alt: 'Core drilling result',
+          },
+          {
+            src: '/core-drilling-assets/image 14.png',
+            alt: 'Core drilling equipment',
+          },
+          {
+            src: '/core-drilling-assets/image 15.png',
+            alt: 'Core drilling in progress',
+          },
         ]}
       />
       <GetAQuote />
