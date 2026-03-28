@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { scrollToSection } from '@/lib/scroll-to-section';
+import { trackFormConversion, trackPhoneClick } from '@/lib/gtag';
 import {
   Dialog,
   DialogContent,
@@ -50,6 +51,7 @@ export default function Footer() {
 
       if (res.ok) {
         setStatus('success');
+        trackFormConversion();
         form.reset();
       } else {
         setStatus('error');
@@ -90,6 +92,7 @@ export default function Footer() {
             <div className="flex flex-col gap-2">
               <a
                 href="tel:+14136662026"
+                onClick={trackPhoneClick}
                 className="flex items-center gap-2.5 text-base transition-colors hover:text-white/80"
               >
                 <PhoneIcon className="size-4 shrink-0 text-[#7BB8D4]" />

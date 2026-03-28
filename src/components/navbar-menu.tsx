@@ -22,6 +22,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { scrollToSection, scrollToId } from '@/lib/scroll-to-section';
+import { trackPhoneClick } from '@/lib/gtag';
 import { useState, useEffect } from 'react';
 
 const services = [
@@ -248,6 +249,7 @@ export function NavbarMobileMenu() {
           <SheetClose asChild>
             <a
               href="tel:+14136662026"
+              onClick={trackPhoneClick}
               className="flex items-center justify-center gap-2 bg-[#2E4048] px-5 py-3 text-lg font-bold text-white transition-colors hover:bg-[#3a5260]"
             >
               <PhoneIcon className="size-4" />

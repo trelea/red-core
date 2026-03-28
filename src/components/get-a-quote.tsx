@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { trackFormConversion } from '@/lib/gtag';
 import {
   Dialog,
   DialogContent,
@@ -56,6 +57,7 @@ export default function GetAQuote() {
 
       if (res.ok) {
         setStatus('success');
+        trackFormConversion();
         form.reset();
         setFiles([]);
       } else {
