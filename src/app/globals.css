@@ -124,3 +124,66 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes availability-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+  50% {
+    box-shadow: 0 0 14px 2px rgba(34, 197, 94, 0.45);
+  }
+}
+
+@keyframes availability-shimmer {
+  0% {
+    transform: translateX(-140%) skewX(-20deg);
+  }
+  60%, 100% {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
+
+@keyframes button-shine {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+  }
+  55%, 100% {
+    transform: translateX(320%) skewX(-20deg);
+  }
+}
+
+@keyframes button-glow {
+  0%, 100% {
+    box-shadow: 0 4px 12px 0 rgba(199, 0, 23, 0.18);
+  }
+  50% {
+    box-shadow: 0 6px 18px 0 rgba(199, 0, 23, 0.28);
+  }
+}
+
+@keyframes availability-jiggle {
+  0%, 78%, 100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  80% {
+    transform: rotate(-3deg) translateY(-1px);
+  }
+  82% {
+    transform: rotate(3deg) translateY(1px);
+  }
+  84% {
+    transform: rotate(-3deg) translateY(-1px);
+  }
+  86% {
+    transform: rotate(2deg) translateY(0);
+  }
+  88% {
+    transform: rotate(-2deg) translateY(-1px);
+  }
+  90% {
+    transform: rotate(1deg);
+  }
+  92% {
+    transform: rotate(0deg);
+  }
+}

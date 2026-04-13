@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { oswald, inter } from '@/lib/fonts';
 import { scrollToSection } from '@/lib/scroll-to-section';
-import { PhoneIcon, ClipboardListIcon } from 'lucide-react';
+import { PhoneIcon, ClipboardListIcon, ArrowRightIcon } from 'lucide-react';
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -51,22 +51,41 @@ export default function Hero({
                 {description}
               </div>
             </div>
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'contacts')}
-                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#C70017] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] sm:px-[50px] sm:py-[15px]')}
+                style={{ animation: 'button-glow 4.5s ease-in-out infinite' }}
+                className={cn(
+                  inter.className,
+                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#C70017] to-[#a80014] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-[#d80019] hover:to-[#b30017] active:translate-y-0 active:scale-[0.98] motion-reduce:animate-none sm:px-6 sm:py-[15px]',
+                )}
               >
-                <PhoneIcon className="h-5 w-5" />
-                Contact Us
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent motion-reduce:hidden"
+                  style={{ animation: 'button-shine 5.5s ease-in-out infinite' }}
+                />
+                <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Contact Us</span>
+                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               </button>
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#1E2C32] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 sm:px-[50px] sm:py-[15px]')}
+                className={cn(
+                  inter.className,
+                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#1E2C32] to-[#2E4048] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-[0_4px_14px_0_rgba(30,44,50,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_0_rgba(30,44,50,0.45)] active:translate-y-0 active:scale-[0.98] sm:px-6 sm:py-[15px]',
+                )}
               >
-                <ClipboardListIcon className="h-5 w-5" />
-                Get a Quote
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent motion-reduce:hidden"
+                  style={{ animation: 'button-shine 6.5s ease-in-out infinite' }}
+                />
+                <ClipboardListIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Get a Quote</span>
+                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               </button>
             </div>
           </div>
@@ -99,22 +118,41 @@ export default function Hero({
                 {description}
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:gap-6">
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'contacts')}
-                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#C70017] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#a80014] lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
+                style={{ animation: 'button-glow 4.5s ease-in-out infinite' }}
+                className={cn(
+                  inter.className,
+                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#C70017] to-[#a80014] px-6 py-3 text-[14px] font-bold uppercase leading-[27px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-[#d80019] hover:to-[#b30017] active:translate-y-0 active:scale-[0.98] motion-reduce:animate-none lg:px-6 lg:py-[15px] lg:text-[16px]',
+                )}
               >
-                <PhoneIcon className="h-5 w-5" />
-                Contact Us
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent motion-reduce:hidden"
+                  style={{ animation: 'button-shine 5.5s ease-in-out infinite' }}
+                />
+                <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Contact Us</span>
+                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               </button>
               <button
                 type="button"
                 onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(inter.className, 'inline-flex items-center justify-center gap-2 rounded-sm bg-[#1E2C32] px-8 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-sm transition-colors hover:bg-[#1E2C32]/90 lg:px-[50px] lg:py-[15px] lg:text-[16px]')}
+                className={cn(
+                  inter.className,
+                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#1E2C32] to-[#2E4048] px-6 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-[0_4px_14px_0_rgba(30,44,50,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_0_rgba(30,44,50,0.45)] active:translate-y-0 active:scale-[0.98] lg:px-6 lg:py-[15px] lg:text-[16px]',
+                )}
               >
-                <ClipboardListIcon className="h-5 w-5" />
-                Get a Quote
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent motion-reduce:hidden"
+                  style={{ animation: 'button-shine 6.5s ease-in-out infinite' }}
+                />
+                <ClipboardListIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Get a Quote</span>
+                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               </button>
             </div>
           </div>

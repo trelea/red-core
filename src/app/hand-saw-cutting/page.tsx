@@ -3,7 +3,8 @@ import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
 import ProjectGallery from '@/components/project-gallery';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
 
 export const metadata: Metadata = {
   title: 'Hand Saw Cutting Services in Agawam & Springfield MA',
@@ -67,11 +68,38 @@ export default function HandSawCuttingPage() {
       />
       <ProjectGallery
         images={[
-          { src: '/hand-saw-cutting-assets/image 9.png', alt: 'Hand saw cutting concrete wall' },
-          { src: '/hand-saw-cutting-assets/image 10.png', alt: 'Hand saw cutting concrete wall' },
-          { src: '/hand-saw-cutting-assets/image 11.png', alt: 'Hand saw cutting concrete wall' },
-          { src: '/hand-saw-cutting-assets/image 12.png', alt: 'Hand saw cutting concrete wall' },
-          { src: '/hand-saw-cutting-assets/image 13.png', alt: 'Hand saw cutting concrete wall' },
+          {
+            src: '/hand-saw-cutting-assets/image 9.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 10.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 11.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 12.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 13.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 14.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 15.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
+          {
+            src: '/hand-saw-cutting-assets/image 16.png',
+            alt: 'Hand saw cutting concrete wall',
+          },
         ]}
       />
       <GetAQuote />

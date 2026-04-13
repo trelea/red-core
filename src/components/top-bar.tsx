@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/tooltip';
-
 export default function TopBar() {
   const [copied, setCopied] = useState(false);
 
@@ -25,14 +24,32 @@ export default function TopBar() {
   return (
     <div className="border-b border-white/[0.06] bg-[#172428] py-1 sm:py-1.5">
       <div className="container mx-auto flex items-center justify-between px-3 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-        <Badge className="gap-1.5 border-0 bg-green-500/10 px-2 py-0.5 text-sm font-medium text-green-400 hover:bg-green-500/15 sm:gap-2 sm:px-2.5 sm:text-[15px]">
-          <span className="relative flex size-1.5 sm:size-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex size-1.5 rounded-full bg-green-400 sm:size-2.5" />
-          </span>
-          <span className="sm:hidden">Available for booking 24/7</span>
-          <span className="hidden sm:inline">Available for booking 24/7</span>
-        </Badge>
+        <div
+          className="relative rounded-md motion-reduce:animate-none"
+          style={{
+            animation: 'availability-jiggle 5s ease-in-out infinite',
+            transformOrigin: 'center',
+          }}
+        >
+          <Badge
+            className="relative gap-1.5 overflow-hidden rounded-md border border-green-400/20 bg-green-500/10 px-2 py-0.5 text-sm font-medium text-green-400 sm:gap-2 sm:px-2.5 sm:text-[15px]"
+            style={{ animation: 'availability-glow 2.8s ease-in-out infinite' }}
+          >
+            <span className="relative flex size-1.5 sm:size-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-green-400 sm:size-2.5" />
+            </span>
+            <span className="relative z-10">Available for booking 24/7</span>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 -left-1/2 z-0 w-1/3 bg-gradient-to-r from-transparent via-green-300/30 to-transparent"
+              style={{
+                animation:
+                  'availability-shimmer 3.2s ease-in-out infinite',
+              }}
+            />
+          </Badge>
+        </div>
 
         <Tooltip>
           <TooltipTrigger asChild>

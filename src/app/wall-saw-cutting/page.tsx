@@ -3,7 +3,8 @@ import Hero from '@/components/hero';
 import GetAQuote from '@/components/get-a-quote';
 import ProjectGallery from '@/components/project-gallery';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
 
 export const metadata: Metadata = {
   title: 'Wall Saw Cutting Services in Agawam & Springfield MA',
@@ -54,8 +55,8 @@ export default function WallSawCuttingPage() {
               openings. Provides straight, smooth edges with minimal vibration.
             </p>
             <p className="mt-6">
-              <strong>Used for:</strong> door openings, window enlargements, wall
-              removals, and structural modifications.
+              <strong>Used for:</strong> door openings, window enlargements,
+              wall removals, and structural modifications.
             </p>
           </>
         }
@@ -66,11 +67,30 @@ export default function WallSawCuttingPage() {
       />
       <ProjectGallery
         images={[
-          { src: '/wall-saw-cutting-assets/image 9.png', alt: 'Wall saw cutting concrete structure' },
-          { src: '/wall-saw-cutting-assets/image 10.png', alt: 'Wall saw cutting concrete structure' },
-          { src: '/wall-saw-cutting-assets/image 11.png', alt: 'Wall saw cutting concrete structure' },
-          { src: '/wall-saw-cutting-assets/image 12.png', alt: 'Wall saw cutting concrete structure' },
-          { src: '/wall-saw-cutting-assets/image 13.png', alt: 'Wall saw cutting concrete structure' },
+          {
+            src: '/wall-saw-cutting-assets/image 9.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
+          {
+            src: '/wall-saw-cutting-assets/image 10.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
+          {
+            src: '/wall-saw-cutting-assets/image 11.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
+          {
+            src: '/wall-saw-cutting-assets/image 12.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
+          {
+            src: '/wall-saw-cutting-assets/image 13.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
+          {
+            src: '/wall-saw-cutting-assets/image 14.png',
+            alt: 'Wall saw cutting concrete structure',
+          },
         ]}
       />
       <GetAQuote />
