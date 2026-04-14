@@ -6,9 +6,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const { fullName, phone, email } = await request.json();
+    const { fullName, phone, email, callbackDay, callbackTime } = await request.json();
 
-    if (!fullName || !phone || !email) {
+    if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
       return Response.json(
         { error: 'All fields are required.' },
         { status: 400 },
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       from: 'Red Core <redcore@redcoreconcrete.com>',
       to: ['redcoreusa@gmail.com'],
       subject: `Free Consultation Request from ${fullName}`,
-      react: ContactUsTemplate({ fullName, email, phone })
+      react: ContactUsTemplate({ fullName, email, phone, callbackDay, callbackTime })
     });
 
     if (error) {

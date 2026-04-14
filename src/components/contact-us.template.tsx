@@ -6,6 +6,8 @@ interface ContactUsTemplateProps {
   fullName: string;
   phone: string;
   email: string;
+  callbackDay: string;
+  callbackTime: string;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -23,6 +25,8 @@ export function ContactUsTemplate({
   fullName,
   phone,
   email,
+  callbackDay,
+  callbackTime,
 }: ContactUsTemplateProps) {
   return (
     <div style={{ margin: 0, padding: 0, backgroundColor: '#E0E0E2', fontFamily: 'Arial, Helvetica, sans-serif' }}>
@@ -63,6 +67,23 @@ export function ContactUsTemplate({
                   <tr>
                     <td style={{ padding: '0 40px' }}>
                       <div style={{ borderBottom: '2px solid #C70017', width: 48 }} />
+                    </td>
+                  </tr>
+                  {/* Callback preference highlight */}
+                  <tr>
+                    <td style={{ padding: '16px 40px 4px' }}>
+                      <table width="100%" cellPadding={0} cellSpacing={0} style={{ backgroundColor: '#FEF2F3', border: '1px solid #FBD5D9', borderLeft: '4px solid #C70017', borderRadius: 6 }}>
+                        <tbody>
+                          <tr>
+                            <td style={{ padding: '14px 18px' }}>
+                              <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#C70017', textTransform: 'uppercase', letterSpacing: 1 }}>When to call</span>
+                              <span style={{ display: 'block', marginTop: 6, fontSize: 16, color: '#1E2C32', fontWeight: 700, lineHeight: '1.5' }}>
+                                {callbackDay} &middot; {callbackTime}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                   {/* Fields */}
