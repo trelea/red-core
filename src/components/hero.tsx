@@ -1,12 +1,8 @@
-'use client';
-
 import Image from 'next/image';
-import { MailIcon, PhoneIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { inter, orbitron } from '@/lib/fonts';
-import { scrollToSection } from '@/lib/scroll-to-section';
-import { trackPhoneClick } from '@/lib/gtag';
-import { useQuoteDialog } from '@/components/quote-dialog-provider';
+import ContactButtons from '@/components/contact-buttons';
+import HeroActions from '@/components/hero-actions';
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -19,56 +15,6 @@ interface HeroProps {
   // Optional props to control what is rendered
   render_desc?: boolean;
   render_buttons?: boolean;
-}
-
-function ContactButtons({ small = false }: { small?: boolean }) {
-  return (
-    <>
-      <a
-        href="mailto:redcoreusa@gmail.com"
-        aria-label="Email us"
-        className={cn(
-          'group flex items-center overflow-hidden rounded-l-full bg-[#FFFFFF73] text-black shadow-lg backdrop-blur-sm transition-colors hover:bg-white/60',
-          small ? 'h-[54px]' : 'h-[64px]',
-        )}
-      >
-        <span
-          className={cn(
-            'flex shrink-0 items-center justify-center',
-            small ? 'w-[72px]' : 'w-[93px]',
-          )}
-        >
-          <MailIcon className={small ? 'size-6' : 'size-[26px]'} />
-        </span>
-        {/* Email slides out to the right of the icon on hover */}
-        <span
-          className={cn(
-            'max-w-0 overflow-hidden whitespace-nowrap font-semibold transition-[max-width,padding] duration-300 ease-out group-hover:max-w-[280px]',
-            small ? 'text-[13px] group-hover:pr-5' : 'text-sm group-hover:pr-7',
-          )}
-        >
-          redcoreusa@gmail.com
-        </span>
-      </a>
-      <a
-        href="tel:+14136662026"
-        onClick={trackPhoneClick}
-        className={cn(
-          'flex items-center rounded-l-full bg-[#FFFFFF73] text-black shadow-lg backdrop-blur-sm transition-colors hover:bg-white/60',
-          small
-            ? 'h-[54px] gap-2.5 pl-5 pr-5'
-            : 'h-[65px] gap-4 pl-[37px] pr-[38px]',
-        )}
-      >
-        <PhoneIcon className={cn('text-black', small ? 'size-6' : 'size-7')} />
-        <span
-          className={cn('font-semibold', small ? 'text-[13px]' : 'text-sm')}
-        >
-          (413)-666-2026
-        </span>
-      </a>
-    </>
-  );
 }
 
 export default function Hero({
@@ -86,7 +32,6 @@ export default function Hero({
   render_desc = true,
   render_buttons = true,
 }: HeroProps) {
-  const { openQuote } = useQuoteDialog();
   // On phones we use the undistorted full-res PNG (sharper, no SVG stretch);
   // on larger screens we use the SVG framing. A passed `image` (service pages)
   // overrides both.
@@ -178,24 +123,7 @@ export default function Hero({
                   {description}
                 </div>
               )}
-              {render_buttons && (
-                <div className="mt-7 flex flex-wrap items-center gap-2.5 sm:mt-9 lg:mt-16 2xl:mt-20 2xl:gap-3.5">
-                  <button
-                    type="button"
-                    onClick={openQuote}
-                    className="rounded-full bg-[#c70017] px-6 py-3 text-[13px] font-semibold uppercase tracking-wide text-white shadow-sm transition-colors lg:px-10 lg:py-5 lg:text-sm 2xl:px-12 2xl:py-6 2xl:text-base hover:bg-[#9a0012]"
-                  >
-                    Get a quote
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => scrollToSection(e, 'projects')}
-                    className="rounded-full bg-[#4F4F4F] px-6 py-3 text-[13px] font-semibold uppercase tracking-wide text-white shadow-sm transition-colors lg:px-10 lg:py-5 lg:text-sm 2xl:px-12 2xl:py-6 2xl:text-base hover:bg-[#3f3f3f]"
-                  >
-                    Our projects
-                  </button>
-                </div>
-              )}
+              {render_buttons && <HeroActions />}
             </div>
           </div>
 

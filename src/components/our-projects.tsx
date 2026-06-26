@@ -133,7 +133,19 @@ function ProjectRow({ project }: { project: Project }) {
                     'w-1/2 justify-center gap-2 rounded-[74px] bg-[#C70017] px-[30px] py-3 text-[15px] font-bold text-white',
                   )}
                 >
-                  {priceFormatter.format(project.project_price)}
+                  <span>
+                    {priceFormatter
+                      .formatToParts(project.project_price)
+                      .map((part, idx) =>
+                        part.type === 'currency' ? (
+                          <span key={idx} className="text-[#14AD00]">
+                            {part.value}
+                          </span>
+                        ) : (
+                          part.value
+                        ),
+                      )}
+                  </span>
                 </Badge>
               </li>
             </ul>
