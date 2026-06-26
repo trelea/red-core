@@ -1,83 +1,63 @@
-'use client';
-
-import { useRef } from 'react';
-import Autoplay from 'embla-carousel-autoplay';
 import FeedbackCard from '@/components/feedback-card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
+import { Marquee } from '@/components/ui/marquee';
 
 const feedbacks = [
   {
+    name: 'Ethan R.',
+    feedback:
+      'REDCORE did an amazing job rebuilding our back deck. The crew was professional, fast, and explained every step clearly. The new decking feels solid and looks beautiful. Pricing was fair and communication was excellent from start to finish.',
+  },
+  {
+    name: 'Melissa T.',
+    feedback:
+      'We had several old windows replaced and the difference is incredible. Everything was installed cleanly and professionally, and they made sure the trim and sealing looked perfect. Very reliable company and easy to work with.',
+  },
+  {
+    name: 'Jonathan K.',
+    feedback:
+      'Highly recommend REDCORE’s door installation services. They installed our new front entry quickly and made sure everything closed perfectly and sealed. Great attention to detail and a respectful team.',
+  },
+  {
     name: 'Kelly G.',
     feedback:
-      'Would highly recommend. Great service and value.\n\nTheir communication was amazing and I\u2019m very grateful they were willing to help me out. Thank you!',
-  },
-  {
-    name: 'Mark T.',
-    feedback:
-      'Excellent work on our basement project. The team was professional, on time, and left the site spotless.\n\nWill definitely use again!',
-  },
-  {
-    name: 'Sarah L.',
-    feedback:
-      'Fast response and great pricing. They handled our commercial project with care and precision.\n\nHighly recommend to anyone needing concrete services.',
+      'Would highly recommend. Great service and value. Their communication was amazing and I’m very grateful they were willing to help me out. Thank you!',
   },
   {
     name: 'James R.',
     feedback:
-      'Top-notch core drilling service. Clean cuts, no mess, and very reasonable rates.\n\nThe crew was friendly and knew exactly what they were doing.',
+      'Top-notch core drilling service. Clean cuts, no mess, and very reasonable rates. The crew was friendly and knew exactly what they were doing.',
   },
   {
     name: 'Anna P.',
     feedback:
-      'Called on short notice and they showed up the next day. Professional from start to finish.\n\nGreat communication throughout the entire process.',
-  },
-  {
-    name: 'David M.',
-    feedback:
-      'Best concrete cutting service in the area. Fair pricing and outstanding quality.\n\nThey went above and beyond to make sure we were satisfied.',
+      'Called on short notice and they showed up the next day. Professional from start to finish. Great communication throughout the entire process.',
   },
 ];
 
 export default function Feedbacks() {
-  const autoplayPlugin = useRef(Autoplay({ delay: 5000 }));
-
   return (
-    <section className="bg-white py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-[120px] xl:px-[160px]">
-        <h2 className="mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]">
-          Feedbacks:
-        </h2>
+    <section className="overflow-hidden bg-white py-20 sm:py-28 lg:py-36">
+      {/* container — keeps the heading aligned with navbar / footer width */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+        {/* head */}
+        <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+          Feedbacks
+        </span>
+      </div>
 
-        <Carousel
-          opts={{
-            align: 'start',
-            loop: true,
-          }}
-          plugins={[autoplayPlugin.current]}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-5">
-            {feedbacks.map((item, index) => (
-              <CarouselItem
-                key={index}
-                className="basis-full pl-5 sm:basis-1/2 lg:basis-1/3"
-              >
-                <FeedbackCard name={item.name} feedback={item.feedback} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <CarouselPrevious className="static translate-y-0 size-10 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] sm:size-14 [&_svg]:size-7 [&_svg]:stroke-[3.5] sm:[&_svg]:size-11" />
-            <CarouselNext className="static translate-y-0 size-10 border-0 bg-transparent text-[#1E2C32] shadow-none hover:bg-transparent hover:text-[#C70017] sm:size-14 [&_svg]:size-7 [&_svg]:stroke-[3.5] sm:[&_svg]:size-11" />
-          </div>
-        </Carousel>
+      {/* full-width marquee with white edge fades */}
+      <div className="relative mt-8 sm:mt-10 lg:mt-12">
+        <Marquee pauseOnHover className="[--duration:70s] [--gap:1.25rem]">
+          {feedbacks.map((item) => (
+            <FeedbackCard
+              key={item.name}
+              name={item.name}
+              feedback={item.feedback}
+            />
+          ))}
+        </Marquee>
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden bg-gradient-to-r from-white via-white/70 to-transparent sm:block sm:w-24 md:w-40 lg:w-[240px] lg:via-white/90 xl:w-[320px]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden bg-gradient-to-l from-white via-white/70 to-transparent sm:block sm:w-24 md:w-40 lg:w-[240px] lg:via-white/90 xl:w-[320px]" />
       </div>
     </section>
   );

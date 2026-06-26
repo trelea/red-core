@@ -5,6 +5,7 @@ import './globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { QuoteDialogProvider } from '@/components/quote-dialog-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,13 +28,12 @@ export const metadata: Metadata = {
     template: '%s | Red Core',
   },
   description:
-    'Red Core provides professional concrete cutting and core drilling services including slab cutting, wall saw cutting, hand saw cutting, and small demolition. Precision work for residential and commercial projects.',
+    'Red Core provides professional concrete cutting and core drilling services including slab cutting, wall saw cutting, and small demolition. Precision work for residential and commercial projects.',
   keywords: [
     'core drilling',
     'concrete cutting',
     'slab cutting',
     'wall saw cutting',
-    'hand saw cutting',
     'small demolition',
     'concrete drilling',
     'precision cutting',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: 'Red Core',
     title: 'Red Core | Professional Concrete Cutting & Core Drilling Services',
     description:
-      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, hand saw cutting, and controlled demolition for residential and commercial projects.',
+      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition for residential and commercial projects.',
     images: [
       {
         url: '/og-image.png',
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Red Core | Professional Concrete Cutting & Core Drilling Services',
     description:
-      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, hand saw cutting, and controlled demolition.',
+      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -120,7 +120,7 @@ const localBusinessJsonLd = {
   '@id': `${siteUrl}/#business`,
   name: 'Red Core',
   description:
-    'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, hand saw cutting, and controlled demolition for residential and commercial projects.',
+    'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition for residential and commercial projects.',
   url: siteUrl,
   logo: `${siteUrl}/logo.svg`,
   image: `${siteUrl}/og-image.png`,
@@ -142,7 +142,6 @@ const localBusinessJsonLd = {
     'Core Drilling',
     'Slab Cutting',
     'Wall Saw Cutting',
-    'Hand Saw Cutting',
     'Small Demolition',
   ],
   priceRange: '$$',
@@ -196,11 +195,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TooltipProvider>
-          <main className="pt-[96px] sm:pt-[112px]">
-            <Navbar />
-            {children}
-            <Footer />
-          </main>
+          <QuoteDialogProvider>
+            <main>
+              <Navbar />
+              {children}
+              <Footer />
+            </main>
+          </QuoteDialogProvider>
         </TooltipProvider>
       </body>
     </html>

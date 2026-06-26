@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Hero from '@/components/hero';
-import GetAQuote from '@/components/get-a-quote';
-import ProjectGallery from '@/components/project-gallery';
+import { OurProjects } from '@/components/our-projects';
+import OurServices from '@/components/our-services';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
 
 export const metadata: Metadata = {
   title: 'Small Demolition Services in Agawam & Springfield MA',
@@ -39,7 +40,6 @@ export default function SmallDemolitionPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
       <Hero
-        variant="background"
         title={
           <>
             <span className="font-bold">Small</span>
@@ -61,20 +61,34 @@ export default function SmallDemolitionPage() {
           </>
         }
         image={{
-          src: '/small-demolition-img.png',
+          src: '/small-demolition-img.svg',
           alt: 'Small demolition of concrete structure',
         }}
+        render_desc={false}
+        render_buttons={false}
       />
-      <ProjectGallery
-        images={[
-          { src: '/small-demolition-assets/image 9.png', alt: 'Small demolition of concrete structure' },
-          { src: '/small-demolition-assets/image 10.png', alt: 'Small demolition of concrete structure' },
-          { src: '/small-demolition-assets/image 11.png', alt: 'Small demolition of concrete structure' },
-          { src: '/small-demolition-assets/image 12.png', alt: 'Small demolition of concrete structure' },
-          { src: '/small-demolition-assets/image 13.png', alt: 'Small demolition of concrete structure' },
+      <OurProjects
+        projects={[
+          {
+            project_name: 'Small Demolition',
+            project_location: 'East Taunton, MA',
+            project_price: 2500,
+            project_description:
+              'Work completed at Hood through our contractor: expanded existing concrete block door opening to 90” wide and 11’ high, followed by saw cutting, block removal, and manual debris removal due to limited interior access.',
+            project_images: [
+              {
+                src: '/small-demolition-assets/img1.png',
+                alt: 'Saw cutting a concrete block door opening',
+              },
+              {
+                src: '/small-demolition-assets/img2.png',
+                alt: 'Debris removal after small demolition',
+              },
+            ],
+          },
         ]}
       />
-      <GetAQuote />
+      <OurServices />
     </>
   );
 }

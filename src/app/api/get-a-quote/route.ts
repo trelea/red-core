@@ -10,15 +10,16 @@ export async function POST(request: Request) {
     const fullName = formData.get('fullName') as string;
     const phone = formData.get('phone') as string;
     const email = formData.get('email') as string;
-    const location = formData.get('location') as string;
-    const projectDetails = formData.get('projectDetails') as string;
+    const offer = formData.get('offer') as string;
+    const service = formData.get('service') as string;
+    const message = formData.get('message') as string;
     const callbackDay = formData.get('callbackDay') as string;
     const callbackTime = formData.get('callbackTime') as string;
     const files = formData.getAll('images') as File[];
 
-    if (!fullName || !phone || !email || !location || !projectDetails || !callbackDay || !callbackTime) {
+    if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
       return Response.json(
-        { error: 'All fields are required.' },
+        { error: 'Name, phone, email and callback preference are required.' },
         { status: 400 },
       );
     }
@@ -50,8 +51,9 @@ export async function POST(request: Request) {
         fullName,
         phone,
         email,
-        location,
-        projectDetails,
+        offer,
+        service,
+        message,
         callbackDay,
         callbackTime,
         imageCount: attachments.length,

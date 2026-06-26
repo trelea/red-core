@@ -65,8 +65,8 @@ export default function ProjectGallery({ images }: Props) {
   }, [selectedIndex]);
 
   return (
-    <section>
-      <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-[120px] lg:py-20 xl:px-[160px]">
+    <section id="projects">
+      <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-12 lg:py-20 xl:px-[120px] 2xl:px-[160px]">
         <h2
           className={cn(
             oswald.className,

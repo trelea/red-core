@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 
 const features = [
   {
@@ -39,36 +39,36 @@ const features = [
 export default function WhyChooseUs() {
   return (
     <section className="bg-white py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-[120px] xl:px-[160px]">
-        <h2 className="mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]">
-          Why choose us?
-        </h2>
+      <div className="rounded-[24px] bg-[#f3f3f3] py-8 sm:rounded-[32px] sm:py-10 lg:rounded-[45px] lg:py-14">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+          <span className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+            Why choose us?
+          </span>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-12 xl:gap-16">
-          {features.map((feature) => (
-            <Card
-              key={feature.title}
-              className="border-0 bg-transparent shadow-none"
-            >
-              <CardHeader className="flex flex-col items-center gap-3 p-0 sm:gap-6">
-                <Image
-                  src={feature.icon}
-                  alt=""
-                  width={64}
-                  height={64}
-                  className="size-14 drop-shadow-sm sm:size-16"
-                />
-                <CardTitle className="whitespace-pre-line text-center text-[18px] font-bold leading-[1.2] text-[#1E2C32] sm:text-[20px] lg:text-[24px]">
-                  {feature.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 pt-3 sm:pt-6">
-                <p className="mx-auto max-w-[280px] text-center text-[14px] leading-[1.4] text-[#1E2C32] sm:max-w-none">
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map((feature) => (
+              <Card
+                key={feature.title}
+                className="flex flex-col gap-0 rounded-none border-0 bg-[#e1e1e1] p-7 shadow-none sm:p-10 lg:p-[55px]"
+              >
+                <div className="flex flex-row items-center gap-4 sm:flex-col sm:items-start sm:gap-0">
+                  <Image
+                    src={feature.icon}
+                    alt=""
+                    width={70}
+                    height={70}
+                    className="size-16 shrink-0 lg:size-[70px]"
+                  />
+                  <CardTitle className="whitespace-pre-line text-[20px] font-bold leading-[1.15] text-[#1E2C32] sm:mt-7 sm:text-[22px] lg:text-[24px] xl:text-[26px] 2xl:text-[30px]">
+                    {feature.title}
+                  </CardTitle>
+                </div>
+                <CardDescription className="mt-4 text-[15px] leading-[1.55] text-[#5b5b5b] sm:mt-5 sm:text-[13px] lg:text-[14px] xl:text-[15px] 2xl:text-[17px]">
                   {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+                </CardDescription>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </section>
