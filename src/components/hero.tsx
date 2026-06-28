@@ -1,10 +1,8 @@
-'use client';
-
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { oswald, inter } from '@/lib/fonts';
-import { scrollToSection } from '@/lib/scroll-to-section';
-import { PhoneIcon, ClipboardListIcon, ArrowRightIcon } from 'lucide-react';
+import { inter, microgramma } from '@/lib/fonts';
+import ContactButtons from '@/components/contact-buttons';
+import HeroActions from '@/components/hero-actions';
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -12,184 +10,174 @@ interface HeroProps {
   image?: {
     src: string;
     alt: string;
-    width?: number;
-    height?: number;
   };
-  variant?: 'background' | 'simple';
-  className?: string;
+
+  // Optional props to control what is rendered
+  render_desc?: boolean;
+  render_buttons?: boolean;
 }
 
 export default function Hero({
   title = (
     <>
-      <span className="font-normal">Professional</span>
+      Concrete
       <br />
-      <span className="font-bold">Concrete Cutting</span>
+      cutting
       <br />
-      <span className="font-normal">& </span>
-      <span className="font-bold">Core Drilling</span>
+      experts
     </>
   ),
-  description = 'We help residential and commercial clients solve concrete-related tasks quickly, cleanly, and professionally.',
-  image = {
-    src: '/hero-img.png',
-    alt: 'Redcore concrete cutting service in action',
-  },
-  variant = 'background',
-  className,
+  description = 'Professional concrete cutting, core drilling, slab sawing, and controlled demolition with clean results, precise work, and reliable scheduling.',
+  image,
+  render_desc = true,
+  render_buttons = true,
 }: HeroProps) {
-  if (variant === 'simple') {
-    return (
-      <section className={cn('relative overflow-hidden bg-white', className)}>
-        <div className="container mx-auto flex flex-col gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:flex-row lg:items-center lg:gap-16 lg:px-[120px] xl:px-[160px]">
-          <div className="flex w-full flex-col gap-10 text-[#1E2C32] lg:w-1/2 lg:shrink-0 lg:gap-16">
-            <div className="flex flex-col gap-10">
-              <h1 className={cn(oswald.className, 'text-[36px] uppercase leading-[1.18] tracking-tight sm:text-[38px] md:text-[42px] lg:text-[61px]')}>
-                {title}
-              </h1>
-              <div className={cn(inter.className, 'max-w-[488px] text-[16px] font-normal leading-normal sm:text-[18px] md:text-[20px] lg:text-[24px]')}>
-                {description}
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-              <button
-                type="button"
-                onClick={(e) => scrollToSection(e, 'contacts')}
-                style={{ animation: 'button-glow 4.5s ease-in-out infinite' }}
-                className={cn(
-                  inter.className,
-                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#C70017] to-[#a80014] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-[#d80019] hover:to-[#b30017] active:translate-y-0 active:scale-[0.98] motion-reduce:animate-none sm:px-6 sm:py-[15px]',
-                )}
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent motion-reduce:hidden"
-                  style={{ animation: 'button-shine 5.5s ease-in-out infinite' }}
-                />
-                <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative z-10">Contact Us</span>
-                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-              </button>
-              <button
-                type="button"
-                onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(
-                  inter.className,
-                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#1E2C32] to-[#2E4048] px-8 py-3 text-[16px] font-bold uppercase leading-[27px] text-white shadow-[0_4px_14px_0_rgba(30,44,50,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_0_rgba(30,44,50,0.45)] active:translate-y-0 active:scale-[0.98] sm:px-6 sm:py-[15px]',
-                )}
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent motion-reduce:hidden"
-                  style={{ animation: 'button-shine 6.5s ease-in-out infinite' }}
-                />
-                <ClipboardListIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative z-10">Get a Quote</span>
-                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-              </button>
-            </div>
-          </div>
-          <div className="w-full lg:w-1/2 lg:shrink-0">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              width={image.width ?? 650}
-              height={image.height ?? 500}
-              className="h-auto w-full rounded-lg object-contain shadow-md"
-              priority
-            />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  // The same image is used on phones (covered background) and desktop (right
+  // half). A passed `image` (service pages) overrides the default.
+  const desktopImage = image ?? {
+    src: '/hero-img-flipped.jpg',
+    alt: 'Modern concrete building',
+  };
+  // Service pages pass a wide (rectangular) image; the default home image is
+  // square. On phones the rectangle is scaled up ~50% so it reads as large as
+  // the square, and the gray fade overlay is sized to match.
+  const hasImage = !!image;
+  // Title-only mode (used by the service pages) — nudge the band a touch less.
+  const compact = !render_desc && !render_buttons;
+  // Service-page layout: a description but no CTA buttons. These pages use short,
+  // wide (rectangular) illustrations, so instead of the home page's full-height
+  // centered band we size the hero to its content and pin it just under the
+  // navbar, with the image absolutely centered in the right half.
+  const service = render_desc && !render_buttons;
   return (
-    <section className={cn('relative overflow-hidden bg-[#E0E0E2]', className)}>
-      {/* Text content — above everything */}
-      <div className="relative z-10 lg:flex lg:h-[740px] lg:items-center">
-        <div className="container mx-auto px-4 py-10 sm:px-6 lg:px-[120px] lg:py-0 xl:px-[160px]">
-          <div className="flex flex-col gap-10 text-[#1E2C32] lg:w-[668px] lg:gap-16">
-            <div className="flex flex-col gap-5 lg:gap-10">
-              <h1 className={cn(oswald.className, 'text-[36px] uppercase leading-[1.18] tracking-tight sm:text-[38px] md:text-[42px] lg:text-[61px] xl:text-[68px]')}>
+    <section
+      className={cn(
+        microgramma.variable,
+        'relative isolate w-screen overflow-hidden bg-[#d9d9d9] sm:h-auto sm:w-auto lg:min-h-0 lg:max-h-screen',
+        // Phones: full-screen for the full hero, half-screen for title-only.
+        compact ? 'h-[50vh] sm:min-h-[420px]' : 'h-screen sm:min-h-[700px]',
+      )}
+    >
+      {/* Mobile (below lg): the FULL image is rendered in the lower band of the
+          section — from 20% to 100% of the height (Oy). The top 20% stays gray
+          for the text. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 top-[20%] -z-10 lg:hidden"
+      >
+        <Image
+          src={desktopImage.src}
+          alt={desktopImage.alt}
+          fill
+          priority
+          sizes="100vw"
+          className={cn(
+            'object-contain object-right-bottom',
+            // Service rectangle: scale up ~50% so it reads as large as the
+            // square home image (extra width is clipped by the section).
+            hasImage && 'scale-[1.5] origin-bottom',
+          )}
+        />
+        {/* Fade the image's top edge into the gray section. Bottom-anchored, with
+            a height matching the image so the overlay's top lines up with the
+            image's top edge: ~100vw for the square, ~85vw for the scaled rectangle. */}
+        <div
+          aria-hidden
+          className={cn(
+            'absolute inset-x-0 bottom-0 bg-gradient-to-b from-[#d9d9d9] from-0% via-[#d9d9d9]/60 via-12% to-transparent to-30%',
+            hasImage ? 'h-[85vw]' : 'h-[100vw]',
+          )}
+        />
+      </div>
+
+      {/* Desktop (lg+): the image occupies the right half, vertically centered.
+          Home: in flow with a 50vw min-height (square photo defines a full-height
+          hero). Service: absolute, filling the content-sized section so the
+          rectangular illustration is centered without forcing extra height.
+          Hidden on mobile (the background layer is used). */}
+      <div
+        className={cn(
+          'hidden lg:flex lg:w-1/2 lg:items-center',
+          service
+            ? 'absolute inset-y-0 right-0'
+            : 'relative lg:ml-auto lg:min-h-[50vw] lg:max-h-screen',
+        )}
+      >
+        <Image
+          src={desktopImage.src}
+          alt={desktopImage.alt}
+          width={722}
+          height={754}
+          priority
+          quality={100}
+          sizes="50vw"
+          className={cn(
+            'w-full object-right',
+            // Service: fill the right half (crop wide illustration to cover).
+            // Home: contain the full square photo.
+            service ? 'h-full object-cover' : 'h-auto object-contain',
+          )}
+        />
+        {/* Soft-blend the image's left edge into the gray panel */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-[#d9d9d9] from-0% via-[#d9d9d9]/50 via-8% to-transparent to-16%"
+        />
+      </div>
+
+      {/* Content + contacts. Under lg it's a normal in-flow block anchored at the
+          top (text sits in the gray band); at lg+ it becomes the absolute,
+          vertically-balanced overlay band. */}
+      <div
+        className={cn(
+          'relative w-full pb-12 lg:flex lg:items-start',
+          // Phones/small: anchor the content high under the navbar (~15% of the
+          // viewport) instead of the middle.
+          compact ? 'pt-28' : 'pt-[15vh]',
+          service
+            ? // In flow: defines the section height; pinned under the navbar.
+              'lg:pb-24 lg:pt-32 xl:pb-28 xl:pt-36'
+            : // Absolute overlay, vertically centered over the tall image.
+              'lg:absolute lg:inset-0 lg:pb-0 lg:pt-32 xl:items-center xl:pt-0',
+        )}
+      >
+        <div
+          className={cn(
+            'relative w-full',
+            service ? '' : compact ? 'xl:translate-y-20' : 'xl:translate-y-10',
+          )}
+        >
+          <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+            <div className="flex max-w-[600px] flex-col 2xl:max-w-[760px]">
+              <h1 className="text-[32.48px] font-bold uppercase leading-[1.18] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[40px] lg:text-[61px]">
                 {title}
               </h1>
-              <div className={cn(inter.className, 'max-w-[488px] text-[16px] font-normal leading-normal sm:text-[18px] md:text-[20px] lg:text-[24px]')}>
-                {description}
-              </div>
+              {render_desc && (
+                <div
+                  className={cn(
+                    inter.className,
+                    'mt-[25px] max-w-[460px] text-[18px] font-normal leading-none tracking-normal text-[#3a3a3a] lg:mt-8 lg:text-[24px] 2xl:mt-10 2xl:max-w-[580px] 2xl:text-[30px]',
+                  )}
+                >
+                  {description}
+                </div>
+              )}
+              {render_buttons && <HeroActions />}
             </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:gap-6">
-              <button
-                type="button"
-                onClick={(e) => scrollToSection(e, 'contacts')}
-                style={{ animation: 'button-glow 4.5s ease-in-out infinite' }}
-                className={cn(
-                  inter.className,
-                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#C70017] to-[#a80014] px-6 py-3 text-[14px] font-bold uppercase leading-[27px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-[#d80019] hover:to-[#b30017] active:translate-y-0 active:scale-[0.98] motion-reduce:animate-none lg:px-6 lg:py-[15px] lg:text-[16px]',
-                )}
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent motion-reduce:hidden"
-                  style={{ animation: 'button-shine 5.5s ease-in-out infinite' }}
-                />
-                <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative z-10">Contact Us</span>
-                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-              </button>
-              <button
-                type="button"
-                onClick={(e) => scrollToSection(e, 'quote')}
-                className={cn(
-                  inter.className,
-                  'group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-sm bg-gradient-to-r from-[#1E2C32] to-[#2E4048] px-6 py-3 text-[14px] font-bold uppercase leading-[27px] text-white shadow-[0_4px_14px_0_rgba(30,44,50,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_0_rgba(30,44,50,0.45)] active:translate-y-0 active:scale-[0.98] lg:px-6 lg:py-[15px] lg:text-[16px]',
-                )}
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent motion-reduce:hidden"
-                  style={{ animation: 'button-shine 6.5s ease-in-out infinite' }}
-                />
-                <ClipboardListIcon className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative z-10">Get a Quote</span>
-                <ArrowRightIcon className="relative z-10 h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-              </button>
-            </div>
+          </div>
+
+          {/* Contacts (desktop, lg+) — flush right, bottom-aligned to the text */}
+          <div className="absolute bottom-0 right-0 z-10 hidden flex-col items-end gap-[5px] lg:flex">
+            <ContactButtons />
           </div>
         </div>
       </div>
 
-      {/* Hero image — mobile: pulled up under buttons, desktop: right 61% of section */}
-      <div className="-mt-40 h-[250px] sm:-mt-44 sm:h-[350px] md:h-[400px] lg:absolute lg:inset-y-0 lg:left-[39%] lg:right-0 lg:mt-0 lg:h-full">
-        <div className="relative h-full w-full">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            className="object-cover object-center lg:object-left"
-            sizes="(min-width: 1024px) 61vw, 100vw"
-            priority
-            unoptimized
-          />
-          {/* Mobile: top-to-bottom fade into gray background */}
-          <div
-            className="absolute inset-x-0 top-0 h-[70%] lg:hidden"
-            style={{
-              background:
-                'linear-gradient(to bottom, #E0E0E2 0%, rgba(224, 224, 226, 0) 100%)',
-            }}
-          />
-          {/* Desktop: left-to-right fade into gray background */}
-          <div
-            className="hidden lg:absolute lg:inset-y-0 lg:left-0 lg:block lg:w-[37%]"
-            style={{
-              background:
-                'linear-gradient(to right, #E0E0E2 2.5%, rgba(224, 224, 226, 0) 95%)',
-            }}
-          />
-        </div>
+      {/* Contacts (mobile, below lg) — smaller, pinned to the bottom-right of the
+          image where the hero stacks vertically. */}
+      <div className="absolute bottom-5 right-0 z-10 flex flex-col items-end gap-[5px] lg:hidden">
+        <ContactButtons small />
       </div>
     </section>
   );
 }
-

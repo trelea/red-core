@@ -2,7 +2,7 @@ function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-function smoothScrollTo(target: number, duration = 800) {
+function smoothScrollTo(target: number, duration = 1100) {
   const start = window.scrollY;
   const distance = target - start;
   let startTime: number | null = null;
@@ -23,7 +23,7 @@ function smoothScrollTo(target: number, duration = 800) {
   requestAnimationFrame(step);
 }
 
-export function scrollToId(id: string, align: 'center' | 'top' = 'center') {
+export function scrollToId(id: string, align: 'center' | 'top' = 'top') {
   const el = document.getElementById(id);
   if (!el) return;
 
@@ -41,7 +41,7 @@ export function scrollToId(id: string, align: 'center' | 'top' = 'center') {
   }
 }
 
-export function scrollToSection(e: React.MouseEvent, id: string, align: 'center' | 'top' = 'center') {
+export function scrollToSection(e: React.MouseEvent, id: string, align: 'center' | 'top' = 'top') {
   const el = document.getElementById(id);
   if (el) {
     e.preventDefault();

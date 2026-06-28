@@ -6,8 +6,9 @@ interface GetAQuoteTemplateProps {
   fullName: string;
   phone: string;
   email: string;
-  location: string;
-  projectDetails: string;
+  offer: string;
+  service: string;
+  message: string;
   callbackDay: string;
   callbackTime: string;
   imageCount?: number;
@@ -28,8 +29,9 @@ export function GetAQuoteTemplate({
   fullName,
   phone,
   email,
-  location,
-  projectDetails,
+  offer,
+  service,
+  message,
   callbackDay,
   callbackTime,
   imageCount = 0,
@@ -104,15 +106,18 @@ export function GetAQuoteTemplate({
                           <Field label="Email">
                             <a href={`mailto:${email}`} style={{ color: '#1E2C32', textDecoration: 'none' }}>{email}</a>
                           </Field>
-                          <Field label="Location">{location}</Field>
-                          <tr>
-                            <td style={{ padding: '16px 0', borderBottom: imageCount > 0 ? '1px solid #e5e7eb' : 'none' }}>
-                              <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: 1 }}>Project Details</span>
-                              <p style={{ margin: '8px 0 0', fontSize: 15, color: '#1E2C32', lineHeight: '1.7', whiteSpace: 'pre-wrap', backgroundColor: '#f9fafb', padding: '16px', borderRadius: 6, border: '1px solid #e5e7eb' }}>
-                                {projectDetails}
-                              </p>
-                            </td>
-                          </tr>
+                          <Field label="Service">{service || '—'}</Field>
+                          <Field label="Special Offer">{offer || '—'}</Field>
+                          {message && (
+                            <tr>
+                              <td style={{ padding: '16px 0', borderBottom: imageCount > 0 ? '1px solid #e5e7eb' : 'none' }}>
+                                <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: 1 }}>Message</span>
+                                <p style={{ margin: '8px 0 0', fontSize: 15, color: '#1E2C32', lineHeight: '1.7', whiteSpace: 'pre-wrap', backgroundColor: '#f9fafb', padding: '16px', borderRadius: 6, border: '1px solid #e5e7eb' }}>
+                                  {message}
+                                </p>
+                              </td>
+                            </tr>
+                          )}
                           {imageCount > 0 && (
                             <tr>
                               <td style={{ padding: '16px 0' }}>

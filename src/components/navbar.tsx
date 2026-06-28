@@ -1,49 +1,79 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { PhoneIcon } from 'lucide-react';
-import { NavbarDesktopMenu, NavbarMobileMenu, MobileServicesLink } from '@/components/navbar-menu';
-import PhoneLink from '@/components/phone-link';
-import TopBar from '@/components/top-bar';
+import { Dock } from '@/components/ui/dock';
+import { NavbarMobileMenu } from '@/components/navbar-menu';
+import { scrollToSection } from '@/lib/scroll-to-section';
+import { useQuoteDialog } from '@/components/quote-dialog-provider';
+import { cn } from '@/lib/utils';
+
+const navItems = [
+  { label: 'About us', id: 'about' },
+  { label: 'Services', id: 'services' },
+  { label: 'Get a quote', id: 'quote', emphasized: true },
+  { label: 'Special offers', id: 'offers' },
+];
 
 export default function Navbar() {
+  const { openQuote } = useQuoteDialog();
   return (
-    <header className="fixed top-0 left-0 z-50 w-full">
-      <TopBar />
-      <div className="bg-[#1E2C32] shadow-md shadow-black/20">
-        <div className="container mx-auto flex items-center justify-between px-4 py-5 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-          <Link href="/" className="shrink-0">
-            <Image
-              src="/logo.svg"
-              alt="Red Core Inc."
-              width={280}
-              height={39}
-              className="h-[30px] w-auto sm:h-[38px]"
-              priority
-            />
-          </Link>
+    <header className="pointer-events-none fixed left-0 top-0 z-50 w-full">
+      {/* blurred underlay — keeps the nav legible over any section/color */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-20 w-full backdrop-blur-[1px] [mask-image:linear-gradient(to_bottom,black_15%,transparent)] lg:h-40"
+      />
+      <div className="container relative mx-auto flex items-center justify-between gap-4 px-[30px] pb-4 pt-[30px] lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:pb-5 lg:pt-8 xl:px-[120px] 2xl:px-[160px]">
+        {/* top left the logo */}
+        <Link
+          href="/"
+          className="pointer-events-auto shrink-0 justify-self-start"
+        >
+          <Image
+            src="/logo.svg"
+            alt="Red Core Inc."
+            width={280}
+            height={39}
+            priority
+            className="h-[28px] w-auto sm:h-[32px] lg:h-[31px] xl:h-[33px] min-[1440px]:h-[37px]"
+          />
+        </Link>
 
-          {/* Desktop: centered navigation */}
-          <NavbarDesktopMenu />
+        {/* middle top dock nav items */}
+        <Dock
+          disableMagnification
+          className="pointer-events-auto mt-0 hidden h-auto gap-0 justify-self-center rounded-full border-0 bg-white/80 p-0 shadow-sm backdrop-blur-sm lg:flex shadow-md"
+        >
+          {navItems.map((item, i) => (
+            <span key={item.id} className="flex items-center">
+              {i > 0 && (
+                <span
+                  aria-hidden
+                  className="mx-1 h-4 w-px bg-black/15 xl:mx-2"
+                />
+              )}
+              <button
+                type="button"
+                onClick={(e) =>
+                  item.id === 'quote'
+                    ? openQuote()
+                    : scrollToSection(e, item.id)
+                }
+                className={cn(
+                  'whitespace-nowrap rounded-full px-[30px] py-[11px] text-[13px] font-normal uppercase tracking-normal transition-colors',
+                  'text-black hover:text-[#c70017]',
+                )}
+              >
+                {item.label}
+              </button>
+            </span>
+          ))}
+        </Dock>
 
-          {/* Desktop: phone on far right */}
-          <PhoneLink
-            className="hidden shrink-0 items-center justify-center gap-3 rounded-sm bg-[#2E4048] px-3 py-2.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#3a5260] lg:flex xl:px-5 xl:py-[15px] xl:text-[16px]"
-          >
-            <PhoneIcon className="size-4 xl:size-5" />
-            (413)-666-2026
-          </PhoneLink>
-
-          {/* Mobile: services + phone + hamburger grouped on right */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <MobileServicesLink />
-            <PhoneLink
-              className="flex items-center justify-center rounded-sm bg-[#2E4048] p-2.5 text-white shadow-md transition-colors hover:bg-[#3a5260] sm:px-3 sm:py-2.5 sm:text-[14px] sm:font-bold"
-            >
-              <PhoneIcon className="size-4 sm:hidden" />
-              <span className="hidden sm:inline">(413)-666-2026</span>
-            </PhoneLink>
-            <NavbarMobileMenu />
-          </div>
+        {/* mobile menu */}
+        <div className="pointer-events-auto lg:hidden">
+          <NavbarMobileMenu />
         </div>
       </div>
     </header>

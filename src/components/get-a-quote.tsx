@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
-import Image from 'next/image';
 import { format } from 'date-fns';
 import {
   PaperclipIcon,
@@ -9,18 +8,22 @@ import {
   XIcon,
   CalendarIcon,
   ClockIcon,
-  ChevronDownIcon,
+  ArrowUpRightIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { oswald, inter } from '@/lib/fonts';
+import { inter, montserrat, microgramma } from '@/lib/fonts';
 import { trackFormConversion } from '@/lib/gtag';
 import {
   Dialog,
@@ -39,18 +42,46 @@ interface CapturedFields {
   fullName: string;
   phone: string;
   email: string;
-  location: string;
-  projectDetails: string;
+  offer: string;
+  service: string;
+  message: string;
 }
 
-export default function GetAQuote() {
+const SERVICE_OPTIONS = [
+  'Concrete Openings & Wall Sawing',
+  'Core Drilling',
+  'Slab / Foundation Cutting',
+  'Small Demolition',
+];
+
+const OFFER_OPTIONS = [
+  'Concrete Openings & Wall Sawing — $1,000 Flat / Special Offer',
+  'Core Drilling — Volume Pricing',
+  'Foundation Cutting — 50% Off Debris Loading',
+  'Demolition — 30% Off + Free Cleanup',
+];
+
+interface GetAQuoteDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+// Underline-style field used across the screenshot layout
+const fieldClass =
+  'h-auto rounded-none border-0 border-b border-black/30 bg-transparent px-0 py-3 text-[16px] font-normal text-black shadow-none placeholder:text-black/45 focus-visible:border-black focus-visible:ring-0';
+
+export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogProps) {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [files, setFiles] = useState<File[]>([]);
+  const [preview, setPreview] = useState<{ url: string; name: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const hourInputRef = useRef<HTMLInputElement>(null);
   const minuteInputRef = useRef<HTMLInputElement>(null);
+
+  const [offer, setOffer] = useState('');
+  const [service, setService] = useState('');
 
   const [callbackOpen, setCallbackOpen] = useState(false);
   const [captured, setCaptured] = useState<CapturedFields | null>(null);
@@ -83,6 +114,15 @@ export default function GetAQuote() {
     setDialogError(null);
   }
 
+  function resetForm() {
+    formRef.current?.reset();
+    setFiles([]);
+    setOffer('');
+    setService('');
+    setCaptured(null);
+    resetCallbackState();
+  }
+
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(e.target.files || []);
     setFiles((prev) => [...prev, ...selected].slice(0, 5));
@@ -91,6 +131,20 @@ export default function GetAQuote() {
 
   function removeFile(index: number) {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function openPreview(file: File) {
+    setPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev.url);
+      return { url: URL.createObjectURL(file), name: file.name };
+    });
+  }
+
+  function closePreview() {
+    setPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev.url);
+      return null;
+    });
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -102,8 +156,9 @@ export default function GetAQuote() {
       fullName: (form.elements.namedItem('fullName') as HTMLInputElement).value,
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
-      location: (form.elements.namedItem('location') as HTMLInputElement).value,
-      projectDetails: (form.elements.namedItem('project') as HTMLTextAreaElement).value,
+      offer,
+      service,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
     });
     setCallbackOpen(true);
   }
@@ -161,8 +216,9 @@ export default function GetAQuote() {
     formData.append('fullName', captured.fullName);
     formData.append('phone', captured.phone);
     formData.append('email', captured.email);
-    formData.append('location', captured.location);
-    formData.append('projectDetails', captured.projectDetails);
+    formData.append('offer', captured.offer);
+    formData.append('service', captured.service);
+    formData.append('message', captured.message);
     formData.append('callbackDay', callbackDay);
     formData.append('callbackTime', callbackTime);
     files.forEach((file) => formData.append('images', file));
@@ -176,11 +232,9 @@ export default function GetAQuote() {
       if (res.ok) {
         setStatus('success');
         trackFormConversion();
-        formRef.current?.reset();
-        setFiles([]);
-        setCaptured(null);
-        resetCallbackState();
+        resetForm();
         setCallbackOpen(false);
+        onOpenChange(false);
       } else {
         setStatus('error');
         setCallbackOpen(false);
@@ -194,207 +248,192 @@ export default function GetAQuote() {
   }
 
   return (
-    <section id="quote" className="relative overflow-hidden bg-[#C70017]">
-      {/* Background image overlay on right side */}
-      <div
-        className="absolute inset-0 bg-contain bg-right bg-no-repeat opacity-40"
-        style={{
-          backgroundImage: "url('/get-a-qupte-img.png')",
-          maskImage:
-            'linear-gradient(to left, black 40%, transparent 100%)',
-          WebkitMaskImage:
-            'linear-gradient(to left, black 40%, transparent 100%)',
+    <>
+      {/* Main quote form dialog */}
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          if (loading) return;
+          onOpenChange(next);
         }}
-      />
-      {/* Gradient overlay: solid red left, fading right */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            'linear-gradient(90deg, #C70017 2.4%, rgba(199, 0, 23, 0) 104%)',
-        }}
-      />
+      >
+        <DialogContent
+          showCloseButton={false}
+          className={cn(
+            inter.className,
+            'flex max-h-[92vh] w-[calc(100vw-24px)] flex-col gap-0 overflow-y-auto rounded-none border-0 bg-[#e9e9e9] p-0 text-black shadow-2xl sm:max-w-[1142px]',
+          )}
+        >
+          <DialogDescription className="sr-only">
+            Request a same-day quote for concrete cutting and core drilling services.
+          </DialogDescription>
 
-      <div className="container relative mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-[120px] lg:py-20 xl:px-[160px]">
-        <div className="flex flex-col gap-8 sm:gap-10 lg:flex-row lg:gap-16 xl:gap-24">
-          {/* Left: Heading & Description */}
-          <div className="flex w-full flex-col text-white lg:w-[387px] lg:shrink-0">
-            <div className="flex flex-col gap-6">
-              <h2 className="text-[32px] font-bold uppercase leading-none tracking-tight sm:text-[42px] lg:text-[53px]">
-                Get a Quote
-              </h2>
-              <p className="text-[20px] font-normal sm:text-[24px] lg:text-[27.7px]">
-                24/7 Fast Estimate
-              </p>
-            </div>
+          <div className="relative px-6 py-8 sm:px-20 sm:pt-11 sm:pb-16">
+            {/* Close */}
+            <DialogClose
+              aria-label="Close"
+              className="absolute right-5 top-5 rounded-md p-2 text-black/70 transition-colors hover:bg-black/5 hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 sm:right-8 sm:top-8"
+            >
+              <XIcon className="size-6" />
+            </DialogClose>
 
-            <Separator className="my-8 bg-white/20" />
+            {/* Title — Montserrat SemiBold 55px / 64px line-height */}
+            <DialogTitle
+              className={cn(
+                montserrat.className,
+                'text-[24px] font-semibold leading-[1.1] tracking-[0] text-black sm:text-[55px] sm:leading-[64px]',
+              )}
+            >
+              Get a Same-Day Quote
+            </DialogTitle>
+            <span className="mt-4 block h-[3px] w-12 bg-[#C70017]" />
 
-            <div className="text-lg font-medium leading-[28px] text-white">
-              <p>
-                Project pricing depends on several factors, including concrete
-                thickness, type of service required, scope of work, site
-                conditions, and overall project complexity.
-              </p>
-              <br />
-              <p>
-                Submit your details and receive a quick, accurate calculation
-                tailored to your project.
-              </p>
-            </div>
-          </div>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="mt-7 grid grid-cols-1 gap-x-11 gap-y-8 lg:grid-cols-2 lg:items-start"
+            >
+              {/* Left column: contact + selects */}
+              <div className="flex flex-col gap-5">
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  required
+                  placeholder="Full Name"
+                  className={fieldClass}
+                />
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  placeholder="Phone number"
+                  className={fieldClass}
+                />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Email"
+                  className={fieldClass}
+                />
 
-          {/* Right: Form inside Card */}
-          <Card className="w-full border-0 bg-transparent shadow-none">
-            <CardContent className="p-0">
-              <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-8">
-                {/* Input Grid: 2 cols x 2 rows */}
-                <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-8 lg:gap-x-16 lg:gap-y-10">
-                  <div className="flex flex-col gap-2">
-                    <Label
-                      htmlFor="fullName"
-                      className="text-base font-bold text-white/90"
-                    >
-                      Full Name
-                    </Label>
-                    <Input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      required
-                      placeholder="John Doe"
-                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label
-                      htmlFor="phone"
-                      className="text-base font-bold text-white/90"
-                    >
-                      Phone
-                    </Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required
-                      placeholder="(000) 000-0000"
-                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label
-                      htmlFor="email"
-                      className="text-base font-bold text-white/90"
-                    >
-                      Email
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="yourname@example.com"
-                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label
-                      htmlFor="location"
-                      className="text-base font-bold text-white/90"
-                    >
-                      Your location
-                    </Label>
-                    <Input
-                      id="location"
-                      name="location"
-                      type="text"
-                      required
-                      placeholder="City, State"
-                      className="h-auto rounded-md border border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
-                    />
-                  </div>
-                </div>
-
-                {/* Textarea */}
-                <div className="flex flex-col gap-2">
-                  <Label
-                    htmlFor="project"
-                    className="text-base font-bold text-white/90"
+                <Select value={offer} onValueChange={setOffer}>
+                  <SelectTrigger
+                    aria-label="Select special offer"
+                    className={cn(
+                      fieldClass,
+                      'w-full justify-between data-[placeholder]:text-black/45 [&>svg]:opacity-60',
+                    )}
                   >
-                    Project details
-                  </Label>
-                  <Textarea
-                    id="project"
-                    name="project"
-                    required
-                    placeholder="Describe your project"
-                    className="h-[120px] resize-none sm:h-[150px] lg:h-[192px] rounded-md border-white bg-transparent px-6 py-5 text-lg font-medium text-white placeholder:text-white/65 focus-visible:border-white focus-visible:ring-0"
-                  />
-                </div>
+                    <SelectValue placeholder="Select special offer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {OFFER_OPTIONS.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={service} onValueChange={setService}>
+                  <SelectTrigger
+                    aria-label="Select service"
+                    className={cn(
+                      fieldClass,
+                      'w-full justify-between data-[placeholder]:text-black/45 [&>svg]:opacity-60',
+                    )}
+                  >
+                    <SelectValue placeholder="Select service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SERVICE_OPTIONS.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Right column: message + actions */}
+              <div className="flex flex-col gap-5">
+                <Textarea
+                  id="message"
+                  name="message"
+                  placeholder="Message"
+                  className="h-[240px] resize-none rounded-none border border-black/40 bg-transparent px-4 py-3 text-[16px] font-normal text-black shadow-none placeholder:text-black/45 focus-visible:border-black focus-visible:ring-0 sm:h-[300px]"
+                />
 
                 {/* File previews */}
                 {files.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2">
                     {files.map((file, i) => (
                       <div
                         key={`${file.name}-${i}`}
-                        className="group relative flex items-center gap-2 rounded-md border border-white/30 bg-white/10 px-3 py-2"
+                        className="group flex items-center gap-2 rounded-none border border-black/20 bg-black/[0.03] px-3 py-1.5"
                       >
-                        <PaperclipIcon className="size-4 shrink-0 text-white/70" />
-                        <span className="max-w-[120px] truncate text-sm text-white/90">{file.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => openPreview(file)}
+                          title="Click to preview"
+                          className="flex min-w-0 items-center gap-2 text-left transition-colors hover:text-[#C70017]"
+                        >
+                          <PaperclipIcon className="size-3.5 shrink-0 text-black/50" />
+                          <span className="max-w-[120px] truncate text-sm text-black/80 group-hover:text-current">
+                            {file.name}
+                          </span>
+                        </button>
                         <button
                           type="button"
                           onClick={() => removeFile(i)}
-                          className="ml-1 shrink-0 text-white/50 transition-colors hover:text-white"
+                          className="ml-1 shrink-0 text-black/40 transition-colors hover:text-black"
                         >
-                          <XIcon className="size-4" />
+                          <XIcon className="size-3.5" />
                         </button>
                       </div>
                     ))}
                   </div>
                 )}
 
-                {/* Actions */}
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={files.length >= 5}
-                      onClick={() => fileInputRef.current?.click()}
-                      className="rounded-full border-white bg-transparent px-5 py-2.5 text-base font-medium text-white hover:bg-white/10 hover:text-white disabled:opacity-40"
-                    >
-                      <PaperclipIcon className="size-5" />
-                      {files.length > 0 ? `${files.length}/5 photos` : 'Attach photos'}
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    {status === 'error' && (
-                      <span className="text-sm font-medium text-white/80">Something went wrong. Try again.</span>
-                    )}
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className="h-auto rounded-sm bg-white px-10 py-4 text-[15px] font-bold uppercase text-[#C70017] shadow-sm hover:bg-white/90 disabled:opacity-50"
-                    >
-                      {loading ? 'Sending...' : 'Submit'}
-                    </Button>
-                  </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {status === 'error' && (
+                  <span className="text-sm font-medium text-[#C70017]">Something went wrong. Try again.</span>
+                )}
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    type="button"
+                    disabled={files.length >= 5}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-none border border-black/40 px-3 py-2.5 text-[13px] font-normal text-black/70 transition-colors hover:bg-black/[0.04] hover:text-black disabled:opacity-40 sm:px-5 sm:py-3.5 sm:text-[15px]"
+                  >
+                    <PaperclipIcon className="size-4" />
+                    {files.length > 0 ? `${files.length}/5 photos` : 'Attach a photo'}
+                  </button>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="h-auto w-full rounded-none bg-[#C70017] px-4 py-2.5 text-[13px] font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#a80014] disabled:opacity-50 sm:px-9 sm:py-3.5 sm:text-[15px]"
+                  >
+                    {loading ? 'Sending...' : 'Send'}
+                    <ArrowUpRightIcon className="size-4" />
+                  </Button>
                 </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              </div>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Callback preference dialog */}
       <Dialog
@@ -408,39 +447,24 @@ export default function GetAQuote() {
       >
         <DialogContent
           showCloseButton={false}
-          className="flex flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:max-w-[560px]"
+          className={cn(
+            inter.className,
+            microgramma.variable,
+            'flex flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:max-w-[720px]',
+          )}
         >
-          {/* Brand header bar */}
-          <div className="relative flex shrink-0 items-center justify-between gap-4 bg-[#1E2C32] px-4 py-3 sm:px-6 sm:py-3.5">
-            <span className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C70017]/60 to-transparent" />
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Image
-                src="/logo.svg"
-                alt="Red Core"
-                width={204}
-                height={39}
-                priority
-                className="h-7 w-auto sm:h-[34px]"
-              />
-              <span className="hidden h-7 w-px bg-white/15 sm:block" />
-              <div className="flex flex-col leading-none">
-                <DialogTitle
-                  className={cn(
-                    oswald.className,
-                    'text-lg font-bold uppercase tracking-[0.04em] text-white sm:text-xl',
-                  )}
-                >
-                  When To Call
-                </DialogTitle>
-                <DialogDescription
-                  className={cn(
-                    inter.className,
-                    'mt-1.5 hidden text-[13px] font-medium text-white/60 sm:block',
-                  )}
-                >
-                  Pick a day and time and we&apos;ll reach out.
-                </DialogDescription>
-              </div>
+          {/* Header */}
+          <div className="flex items-start justify-between gap-4 px-6 pt-6 sm:px-8 sm:pt-8">
+            <div className="flex flex-col">
+              <span className="inline-flex w-fit items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[13px] font-normal uppercase tracking-[0.18em] text-black">
+                When to call
+              </span>
+              <DialogTitle className="mt-5 text-[22px] font-bold uppercase leading-[1.05] tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif] sm:text-[26px]">
+                Pick a day &amp; time
+              </DialogTitle>
+              <DialogDescription className="mt-2 text-[14px] leading-snug text-[#5b5b5b]">
+                Choose when works best and we&apos;ll reach out.
+              </DialogDescription>
             </div>
             <button
               type="button"
@@ -450,7 +474,7 @@ export default function GetAQuote() {
                 resetCallbackState();
               }}
               aria-label="Close"
-              className="shrink-0 rounded-md p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20"
+              className="-mr-1 shrink-0 rounded-none p-2 text-[#1E2C32]/50 transition-colors hover:bg-[#ededed] hover:text-[#1E2C32] focus:outline-none focus:ring-2 focus:ring-[#c70017]/30"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -469,15 +493,10 @@ export default function GetAQuote() {
           </div>
 
           {/* Body */}
-          <div className={cn(inter.className, 'flex flex-col gap-7 bg-white px-5 py-6 sm:px-7 sm:py-7')}>
+          <div className="flex flex-col gap-7 px-6 py-7 sm:px-8">
             {/* Day */}
             <div className="flex flex-col gap-3">
-              <span
-                className={cn(
-                  oswald.className,
-                  'flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1E2C32]',
-                )}
-              >
+              <span className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1E2C32]">
                 <CalendarIcon className="size-3.5 text-[#C70017]" />
                 Day
               </span>
@@ -491,7 +510,7 @@ export default function GetAQuote() {
                     setDialogError(null);
                   }}
                   className={cn(
-                    'flex cursor-pointer items-center justify-center gap-2 rounded-sm border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
+                    'flex cursor-pointer items-center justify-center gap-2 rounded-none border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
                     dayMode === 'today'
                       ? 'border-[#C70017] bg-[#C70017] text-white'
                       : 'border-[#1E2C32]/15 text-[#1E2C32]/70 hover:border-[#C70017]/50 hover:text-[#1E2C32]',
@@ -510,7 +529,7 @@ export default function GetAQuote() {
                         setDialogError(null);
                       }}
                       className={cn(
-                        'flex cursor-pointer items-center justify-center gap-2 rounded-sm border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
+                        'flex cursor-pointer items-center justify-center gap-2 rounded-none border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
                         dayMode === 'specific'
                           ? 'border-[#C70017] bg-[#C70017] text-white'
                           : 'border-[#1E2C32]/15 text-[#1E2C32]/70 hover:border-[#C70017]/50 hover:text-[#1E2C32]',
@@ -522,7 +541,7 @@ export default function GetAQuote() {
                         : 'Pick a Date'}
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto overflow-hidden rounded-sm p-0" align="start">
+                  <PopoverContent className="w-auto overflow-hidden rounded-none p-0" align="start">
                     <Calendar
                       mode="single"
                       selected={specificDate}
@@ -553,12 +572,7 @@ export default function GetAQuote() {
 
             {/* Time */}
             <div className="flex flex-col gap-3">
-              <span
-                className={cn(
-                  oswald.className,
-                  'flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#1E2C32]',
-                )}
-              >
+              <span className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1E2C32]">
                 <ClockIcon className="size-3.5 text-[#C70017]" />
                 Time
               </span>
@@ -577,7 +591,7 @@ export default function GetAQuote() {
                       setDialogError(null);
                     }}
                     className={cn(
-                      'flex cursor-pointer items-center justify-center gap-2 rounded-sm border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
+                      'flex cursor-pointer items-center justify-center gap-2 rounded-none border px-4 py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
                       timeMode === opt.value
                         ? 'border-[#C70017] bg-[#C70017] text-white'
                         : 'border-[#1E2C32]/15 text-[#1E2C32]/70 hover:border-[#C70017]/50 hover:text-[#1E2C32]',
@@ -604,7 +618,7 @@ export default function GetAQuote() {
                     }
                   }}
                   className={cn(
-                    'cursor-pointer rounded-sm border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C70017]/40',
+                    'cursor-pointer rounded-none border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C70017]/40',
                     timeMode === 'specific'
                       ? 'border-[#C70017] bg-[#C70017] text-white'
                       : 'border-[#1E2C32]/15 text-[#1E2C32]/70 hover:border-[#C70017]/50 hover:text-[#1E2C32]',
@@ -704,7 +718,7 @@ export default function GetAQuote() {
 
             {dialogError && (
               <p
-                className="rounded-sm border-l-4 border-[#C70017] bg-[#C70017]/5 px-3 py-2 text-sm font-medium text-[#C70017]"
+                className="rounded-none border-l-4 border-[#C70017] bg-[#C70017]/5 px-3 py-2 text-sm font-medium text-[#C70017]"
                 role="alert"
               >
                 {dialogError}
@@ -713,13 +727,13 @@ export default function GetAQuote() {
           </div>
 
           {/* Footer */}
-          <div className="flex shrink-0 items-center justify-end gap-2 border-t border-[#1E2C32]/10 bg-[#F7F7F8] px-5 py-3 sm:px-7 sm:py-4">
+          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-[#e0e0e0] bg-[#fafafa] px-6 py-5 sm:px-8">
             <DialogClose asChild>
               <Button
                 type="button"
                 variant="outline"
                 disabled={loading}
-                className="rounded-sm border-[#1E2C32]/25 px-5 font-semibold uppercase tracking-wide text-[#1E2C32] hover:bg-[#1E2C32]/5"
+                className="rounded-none border-[#1E2C32]/25 px-6 font-semibold uppercase tracking-wide text-[#1E2C32] hover:bg-[#1E2C32]/5"
               >
                 Cancel
               </Button>
@@ -728,7 +742,7 @@ export default function GetAQuote() {
               type="button"
               onClick={submitWithCallback}
               disabled={loading}
-              className="rounded-sm bg-[#C70017] px-7 font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#a80014] disabled:opacity-50"
+              className="rounded-none bg-[#c70017] px-7 font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#9a0012] disabled:opacity-50"
             >
               {loading ? 'Sending...' : 'Confirm & Send'}
             </Button>
@@ -736,29 +750,59 @@ export default function GetAQuote() {
         </DialogContent>
       </Dialog>
 
+      {/* Image preview lightbox */}
+      <Dialog open={!!preview} onOpenChange={(open) => !open && closePreview()}>
+        <DialogContent
+          showCloseButton={false}
+          className="flex max-h-[92vh] w-fit max-w-[92vw] flex-col gap-0 overflow-hidden rounded-none border-0 bg-black/90 p-0 shadow-2xl"
+        >
+          <DialogTitle className="sr-only">{preview?.name ?? 'Image preview'}</DialogTitle>
+          <DialogClose
+            aria-label="Close preview"
+            className="absolute right-3 top-3 z-10 rounded-md bg-black/40 p-2 text-white/80 transition-colors hover:bg-black/60 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          >
+            <XIcon className="size-5" />
+          </DialogClose>
+          {preview && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={preview.url}
+              alt={preview.name}
+              className="max-h-[92vh] max-w-[92vw] object-contain"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Success dialog */}
       <Dialog open={status === 'success'} onOpenChange={(open) => !open && setStatus('idle')}>
-        <DialogContent className="border-0 bg-[#1E2C32] text-white sm:max-w-md">
+        <DialogContent
+          className={cn(
+            inter.className,
+            microgramma.variable,
+            'overflow-hidden rounded-none border-0 bg-white text-[#1E2C32] sm:max-w-md',
+          )}
+        >
           <DialogHeader className="items-center gap-4">
-            <div className="flex size-16 items-center justify-center rounded-full bg-[#C70017]/10">
-              <CheckCircleIcon className="size-8 text-[#C70017]" />
+            <div className="flex size-16 items-center justify-center rounded-full bg-[#c70017]/10">
+              <CheckCircleIcon className="size-8 text-[#c70017]" />
             </div>
-            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight">
+            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif]">
               Thank You!
             </DialogTitle>
-            <DialogDescription className="text-center text-base text-white/70">
+            <DialogDescription className="text-center text-base text-[#5b5b5b]">
               Your quote request has been sent successfully. Our team will review your project details and get back to you shortly.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-4 sm:justify-center">
             <DialogClose asChild>
-              <Button className="bg-[#C70017] px-8 py-3 text-sm font-bold uppercase text-white hover:bg-[#a80014]">
+              <Button className="rounded-none bg-[#c70017] px-8 py-3 text-sm font-bold uppercase text-white hover:bg-[#9a0012]">
                 Got it
               </Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </section>
+    </>
   );
 }

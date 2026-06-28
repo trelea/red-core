@@ -1,16 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { MenuIcon, PhoneIcon } from 'lucide-react';
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-} from '@/components/ui/navigation-menu';
+import { MenuIcon, PhoneIcon, MailIcon } from 'lucide-react';
 import {
   Sheet,
   SheetTrigger,
@@ -20,130 +11,25 @@ import {
   SheetClose,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { scrollToSection, scrollToId } from '@/lib/scroll-to-section';
+import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import { trackPhoneClick } from '@/lib/gtag';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const services = [
-  {
-    label: 'Core Drilling',
-    href: '/core-drilling',
-    description: 'Precision drilling of round holes in concrete, brick, and stone.',
-    icon: '/icons/core-drilling-icon.svg',
-  },
-  {
-    label: 'Slab Cutting',
-    href: '/slab-cutting',
-    description: 'Cutting concrete slabs to access underground pipes or utilities.',
-    icon: '/icons/slab-cutting-icon.svg',
-  },
-  {
-    label: 'Wall Saw Cutting',
-    href: '/wall-saw-cutting',
-    description: 'Heavy-duty cutting for doorways, windows, and structural openings.',
-    icon: '/icons/wall-saw-cutting-icon.svg',
-  },
-  {
-    label: 'Hand Saw Cutting',
-    href: '/hand-saw-cutting',
-    description: 'Compact precision cutting for tight or indoor areas.',
-    icon: '/icons/hand-saw-cutting-icon.svg',
-  },
-  {
-    label: 'Small Demolition',
-    href: '/small-demolition',
-    description: 'Controlled removal of concrete without damaging surroundings.',
-    icon: '/icons/small-demolition-icon.svg',
-  },
+const mobileLinks = [
+  { label: 'About us', id: 'about' },
+  { label: 'Services', id: 'services' },
+  { label: 'Get a quote', id: 'quote' },
+  { label: 'Special offers', id: 'offers' },
+  { label: 'Contacts', id: 'contacts' },
 ];
 
-const navLinks = [
-  { label: 'About us', href: '/#about' },
-  { label: 'Get a quote', href: '/#quote' },
-  { label: 'Contacts', href: '/#contacts' },
-];
-
-export function NavbarDesktopMenu() {
-  return (
-    <NavigationMenu className="hidden lg:flex">
-      <NavigationMenuList className="gap-3 xl:gap-5">
-        <NavigationMenuItem>
-          <button
-            type="button"
-            onClick={(e) => scrollToSection(e, 'about')}
-            className="group/link relative py-1 text-[11px] font-medium uppercase tracking-[0.05em] text-white/90 transition-all duration-200 hover:scale-110 hover:text-white xl:text-[12px]"
-          >
-            About us
-            <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/link:w-full" />
-          </button>
-        </NavigationMenuItem>
-
-        <span className="inline-block size-[5px] rounded-[1px] bg-[#C70017]" />
-
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="group/svc relative !h-auto !bg-transparent !p-0 py-1 !text-white/90 text-[14px] font-medium uppercase tracking-[0.08em] hover:!bg-transparent hover:!text-white focus:!bg-transparent focus:!text-white data-[state=open]:!bg-transparent data-[state=open]:!text-white data-[state=open]:hover:!text-white [&>svg]:hidden xl:text-[15px]">
-            Services
-            <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/svc:w-full" />
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="overflow-hidden rounded-lg border border-white/10 bg-[#1E2C32]/90 backdrop-blur-md">
-            <div className="h-[2px] bg-[#C70017]" />
-            <div className="grid w-[550px] grid-cols-2 gap-1.5 p-3 lg:w-[650px] xl:w-[720px]">
-              {services.map((service, i) => (
-                <NavigationMenuLink asChild key={service.href}>
-                  <Link
-                    href={service.href}
-                    className={`group flex flex-col gap-2 rounded-lg p-3 text-left transition-all hover:bg-white/[0.07] ${i === services.length - 1 ? 'col-span-2' : ''}`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded bg-[#C70017]">
-                        <Image
-                          src={service.icon}
-                          alt={service.label}
-                          width={20}
-                          height={20}
-                          className="size-5 brightness-0 invert"
-                        />
-                      </div>
-                      <span className="text-[15px] font-semibold text-white">
-                        {service.label}
-                      </span>
-                    </div>
-                    <span className="pl-[46px] text-[12px] leading-relaxed text-white/60 transition-colors group-hover:text-white/80">
-                      {service.description}
-                    </span>
-                  </Link>
-                </NavigationMenuLink>
-              ))}
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {navLinks.slice(1).map((link) => {
-          const id = link.href.replace('/#', '');
-          return (
-            <span key={link.href} className="contents">
-              <span className="inline-block size-[5px] rounded-[1px] bg-[#C70017]" />
-              <NavigationMenuItem>
-                <button
-                  type="button"
-                  onClick={(e) => scrollToSection(e, id)}
-                  className="group/link relative py-1 text-[11px] font-medium uppercase tracking-[0.05em] text-white/90 transition-all duration-200 hover:scale-110 hover:text-white xl:text-[12px]"
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#C70017] transition-all duration-300 group-hover/link:w-full" />
-                </button>
-              </NavigationMenuItem>
-            </span>
-          );
-        })}
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
-}
+const mobileRowClass =
+  'flex w-full items-center justify-between rounded-lg px-3 py-3.5 text-left text-[15px] font-normal uppercase tracking-[0.04em] text-black transition-colors hover:bg-black/[0.03] hover:text-[#c70017]';
 
 export function NavbarMobileMenu() {
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { openQuote } = useQuoteDialog();
 
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
@@ -153,23 +39,35 @@ export function NavbarMobileMenu() {
     }
   }, []);
 
+  // Kick off the scroll, then close the sheet as soon as it starts.
+  // The "quote" item opens the global quote dialog instead of scrolling.
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
+    if (id === 'quote') {
+      openQuote();
+    } else {
+      scrollToSection(e, id);
+    }
+    setOpen(false);
+  };
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/10 hover:text-white"
+          className="size-10 rounded-full bg-[#D9D9D9] text-black shadow-sm hover:bg-[#cccccc]"
         >
-          <MenuIcon className="size-5" />
+          <MenuIcon className="size-6" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-[calc(100vw-40px)] overflow-y-auto bg-[#1E2C32] text-white sm:w-80"
+        className="flex w-[calc(100vw-40px)] flex-col gap-0 overflow-y-auto border-0 bg-white/95 p-0 text-black backdrop-blur-xl sm:w-[360px]"
       >
-        <SheetHeader>
+        {/* Header */}
+        <SheetHeader className="border-b border-black/10 px-6 py-5">
           <SheetTitle>
             <Image
               src="/logo.svg"
@@ -180,96 +78,44 @@ export function NavbarMobileMenu() {
             />
           </SheetTitle>
         </SheetHeader>
-        <Separator className="bg-white/10" />
-        <nav className="flex flex-col gap-1 px-4">
-          <SheetClose asChild>
-            <Button
-              variant="ghost"
-              className="justify-start text-white hover:bg-white/10 hover:text-white"
-              onClick={(e) => scrollToSection(e, 'about')}
-            >
-              About us
-            </Button>
-          </SheetClose>
 
-          <Button
-            variant="ghost"
-            className="justify-start text-white hover:bg-white/10 hover:text-white"
-            onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-          >
-            Services
-          </Button>
-          {mobileServicesOpen && (
-            <div className="ml-2 flex flex-col gap-1 border-l border-white/10 pl-3">
-              {services.map((service) => (
-                <SheetClose asChild key={service.href}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="justify-start gap-3 text-white/80 hover:bg-white/10 hover:text-white"
-                    asChild
-                  >
-                    <Link href={service.href}>
-                      <Image
-                        src={service.icon}
-                        alt={service.label}
-                        width={20}
-                        height={20}
-                        className="size-5"
-                      />
-                      {service.label}
-                    </Link>
-                  </Button>
-                </SheetClose>
-              ))}
-            </div>
-          )}
-
-          <SheetClose asChild>
-            <Button
-              variant="ghost"
-              className="justify-start text-white hover:bg-white/10 hover:text-white"
-              onClick={(e) => scrollToSection(e, 'quote')}
+        {/* Navigation */}
+        <nav className="flex flex-1 flex-col px-3 py-4">
+          {mobileLinks.map((link) => (
+            <button
+              key={link.id}
+              type="button"
+              className={mobileRowClass}
+              onClick={(e) => handleNavClick(e, link.id)}
             >
-              Get a quote
-            </Button>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button
-              variant="ghost"
-              className="justify-start text-white hover:bg-white/10 hover:text-white"
-              onClick={(e) => scrollToSection(e, 'contacts')}
-            >
-              Contacts
-            </Button>
-          </SheetClose>
+              {link.label}
+            </button>
+          ))}
         </nav>
-        <Separator className="bg-white/10" />
-        <div className="px-4">
+
+        {/* Footer CTA */}
+        <div className="mt-auto flex flex-col gap-3 border-t border-black/10 px-6 py-5">
           <SheetClose asChild>
             <a
               href="tel:+14136662026"
               onClick={trackPhoneClick}
-              className="flex items-center justify-center gap-2 bg-[#2E4048] px-5 py-3 text-lg font-bold text-white transition-colors hover:bg-[#3a5260]"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
             >
               <PhoneIcon className="size-4" />
               (413)-666-2026
             </a>
           </SheetClose>
+          <SheetClose asChild>
+            <a
+              href="mailto:redcoreusa@gmail.com"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
+            >
+              <MailIcon className="size-4" />
+              redcoreusa@gmail.com
+            </a>
+          </SheetClose>
         </div>
       </SheetContent>
     </Sheet>
-  );
-}
-
-export function MobileServicesLink() {
-  return (
-    <button
-      type="button"
-      onClick={(e) => scrollToSection(e, 'services', 'top')}
-      className="flex items-center justify-center rounded-sm bg-[#2E4048] p-2.5 text-[14px] font-bold text-white shadow-md transition-colors hover:bg-[#3a5260] sm:px-3"
-    >
-      Services
-    </button>
   );
 }

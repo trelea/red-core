@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRightIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { inter, microgramma } from '@/lib/fonts';
 
 const services = [
   {
@@ -9,74 +10,76 @@ const services = [
     title: 'Core Drilling',
     href: '/core-drilling',
     description:
-      'Precision drilling of perfectly round holes in concrete, brick, and stone.',
+      'Precision holes for plumbing, electrical, HVAC, and structural openings.',
   },
   {
     icon: '/icons/slab-cutting-icon.svg',
     title: 'Slab Cutting',
     href: '/slab-cutting',
     description:
-      'Cutting concrete slabs and floors to access underground pipes or utilities.',
-  },
-  {
-    icon: '/icons/wall-saw-cutting-icon.svg',
-    title: 'Wall Saw Cutting',
-    href: '/wall-saw-cutting',
-    description:
-      'Heavy-duty cutting for doorways, windows, and large structural openings.',
-  },
-  {
-    icon: '/icons/hand-saw-cutting-icon.svg',
-    title: 'Hand Saw Cutting',
-    href: '/hand-saw-cutting',
-    description:
-      'Compact precision cutting for tight or indoor areas where large machines cannot fit.',
+      'Clean concrete slab cutting for trenches, openings, and utility access.',
   },
   {
     icon: '/icons/small-demolition-icon.svg',
     title: 'Small Demolition',
     href: '/small-demolition',
     description:
-      'Controlled removal of concrete sections without damaging surrounding structures.',
+      'Controlled concrete removal with minimal damage to surrounding areas.',
+  },
+  {
+    icon: '/icons/wall-saw-cutting-icon.svg',
+    title: 'Wall Saw Cutting',
+    href: '/wall-saw-cutting',
+    description:
+      'Precise vertical concrete cutting for walls, doors, windows, and structural openings.',
   },
 ];
 
 export default function OurServices() {
   return (
-    <section id="services" className="bg-white py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-[120px] xl:px-[160px]">
-        <h2 className="mb-10 text-[20px] font-bold text-[#1E2C32] sm:text-[24px]">
-          Our Services:
-        </h2>
+    <section
+      id="services"
+      className={cn(microgramma.variable, 'bg-white py-12 sm:py-16 lg:py-20')}
+    >
+      <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+        <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+          Our Services
+        </span>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-          {services.map((service, index) => (
-            <Link
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:mt-10 lg:grid-cols-2">
+          {services.map((service) => (
+            <div
               key={service.title}
-              href={service.href}
-              className={index === services.length - 1 ? 'sm:col-span-2' : ''}
+              className="flex items-center gap-4 bg-[#f5f5f5] p-6 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px] "
             >
-              <Card className="group h-auto min-h-[140px] cursor-pointer rounded-[8px] border-0 bg-[#F5F5F5] text-[#1E2C32] shadow-xs transition-colors duration-300 hover:bg-[#1E2C32] hover:text-white sm:min-h-[180px] lg:min-h-[200px]">
-                <CardContent className="flex h-full flex-col justify-center gap-4 px-4 py-4 sm:gap-6 sm:px-6 lg:px-10">
-                  <div className="flex items-center gap-4 sm:gap-6">
-                    <Image
-                      src={service.icon}
-                      alt={service.title}
-                      width={50}
-                      height={50}
-                      className="size-8 shrink-0 sm:size-10 lg:size-[50px]"
-                    />
-                    <h3 className="flex-1 text-[20px] font-bold leading-none sm:text-[24px] lg:text-[32px]">
-                      {service.title}
-                    </h3>
-                    <ChevronRightIcon className="size-8 shrink-0 stroke-[2.5] text-[#1E2C32] transition-colors duration-300 group-hover:text-white" />
-                  </div>
-                  <p className="pl-12 text-[14px] font-normal leading-normal sm:pl-16 sm:text-[16px] lg:pl-[74px]">
-                    {service.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
+              <Image
+                src={service.icon}
+                alt={service.title}
+                width={214}
+                height={214}
+                className="size-[104px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
+              />
+              <div className="flex min-w-0 flex-1 flex-col">
+                <h3 className="text-[20px] font-black uppercase leading-[1.08] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[24px] lg:text-[26px] lg:leading-[28px] xl:text-[30px] xl:leading-[32px] 2xl:text-[38px] 2xl:leading-[40px]">
+                  {service.title}
+                </h3>
+                <p
+                  className={cn(
+                    inter.className,
+                    'mt-5 text-[14px] font-normal leading-snug tracking-normal text-[#5b5b5b] sm:text-[15px] lg:text-[16px] lg:leading-none xl:text-[17px] 2xl:text-[18px]',
+                  )}
+                >
+                  {service.description}
+                </p>
+                <Link
+                  href={service.href}
+                  className="mt-10 inline-flex h-[40px] w-[160px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[20px] text-[11px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:bg-[#1E2C32] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
+                >
+                  View services
+                  <ChevronRightIcon className="size-4" />
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
       </div>
