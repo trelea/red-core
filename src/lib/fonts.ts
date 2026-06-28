@@ -1,4 +1,5 @@
-import { Oswald, Inter, Orbitron, Montserrat, Urbanist } from "next/font/google";
+import { Oswald, Inter, Montserrat, Urbanist } from "next/font/google";
+import localFont from "next/font/local";
 
 export const oswald = Oswald({
   subsets: ["latin"],
@@ -17,9 +18,12 @@ export const inter = Inter({
   subsets: ["latin"],
 });
 
-// Wide, squared industrial display face (Eurostile-style). Used for hero/headings.
-export const orbitron = Orbitron({
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  variable: "--font-orbitron",
+// Microgramma D Extended Bold — wide squared industrial display face
+// (Eurostile lineage). Used for hero/headings. Only the Bold weight ships.
+export const microgramma = localFont({
+  src: "../../public/assets/Microgramma D Extended Bold.otf",
+  weight: "700",
+  style: "normal",
+  variable: "--font-microgramma",
+  display: "swap",
 });

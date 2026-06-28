@@ -13,19 +13,23 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 
+// To reorder the carousel, change each card's `order` value (lowest shows
+// first). Filenames and alt text stay exactly as they are — only the numbers
+// decide the display sequence.
 const offers = [
   {
     src: '/offers/banner_1.png',
     alt: 'Concrete door or window opening — $1,000 flat rate',
+    order: 1,
   },
-  { src: '/offers/banner_2.png', alt: 'Core drilling offer' },
-  { src: '/offers/banner_3.png', alt: 'Concrete cutting offer' },
-  { src: '/offers/banner_4.png', alt: 'Wall sawing offer' },
-  { src: '/offers/banner_5.png', alt: 'Slab cutting offer' },
-];
+  { src: '/offers/banner_2.png', alt: 'Core drilling offer', order: 4 },
+  { src: '/offers/banner_3.png', alt: 'Concrete cutting offer', order: 2 },
+  { src: '/offers/banner_4.png', alt: 'Wall sawing offer', order: 3 },
+  { src: '/offers/banner_5.png', alt: 'Slab cutting offer', order: 5 },
+].sort((a, b) => a.order - b.order);
 
 export default function Offers() {
-  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
+  const autoplay = useRef(Autoplay({ delay: 10000, stopOnInteraction: false }));
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(offers.length);
@@ -51,7 +55,7 @@ export default function Offers() {
       className="overflow-x-clip bg-white py-12 sm:py-16 lg:py-20"
     >
       {/* container */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         {/* head left side top */}
         <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
           Our Offers

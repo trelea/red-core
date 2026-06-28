@@ -38,7 +38,7 @@ export default function Feedbacks() {
   return (
     <section className="overflow-hidden bg-white py-20 sm:py-28 lg:py-36">
       {/* container — keeps the heading aligned with navbar / footer width */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         {/* head */}
         <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
           Feedbacks

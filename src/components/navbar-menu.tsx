@@ -56,7 +56,7 @@ export function NavbarMobileMenu() {
         <Button
           variant="ghost"
           size="icon"
-          className="text-black hover:bg-black/5"
+          className="size-10 rounded-full bg-[#D9D9D9] text-black shadow-sm hover:bg-[#cccccc]"
         >
           <MenuIcon className="size-6" />
           <span className="sr-only">Toggle menu</span>
@@ -105,13 +105,15 @@ export function NavbarMobileMenu() {
               (413)-666-2026
             </a>
           </SheetClose>
-          <a
-            href="mailto:redcoreusa@gmail.com"
-            className="flex items-center justify-center gap-2 text-sm text-black/60 transition-colors hover:text-[#c70017]"
-          >
-            <MailIcon className="size-4" />
-            redcoreusa@gmail.com
-          </a>
+          <SheetClose asChild>
+            <a
+              href="mailto:redcoreusa@gmail.com"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
+            >
+              <MailIcon className="size-4" />
+              redcoreusa@gmail.com
+            </a>
+          </SheetClose>
         </div>
       </SheetContent>
     </Sheet>

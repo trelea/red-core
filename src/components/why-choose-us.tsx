@@ -40,7 +40,7 @@ export default function WhyChooseUs() {
   return (
     <section className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="rounded-[24px] bg-[#f3f3f3] py-8 sm:rounded-[32px] sm:py-10 lg:rounded-[45px] lg:py-14">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+        <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
           <span className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
             Why choose us?
           </span>

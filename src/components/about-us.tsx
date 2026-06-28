@@ -7,7 +7,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { inter, orbitron } from '@/lib/fonts';
+import { inter, microgramma } from '@/lib/fonts';
 
 type InfoItem = {
   Icon: LucideIcon;
@@ -94,9 +94,9 @@ export default function AboutUs() {
   return (
     <section
       id="about"
-      className={cn(orbitron.variable, 'bg-white py-12 sm:py-16 lg:py-20')}
+      className={cn(microgramma.variable, 'bg-white py-12 sm:py-16 lg:py-20')}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         {/* Desktop (lg+): images left, content right */}
         <div className="hidden items-stretch gap-16 lg:grid lg:grid-cols-2">
           <div className="grid grid-cols-2 gap-5">

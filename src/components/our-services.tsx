@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRightIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { inter, orbitron } from '@/lib/fonts';
+import { inter, microgramma } from '@/lib/fonts';
 
 const services = [
   {
@@ -39,9 +39,9 @@ export default function OurServices() {
   return (
     <section
       id="services"
-      className={cn(orbitron.variable, 'bg-white py-12 sm:py-16 lg:py-20')}
+      className={cn(microgramma.variable, 'bg-white py-12 sm:py-16 lg:py-20')}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
           Our Services
         </span>
@@ -50,17 +50,17 @@ export default function OurServices() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="flex items-center gap-4 bg-[#f5f5f5] p-6 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px]"
+              className="flex items-center gap-4 bg-[#f5f5f5] p-6 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px] "
             >
               <Image
                 src={service.icon}
                 alt={service.title}
                 width={214}
                 height={214}
-                className="size-[104px] shrink-0 object-contain mix-blend-multiply sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
+                className="size-[104px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
               />
               <div className="flex min-w-0 flex-1 flex-col">
-                <h3 className="text-[20px] font-black uppercase leading-[1.08] tracking-normal text-[#141414] [font-family:var(--font-orbitron),sans-serif] sm:text-[24px] lg:text-[26px] lg:leading-[28px] xl:text-[30px] xl:leading-[32px] 2xl:text-[38px] 2xl:leading-[40px]">
+                <h3 className="text-[20px] font-black uppercase leading-[1.08] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[24px] lg:text-[26px] lg:leading-[28px] xl:text-[30px] xl:leading-[32px] 2xl:text-[38px] 2xl:leading-[40px]">
                   {service.title}
                 </h3>
                 <p

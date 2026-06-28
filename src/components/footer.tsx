@@ -21,7 +21,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { inter, orbitron } from '@/lib/fonts';
+import { inter, microgramma } from '@/lib/fonts';
 import { scrollToSection } from '@/lib/scroll-to-section';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import { trackFormConversion, trackPhoneClick } from '@/lib/gtag';
@@ -233,7 +233,7 @@ export default function Footer() {
       id="contacts"
       className="rounded-t-[28px] bg-[#f4f4f4] text-black sm:rounded-t-[46px]"
     >
-      <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-12 lg:py-20 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container mx-auto px-[30px] py-12 sm:py-16 lg:px-12 lg:py-20 xl:px-[120px] 2xl:px-[160px]">
         {/* form (right) takes one half, everything else (left) the other half */}
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-8 xl:gap-12">
           {/* left side */}
@@ -407,7 +407,7 @@ export default function Footer() {
           showCloseButton={false}
           className={cn(
             inter.className,
-            orbitron.variable,
+            microgramma.variable,
             'flex flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:max-w-[720px]',
           )}
         >
@@ -417,7 +417,7 @@ export default function Footer() {
               <span className="inline-flex w-fit items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[13px] font-normal uppercase tracking-[0.18em] text-black">
                 When to call
               </span>
-              <DialogTitle className="mt-5 text-[22px] font-bold uppercase leading-[1.05] tracking-tight text-[#1E2C32] [font-family:var(--font-orbitron),sans-serif] sm:text-[26px]">
+              <DialogTitle className="mt-5 text-[22px] font-bold uppercase leading-[1.05] tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif] sm:text-[26px]">
                 Pick a day &amp; time
               </DialogTitle>
               <DialogDescription className="mt-2 text-[14px] leading-snug text-[#5b5b5b]">
@@ -734,7 +734,7 @@ export default function Footer() {
         <DialogContent
           className={cn(
             inter.className,
-            orbitron.variable,
+            microgramma.variable,
             'overflow-hidden rounded-none border-0 bg-white text-[#1E2C32] sm:max-w-md',
           )}
         >
@@ -742,7 +742,7 @@ export default function Footer() {
             <div className="flex size-16 items-center justify-center rounded-full bg-[#c70017]/10">
               <CheckCircleIcon className="size-8 text-[#c70017]" />
             </div>
-            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight text-[#1E2C32] [font-family:var(--font-orbitron),sans-serif]">
+            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif]">
               Thank You!
             </DialogTitle>
             <DialogDescription className="text-center text-base text-[#5b5b5b]">

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { inter, orbitron } from '@/lib/fonts';
+import { inter, microgramma } from '@/lib/fonts';
 import ContactButtons from '@/components/contact-buttons';
 import HeroActions from '@/components/hero-actions';
 
@@ -32,23 +32,27 @@ export default function Hero({
   render_desc = true,
   render_buttons = true,
 }: HeroProps) {
-  // On phones we use the undistorted full-res PNG (sharper, no SVG stretch);
-  // on larger screens we use the SVG framing. A passed `image` (service pages)
-  // overrides both.
+  // The same image is used on phones (covered background) and desktop (right
+  // half). A passed `image` (service pages) overrides the default.
   const desktopImage = image ?? {
-    src: '/hero-img.png',
+    src: '/hero-img-flipped.jpg',
     alt: 'Modern concrete building',
   };
-  const mobileImage = image ?? {
-    src: '/hero-building.png',
-    alt: 'Modern concrete building',
-  };
+  // Service pages pass a wide (rectangular) image; the default home image is
+  // square. On phones the rectangle is scaled up ~50% so it reads as large as
+  // the square, and the gray fade overlay is sized to match.
+  const hasImage = !!image;
   // Title-only mode (used by the service pages) — nudge the band a touch less.
   const compact = !render_desc && !render_buttons;
+  // Service-page layout: a description but no CTA buttons. These pages use short,
+  // wide (rectangular) illustrations, so instead of the home page's full-height
+  // centered band we size the hero to its content and pin it just under the
+  // navbar, with the image absolutely centered in the right half.
+  const service = render_desc && !render_buttons;
   return (
     <section
       className={cn(
-        orbitron.variable,
+        microgramma.variable,
         'relative isolate w-screen overflow-hidden bg-[#d9d9d9] sm:h-auto sm:w-auto lg:min-h-0 lg:max-h-screen',
         // Phones: full-screen for the full hero, half-screen for title-only.
         compact ? 'h-[50vh] sm:min-h-[420px]' : 'h-screen sm:min-h-[700px]',
@@ -62,20 +66,43 @@ export default function Hero({
         className="absolute inset-x-0 bottom-0 top-[20%] -z-10 lg:hidden"
       >
         <Image
-          src={mobileImage.src}
-          alt={mobileImage.alt}
+          src={desktopImage.src}
+          alt={desktopImage.alt}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-right"
+          className={cn(
+            'object-contain object-right-bottom',
+            // Service rectangle: scale up ~50% so it reads as large as the
+            // square home image (extra width is clipped by the section).
+            hasImage && 'scale-[1.5] origin-bottom',
+          )}
         />
-        {/* Soft-blend the top of the image into the gray text band */}
-        <div className="absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-[#d9d9d9] from-30% via-[#d9d9d9]/55 via-70% to-transparent" />
+        {/* Fade the image's top edge into the gray section. Bottom-anchored, with
+            a height matching the image so the overlay's top lines up with the
+            image's top edge: ~100vw for the square, ~85vw for the scaled rectangle. */}
+        <div
+          aria-hidden
+          className={cn(
+            'absolute inset-x-0 bottom-0 bg-gradient-to-b from-[#d9d9d9] from-0% via-[#d9d9d9]/60 via-12% to-transparent to-30%',
+            hasImage ? 'h-[85vw]' : 'h-[100vw]',
+          )}
+        />
       </div>
 
-      {/* Desktop (lg+): the image sits in the right half, in flow so it defines
-          the section height. Hidden on mobile (the background layer is used). */}
-      <div className="relative hidden lg:ml-auto lg:block lg:w-1/2">
+      {/* Desktop (lg+): the image occupies the right half, vertically centered.
+          Home: in flow with a 50vw min-height (square photo defines a full-height
+          hero). Service: absolute, filling the content-sized section so the
+          rectangular illustration is centered without forcing extra height.
+          Hidden on mobile (the background layer is used). */}
+      <div
+        className={cn(
+          'hidden lg:flex lg:w-1/2 lg:items-center',
+          service
+            ? 'absolute inset-y-0 right-0'
+            : 'relative lg:ml-auto lg:min-h-[50vw] lg:max-h-screen',
+        )}
+      >
         <Image
           src={desktopImage.src}
           alt={desktopImage.alt}
@@ -84,12 +111,17 @@ export default function Hero({
           priority
           quality={100}
           sizes="50vw"
-          className="h-auto w-full object-contain object-right"
+          className={cn(
+            'w-full object-right',
+            // Service: fill the right half (crop wide illustration to cover).
+            // Home: contain the full square photo.
+            service ? 'h-full object-cover' : 'h-auto object-contain',
+          )}
         />
         {/* Soft-blend the image's left edge into the gray panel */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-[#d9d9d9] from-5% via-[#d9d9d9]/50 via-15% to-transparent to-30%"
+          className="absolute inset-0 bg-gradient-to-r from-[#d9d9d9] from-0% via-[#d9d9d9]/50 via-8% to-transparent to-16%"
         />
       </div>
 
@@ -98,26 +130,33 @@ export default function Hero({
           vertically-balanced overlay band. */}
       <div
         className={cn(
-          'relative w-full pb-12 sm:pt-36 lg:absolute lg:inset-0 lg:flex lg:items-start lg:pb-0 lg:pt-32 xl:items-center xl:pt-0',
-          compact ? 'pt-28' : 'pt-52',
+          'relative w-full pb-12 lg:flex lg:items-start',
+          // Phones/small: anchor the content high under the navbar (~15% of the
+          // viewport) instead of the middle.
+          compact ? 'pt-28' : 'pt-[15vh]',
+          service
+            ? // In flow: defines the section height; pinned under the navbar.
+              'lg:pb-24 lg:pt-32 xl:pb-28 xl:pt-36'
+            : // Absolute overlay, vertically centered over the tall image.
+              'lg:absolute lg:inset-0 lg:pb-0 lg:pt-32 xl:items-center xl:pt-0',
         )}
       >
         <div
           className={cn(
             'relative w-full',
-            compact ? 'xl:translate-y-20' : 'xl:translate-y-10',
+            service ? '' : compact ? 'xl:translate-y-20' : 'xl:translate-y-10',
           )}
         >
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-[120px] 2xl:px-[160px]">
+          <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
             <div className="flex max-w-[600px] flex-col 2xl:max-w-[760px]">
-              <h1 className="text-[36px] font-bold uppercase leading-[0.95] tracking-tight text-[#141414] [font-family:var(--font-orbitron),sans-serif] sm:text-[40px] lg:text-[54px] 2xl:text-[70px]">
+              <h1 className="text-[32.48px] font-bold uppercase leading-[1.18] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[40px] lg:text-[61px]">
                 {title}
               </h1>
               {render_desc && (
                 <div
                   className={cn(
                     inter.className,
-                    'mt-4 max-w-[460px] text-[16px] font-normal leading-snug tracking-normal text-[#3a3a3a] sm:text-[18px] sm:leading-none lg:mt-8 lg:text-[24px] 2xl:mt-10 2xl:max-w-[580px] 2xl:text-[30px]',
+                    'mt-[25px] max-w-[460px] text-[18px] font-normal leading-none tracking-normal text-[#3a3a3a] lg:mt-8 lg:text-[24px] 2xl:mt-10 2xl:max-w-[580px] 2xl:text-[30px]',
                   )}
                 >
                   {description}

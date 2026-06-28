@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { inter, montserrat, orbitron } from '@/lib/fonts';
+import { inter, montserrat, microgramma } from '@/lib/fonts';
 import { trackFormConversion } from '@/lib/gtag';
 import {
   Dialog,
@@ -48,18 +48,17 @@ interface CapturedFields {
 }
 
 const SERVICE_OPTIONS = [
+  'Concrete Openings & Wall Sawing',
   'Core Drilling',
-  'Slab Cutting',
+  'Slab / Foundation Cutting',
   'Small Demolition',
-  'Wall Saw Cutting',
 ];
 
 const OFFER_OPTIONS = [
-  'Concrete door / window opening — $1,000 flat',
-  'Core drilling promo',
-  'Slab cutting promo',
-  'Wall sawing promo',
-  'Small demolition promo',
+  'Concrete Openings & Wall Sawing — $1,000 Flat / Special Offer',
+  'Core Drilling — Volume Pricing',
+  'Foundation Cutting — 50% Off Debris Loading',
+  'Demolition — 30% Off + Free Cleanup',
 ];
 
 interface GetAQuoteDialogProps {
@@ -450,7 +449,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
           showCloseButton={false}
           className={cn(
             inter.className,
-            orbitron.variable,
+            microgramma.variable,
             'flex flex-col gap-0 overflow-hidden rounded-none border-0 bg-white p-0 shadow-2xl sm:max-w-[720px]',
           )}
         >
@@ -460,7 +459,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
               <span className="inline-flex w-fit items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[13px] font-normal uppercase tracking-[0.18em] text-black">
                 When to call
               </span>
-              <DialogTitle className="mt-5 text-[22px] font-bold uppercase leading-[1.05] tracking-tight text-[#1E2C32] [font-family:var(--font-orbitron),sans-serif] sm:text-[26px]">
+              <DialogTitle className="mt-5 text-[22px] font-bold uppercase leading-[1.05] tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif] sm:text-[26px]">
                 Pick a day &amp; time
               </DialogTitle>
               <DialogDescription className="mt-2 text-[14px] leading-snug text-[#5b5b5b]">
@@ -780,7 +779,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
         <DialogContent
           className={cn(
             inter.className,
-            orbitron.variable,
+            microgramma.variable,
             'overflow-hidden rounded-none border-0 bg-white text-[#1E2C32] sm:max-w-md',
           )}
         >
@@ -788,7 +787,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
             <div className="flex size-16 items-center justify-center rounded-full bg-[#c70017]/10">
               <CheckCircleIcon className="size-8 text-[#c70017]" />
             </div>
-            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight text-[#1E2C32] [font-family:var(--font-orbitron),sans-serif]">
+            <DialogTitle className="text-center text-2xl font-bold uppercase tracking-tight text-[#1E2C32] [font-family:var(--font-microgramma),sans-serif]">
               Thank You!
             </DialogTitle>
             <DialogDescription className="text-center text-base text-[#5b5b5b]">

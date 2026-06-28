@@ -2,9 +2,13 @@ import type { Metadata } from 'next';
 import Hero from '@/components/hero';
 import { OurProjects } from '@/components/our-projects';
 import OurServices from '@/components/our-services';
+import { getProjects } from '@/lib/projects';
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
+
+// Revalidate so CMS edits to projects appear without a redeploy (ISR).
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Small Demolition Services in Agawam & Springfield MA',
@@ -32,7 +36,8 @@ const serviceJsonLd = {
   url: `${siteUrl}/small-demolition`,
 };
 
-export default function SmallDemolitionPage() {
+export default async function SmallDemolitionPage() {
+  const projects = await getProjects('small-demolition-projects');
   return (
     <>
       <script
@@ -50,13 +55,16 @@ export default function SmallDemolitionPage() {
         description={
           <>
             <p>
-              Controlled removal of concrete sections without damaging
-              surrounding structures. Clean and safe process for renovations and
-              repairs.
+              Controlled demolition for concrete, block, brick, and interior
+              structures.
             </p>
-            <p className="mt-6">
-              <strong>Includes:</strong> concrete breaking, section removal,
-              surface demolition, and debris cleanup options.
+            <p className="mt-3">
+              We remove walls, openings, damaged concrete sections, small slabs,
+              steps, and masonry areas safely and cleanly.
+            </p>
+            <p className="mt-3">
+              For homeowners, contractors, property managers, remodelers, and
+              commercial projects.
             </p>
           </>
         }
@@ -64,30 +72,9 @@ export default function SmallDemolitionPage() {
           src: '/small-demolition-img.svg',
           alt: 'Small demolition of concrete structure',
         }}
-        render_desc={false}
         render_buttons={false}
       />
-      <OurProjects
-        projects={[
-          {
-            project_name: 'Small Demolition',
-            project_location: 'East Taunton, MA',
-            project_price: 2500,
-            project_description:
-              'Work completed at Hood through our contractor: expanded existing concrete block door opening to 90” wide and 11’ high, followed by saw cutting, block removal, and manual debris removal due to limited interior access.',
-            project_images: [
-              {
-                src: '/small-demolition-assets/img1.png',
-                alt: 'Saw cutting a concrete block door opening',
-              },
-              {
-                src: '/small-demolition-assets/img2.png',
-                alt: 'Debris removal after small demolition',
-              },
-            ],
-          },
-        ]}
-      />
+      <OurProjects projects={projects} />
       <OurServices />
     </>
   );

@@ -4,6 +4,7 @@ import Script from 'next/script';
 import './globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
+import ScrollDownIndicator from '@/components/scroll-down-indicator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QuoteDialogProvider } from '@/components/quote-dialog-provider';
 
@@ -200,6 +201,7 @@ export default function RootLayout({
               <Navbar />
               {children}
               <Footer />
+              <ScrollDownIndicator />
             </main>
           </QuoteDialogProvider>
         </TooltipProvider>

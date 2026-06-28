@@ -215,3 +215,14 @@
     transform: rotate(0deg);
   }
 }
+
+/* Gentle scroll-cue bounce (subtler than Tailwind's animate-bounce). */
+@keyframes soft-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}

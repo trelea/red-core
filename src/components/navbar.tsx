@@ -22,9 +22,9 @@ export default function Navbar() {
       {/* blurred underlay — keeps the nav legible over any section/color */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 w-full backdrop-blur-xs [mask-image:linear-gradient(to_bottom,black_25%,transparent)] lg:h-48"
+        className="pointer-events-none absolute inset-x-0 top-0 h-20 w-full backdrop-blur-[1px] [mask-image:linear-gradient(to_bottom,black_15%,transparent)] lg:h-40"
       />
-      <div className="container relative mx-auto flex items-center justify-between gap-4 px-4 pb-4 pt-6 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:pb-5 lg:pt-8 xl:px-[120px] 2xl:px-[160px]">
+      <div className="container relative mx-auto flex items-center justify-between gap-4 px-[30px] pb-4 pt-[30px] lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-12 lg:pb-5 lg:pt-8 xl:px-[120px] 2xl:px-[160px]">
         {/* top left the logo */}
         <Link
           href="/"
@@ -36,14 +36,14 @@ export default function Navbar() {
             width={280}
             height={39}
             priority
-            className="h-[26px] w-auto sm:h-[30px] lg:h-[34px]"
+            className="h-[28px] w-auto sm:h-[32px] lg:h-[31px] xl:h-[33px] min-[1440px]:h-[37px]"
           />
         </Link>
 
         {/* middle top dock nav items */}
         <Dock
           disableMagnification
-          className="pointer-events-auto mt-0 hidden h-auto gap-0 justify-self-center rounded-full border-0 bg-white/75 p-0 shadow-sm backdrop-blur-sm lg:flex shadow-md"
+          className="pointer-events-auto mt-0 hidden h-auto gap-0 justify-self-center rounded-full border-0 bg-white/80 p-0 shadow-sm backdrop-blur-sm lg:flex shadow-md"
         >
           {navItems.map((item, i) => (
             <span key={item.id} className="flex items-center">
@@ -61,7 +61,7 @@ export default function Navbar() {
                     : scrollToSection(e, item.id)
                 }
                 className={cn(
-                  'whitespace-nowrap rounded-full px-4 py-2.5 text-[13px] font-normal uppercase tracking-normal transition-colors xl:px-[30px] xl:py-[13px] xl:text-[15px]',
+                  'whitespace-nowrap rounded-full px-[30px] py-[11px] text-[13px] font-normal uppercase tracking-normal transition-colors',
                   'text-black hover:text-[#c70017]',
                 )}
               >
