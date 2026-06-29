@@ -68,7 +68,6 @@ function ProjectImageCell({
         src={image.src}
         alt={image.alt}
         fill
-        unoptimized
         sizes="(max-width: 1024px) 50vw, 25vw"
         className="object-cover"
       />
