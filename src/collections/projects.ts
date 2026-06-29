@@ -30,16 +30,6 @@ const projectFields: Field[] = [
     required: true,
   },
   {
-    name: 'cols_reversed',
-    label: 'Reverse Layout',
-    type: 'checkbox',
-    defaultValue: false,
-    admin: {
-      description:
-        'When on, the details card sits on the left and the images on the right.',
-    },
-  },
-  {
     name: 'project_images',
     label: 'Images',
     type: 'array',

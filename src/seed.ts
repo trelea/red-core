@@ -12,7 +12,6 @@ type SeedProject = {
   project_location: string;
   project_price: number;
   project_description: string;
-  cols_reversed?: boolean;
   project_images: SeedImage[];
 };
 
@@ -36,7 +35,6 @@ const data: Record<string, SeedProject[]> = {
       project_price: 750,
       project_description:
         'We completed one 6-inch core drilling hole through the concrete foundation wall for pipe/utility access. The hole was drilled from the exterior side using professional core drilling equipment. Work was completed cleanly, accurately, and safely, with cleanup after drilling.',
-      cols_reversed: true,
       project_images: [
         { file: 'core-drilling-assets/img3.png', alt: 'Core drilling a concrete foundation wall' },
         { file: 'core-drilling-assets/img4.png', alt: 'Core drilled hole through concrete foundation' },
@@ -72,7 +70,6 @@ const data: Record<string, SeedProject[]> = {
       project_price: 2500,
       project_description:
         'Concrete slab cutting for drain line installation. Trenches excavated approx. 2 ft deep. Debris removed from basement to exterior per client request. Clean, precise work completed and site left ready for plumbing installation.',
-      cols_reversed: true,
       project_images: [
         { file: 'slab-cutting-assets/img3.png', alt: 'Slab cutting for a drain line trench' },
         { file: 'slab-cutting-assets/img4.png', alt: 'Excavated trench after slab cutting' },
@@ -121,7 +118,6 @@ const data: Record<string, SeedProject[]> = {
       project_price: 1000,
       project_description:
         'Completed a 40”x40” door opening in a concrete wall for a partner concrete company. Precise cutting with clean edges, ready for installation.',
-      cols_reversed: true,
       project_images: [
         { file: 'wall-saw-cutting-assets/img3.png', alt: 'Wall saw cutting a door opening in concrete' },
         { file: 'wall-saw-cutting-assets/img4.png', alt: 'Finished concrete door opening' },
@@ -174,7 +170,6 @@ for (const slug of slugs) {
         project_location: p.project_location,
         project_price: p.project_price,
         project_description: p.project_description,
-        cols_reversed: p.cols_reversed ?? false,
         project_images,
       },
     });

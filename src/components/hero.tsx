@@ -58,13 +58,10 @@ export default function Hero({
         compact ? 'h-[50vh] sm:min-h-[420px]' : 'h-screen sm:min-h-[700px]',
       )}
     >
-      {/* Mobile (below lg): the FULL image is rendered in the lower band of the
-          section — from 20% to 100% of the height (Oy). The top 20% stays gray
-          for the text. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 top-[20%] -z-10 lg:hidden"
-      >
+      {/* Mobile (below lg): the FULL image fills the section from the top edge
+          down. The gradient overlay below keeps the upper area legible for the
+          navbar/title without leaving a gray strip above the image. */}
+      <div aria-hidden className="absolute inset-0 -z-10 lg:hidden">
         <Image
           src={desktopImage.src}
           alt={desktopImage.alt}
@@ -112,10 +109,14 @@ export default function Hero({
           quality={100}
           sizes="50vw"
           className={cn(
-            'w-full object-right',
-            // Service: fill the right half (crop wide illustration to cover).
-            // Home: contain the full square photo.
-            service ? 'h-full object-cover' : 'h-auto object-contain',
+            // Fill the right-half column (cover) and overdraw ~2% vertically only
+            // (scale-y). Under fractional display scaling the column can sit a few
+            // px below the section top, exposing a strip of the section bg above
+            // the image; the vertical overdraw covers it and the section's
+            // overflow-hidden clips the excess. scale-y avoids horizontal overflow
+            // that would otherwise push the image's left edge past the gradient
+            // blend and show as a vertical seam down the middle.
+            'h-full w-full scale-y-[1.02] object-cover object-right -z-10',
           )}
         />
         {/* Soft-blend the image's left edge into the gray panel */}

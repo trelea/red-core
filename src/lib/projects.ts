@@ -31,7 +31,6 @@ export async function getProjects(
     project_location: d.project_location,
     project_price: d.project_price,
     project_description: d.project_description,
-    cols_reversed: d.cols_reversed ?? false,
     project_images: (d.project_images ?? []).map((pi) => {
       const img = pi.image as Media;
       return { src: img?.url ?? '', alt: img?.alt ?? '' };

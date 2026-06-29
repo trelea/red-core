@@ -16,14 +16,27 @@ import { cn } from '@/lib/utils';
 // To reorder the carousel, change each card's `order` value (lowest shows
 // first). Filenames and alt text stay exactly as they are — only the numbers
 // decide the display sequence.
-const offers = [
+type Offer = {
+  src: string;
+  alt: string;
+  order: number;
+  /** Optional dedicated image shown only on small screens (below md). */
+  smSrc?: string;
+};
+
+const offers: Offer[] = [
   {
     src: '/offers/banner_1.png',
     alt: 'Concrete door or window opening — $1,000 flat rate',
     order: 1,
   },
   { src: '/offers/banner_2.png', alt: 'Core drilling offer', order: 4 },
-  { src: '/offers/banner_3.png', alt: 'Concrete cutting offer', order: 2 },
+  {
+    src: '/offers/banner_3.png',
+    alt: 'Concrete cutting offer',
+    order: 2,
+    smSrc: '/offers/banner_3_sm_screens.png',
+  },
   { src: '/offers/banner_4.png', alt: 'Wall sawing offer', order: 3 },
   { src: '/offers/banner_5.png', alt: 'Slab cutting offer', order: 5 },
 ].sort((a, b) => a.order - b.order);
@@ -75,14 +88,36 @@ export default function Offers() {
                   key={offer.src}
                   className="basis-full md:basis-[72%]"
                 >
-                  <Image
-                    src={offer.src}
-                    alt={offer.alt}
-                    width={1740}
-                    height={870}
-                    priority={offer.src === offers[0].src}
-                    className="aspect-[3/2] w-full object-cover object-right md:aspect-[2/1] md:object-center"
-                  />
+                  {offer.smSrc ? (
+                    <>
+                      {/* Small screens (below md): dedicated banner, same
+                          aspect/height as the other slides. */}
+                      <Image
+                        src={offer.smSrc}
+                        alt={offer.alt}
+                        width={3098}
+                        height={1751}
+                        className="block aspect-[3/2] w-full object-cover object-right md:hidden"
+                      />
+                      {/* md+ : standard wide banner. */}
+                      <Image
+                        src={offer.src}
+                        alt={offer.alt}
+                        width={1740}
+                        height={870}
+                        className="hidden aspect-[2/1] w-full object-cover object-center md:block"
+                      />
+                    </>
+                  ) : (
+                    <Image
+                      src={offer.src}
+                      alt={offer.alt}
+                      width={1740}
+                      height={870}
+                      priority={offer.src === offers[0].src}
+                      className="aspect-[3/2] w-full object-cover object-right md:aspect-[2/1] md:object-center"
+                    />
+                  )}
                 </CarouselItem>
               ))}
             </CarouselContent>

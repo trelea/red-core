@@ -184,10 +184,6 @@ export interface CoreDrillingProject {
   project_price: number;
   project_description: string;
   /**
-   * When on, the details card sits on the left and the images on the right.
-   */
-  cols_reversed?: boolean | null;
-  /**
    * Add one or more images for this project (2+ enables a slider).
    */
   project_images: {
@@ -210,10 +206,6 @@ export interface SlabCuttingProject {
   project_location: string;
   project_price: number;
   project_description: string;
-  /**
-   * When on, the details card sits on the left and the images on the right.
-   */
-  cols_reversed?: boolean | null;
   /**
    * Add one or more images for this project (2+ enables a slider).
    */
@@ -238,10 +230,6 @@ export interface SmallDemolitionProject {
   project_price: number;
   project_description: string;
   /**
-   * When on, the details card sits on the left and the images on the right.
-   */
-  cols_reversed?: boolean | null;
-  /**
    * Add one or more images for this project (2+ enables a slider).
    */
   project_images: {
@@ -264,10 +252,6 @@ export interface WallSawCuttingProject {
   project_location: string;
   project_price: number;
   project_description: string;
-  /**
-   * When on, the details card sits on the left and the images on the right.
-   */
-  cols_reversed?: boolean | null;
   /**
    * Add one or more images for this project (2+ enables a slider).
    */
@@ -378,7 +362,6 @@ export interface CoreDrillingProjectsSelect<T extends boolean = true> {
   project_location?: T;
   project_price?: T;
   project_description?: T;
-  cols_reversed?: T;
   project_images?:
     | T
     | {
@@ -397,7 +380,6 @@ export interface SlabCuttingProjectsSelect<T extends boolean = true> {
   project_location?: T;
   project_price?: T;
   project_description?: T;
-  cols_reversed?: T;
   project_images?:
     | T
     | {
@@ -416,7 +398,6 @@ export interface SmallDemolitionProjectsSelect<T extends boolean = true> {
   project_location?: T;
   project_price?: T;
   project_description?: T;
-  cols_reversed?: T;
   project_images?:
     | T
     | {
@@ -435,7 +416,6 @@ export interface WallSawCuttingProjectsSelect<T extends boolean = true> {
   project_location?: T;
   project_price?: T;
   project_description?: T;
-  cols_reversed?: T;
   project_images?:
     | T
     | {
