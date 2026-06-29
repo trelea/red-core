@@ -60,7 +60,7 @@ export default function OurServices() {
                 className="size-[104px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
               />
               <div className="flex min-w-0 flex-1 flex-col">
-                <h3 className="text-[20px] font-black uppercase leading-[1.08] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[24px] lg:text-[26px] lg:leading-[28px] xl:text-[30px] xl:leading-[32px] 2xl:text-[38px] 2xl:leading-[40px]">
+                <h3 className="text-[26px] font-bold uppercase leading-[28px] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif]">
                   {service.title}
                 </h3>
                 <p

@@ -10,7 +10,8 @@
     "lint": "eslint",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
-    "convert:webp": "payload run src/scripts/convert-media-to-webp.ts"
+    "convert:webp": "payload run src/scripts/convert-media-to-webp.ts",
+    "resize:media": "payload run src/scripts/resize-media.ts"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
