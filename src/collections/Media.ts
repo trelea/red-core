@@ -6,7 +6,16 @@ export const Media: CollectionConfig = {
   // to anonymous visitors. Mutations still require an authenticated admin user.
   access: { read: () => true },
   lockDocuments: false, // avoid the admin `disabled` hydration mismatch
-  upload: true, // file storage handled by the s3Storage plugin (R2)
+  // File storage handled by the s3Storage plugin (R2). Every uploaded image is
+  // converted to optimized WebP before it is stored, so the frontend only ever
+  // serves small files. Payload runs this through `sharp` and updates the
+  // filename (.webp), mimeType, and size automatically.
+  upload: {
+    formatOptions: {
+      format: 'webp',
+      options: { quality: 80 },
+    },
+  },
   fields: [
     {
       name: 'alt',

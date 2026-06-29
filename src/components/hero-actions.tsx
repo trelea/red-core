@@ -1,6 +1,5 @@
 'use client';
 
-import { scrollToSection } from '@/lib/scroll-to-section';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import { cn } from '@/lib/utils';
 import { inter } from '@/lib/fonts';
@@ -33,7 +32,9 @@ export default function HeroActions() {
       </button>
       <button
         type="button"
-        onClick={(e) => scrollToSection(e, 'projects')}
+        onClick={() => {
+          window.location.href = '/core-drilling#projects';
+        }}
         className={cn(btnBase, 'bg-[#4F4F4F] hover:bg-[#3f3f3f]')}
       >
         Our projects

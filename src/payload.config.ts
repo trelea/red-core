@@ -1,5 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sharp from 'sharp';
 import { buildConfig } from 'payload';
 import { sqliteAdapter } from '@payloadcms/db-sqlite';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
@@ -37,6 +38,8 @@ export default buildConfig({
     WallSawCuttingProjects,
   ],
   editor: lexicalEditor(),
+  // Required in Payload v3 for upload image processing (formatOptions/imageSizes).
+  sharp,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: sqliteAdapter({

@@ -35,8 +35,6 @@ export interface Project {
   project_description: string;
   /** 1 or more images. 2+ renders a slider (2 per view, advance by one). */
   project_images: ProjectImage[];
-  /** When true the details card sits on the left and the images on the right. Default false. */
-  cols_reversed?: boolean;
 }
 
 interface OurProjectsProps {
@@ -140,12 +138,14 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
         />
       </Carousel>
 
-      {/* dots — one per image (count of images); only worth showing for 3+.
-          Like Offers, smaller; in the strip below the images. */}
-      {images.length > 2 && (
+      {/* dots — one per scroll position (snap), not per image. The slider shows
+          2 images per view and advances one at a time, so there are
+          images.length - 1 snaps (this is `count` from scrollSnapList, the same
+          value the arrows use). Only worth showing when there's more than one. */}
+      {count > 1 && (
         <div className="mt-3 flex justify-center">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f0f0f0] px-2.5 py-1.5 sm:gap-2 sm:px-3 sm:py-2">
-            {Array.from({ length: images.length }).map((_, i) => (
+            {Array.from({ length: count }).map((_, i) => (
               <button
                 key={i}
                 type="button"
@@ -167,16 +167,24 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
   );
 }
 
-function ProjectRow({ project }: { project: Project }) {
-  const reversed = project.cols_reversed ?? false;
+function ProjectRow({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) {
+  // Alternate the layout by position: odd rows (2nd, 4th, …) flip so the
+  // details card sits on the left and the images on the right.
+  const reversed = index % 2 === 1;
 
   return (
     <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
       {/* image side: single image fills the area, 2+ become a slider */}
       <ProjectImagesCarousel images={project.project_images} />
 
-      {/* right side content card (moves to the left when reversed). The min-h
-          keeps it the original height (it no longer stretches to the image
+      {/* right side content card (moves to the left on alternating rows). The
+          min-h keeps it the original height (it no longer stretches to the image
           column, which can be taller when slider dots are shown). */}
       <Card
         className={cn(
@@ -285,6 +293,7 @@ export function OurProjects({ projects }: OurProjectsProps) {
             <ProjectRow
               key={`${project.project_title}-${i}`}
               project={project}
+              index={i}
             />
           ))}
         </div>
