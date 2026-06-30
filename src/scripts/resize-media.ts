@@ -35,7 +35,7 @@ import {
 import type { Media } from '@/payload-types';
 
 // Keep in sync with Media.upload.resizeOptions in src/collections/Media.ts.
-const MAX_EDGE = 2048;
+const MAX_EDGE = 1024;
 
 // `payload run` does not forward CLI flags to process.argv, so the apply switch
 // is an env var: `APPLY=1 npm run resize:media`.
