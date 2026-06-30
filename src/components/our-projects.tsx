@@ -19,6 +19,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
+import { ImageLightbox } from '@/components/image-lightbox';
 import { cn } from '@/lib/utils';
 import { inter, urbanist, microgramma } from '@/lib/fonts';
 
@@ -53,14 +54,20 @@ const detailPillClass =
 function ProjectImageCell({
   image,
   className,
+  onClick,
 }: {
   image: ProjectImage;
   className?: string;
+  /** Opens the image in the full-screen lightbox. */
+  onClick?: () => void;
 }) {
   return (
-    <div
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={`View ${image.alt} full screen`}
       className={cn(
-        'relative h-[320px] overflow-hidden sm:h-[400px] lg:h-auto lg:min-h-[460px]',
+        'group relative block h-[320px] w-full cursor-zoom-in overflow-hidden sm:h-[400px] lg:h-auto lg:min-h-[460px]',
         className,
       )}
     >
@@ -69,9 +76,9 @@ function ProjectImageCell({
         alt={image.alt}
         fill
         sizes="(max-width: 1024px) 50vw, 25vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
-    </div>
+    </button>
   );
 }
 
@@ -84,6 +91,8 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
+  // Index of the image open in the full-screen lightbox, or null when closed.
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -103,7 +112,19 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
 
   // A single image (or none) fills the entire image side — no slider chrome.
   if (images.length <= 1) {
-    return images[0] ? <ProjectImageCell image={images[0]} /> : null;
+    return images[0] ? (
+      <>
+        <ProjectImageCell
+          image={images[0]}
+          onClick={() => setLightboxIndex(0)}
+        />
+        <ImageLightbox
+          images={images}
+          index={lightboxIndex}
+          onIndexChange={setLightboxIndex}
+        />
+      </>
+    ) : null;
   }
 
   return (
@@ -118,7 +139,10 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
         <CarouselContent className="-ml-5">
           {images.map((image, i) => (
             <CarouselItem key={`${image.src}-${i}`} className="basis-1/2 pl-5">
-              <ProjectImageCell image={image} />
+              <ProjectImageCell
+                image={image}
+                onClick={() => setLightboxIndex(i)}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -162,6 +186,12 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
           </div>
         </div>
       )}
+
+      <ImageLightbox
+        images={images}
+        index={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+      />
     </div>
   );
 }
