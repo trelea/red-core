@@ -50,30 +50,30 @@ export default function OurServices() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="flex items-center gap-4 bg-[#f5f5f5] p-6 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px] "
+              className="flex items-center gap-3 bg-[#f5f5f5] p-4 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px] "
             >
               <Image
                 src={service.icon}
                 alt={service.title}
                 width={214}
                 height={214}
-                className="size-[104px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
+                className="size-[88px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
               />
               <div className="flex min-w-0 flex-1 flex-col">
-                <h3 className="text-[26px] font-bold uppercase leading-[28px] tracking-normal text-[#141414] [font-family:var(--font-microgramma),sans-serif]">
+                <h3 className="text-[21px] font-bold uppercase leading-[23px] tracking-normal text-[#141414] sm:text-[26px] sm:leading-[28px] [font-family:var(--font-microgramma),sans-serif]">
                   {service.title}
                 </h3>
                 <p
                   className={cn(
                     inter.className,
-                    'mt-5 text-[14px] font-normal leading-snug tracking-normal text-[#5b5b5b] sm:text-[15px] lg:text-[16px] lg:leading-none xl:text-[17px] 2xl:text-[18px]',
+                    'mt-2 text-[13.5px] font-normal leading-snug tracking-normal text-[#5b5b5b] sm:mt-5 sm:text-[15px] lg:text-[16px] lg:leading-none xl:text-[17px] 2xl:text-[18px]',
                   )}
                 >
                   {service.description}
                 </p>
                 <Link
                   href={service.href}
-                  className="mt-10 inline-flex h-[40px] w-[160px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[20px] text-[11px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:bg-[#1E2C32] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
+                  className="mt-5 inline-flex h-[36px] w-[150px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[18px] text-[10px] sm:mt-10 font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:bg-[#1E2C32] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
                 >
                   View services
                   <ChevronRightIcon className="size-4" />
