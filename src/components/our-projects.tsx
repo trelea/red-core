@@ -6,7 +6,7 @@
  * Built from shadcn/ui primitives (Badge, Card, Button).
  */
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { BlurImage } from '@/components/blur-image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,11 +55,14 @@ function ProjectImageCell({
   image,
   className,
   onClick,
+  priority,
 }: {
   image: ProjectImage;
   className?: string;
   /** Opens the image in the full-screen lightbox. */
   onClick?: () => void;
+  /** Eager-load (LCP) — set only for the first, above-the-fold project row. */
+  priority?: boolean;
 }) {
   return (
     <button
@@ -67,15 +70,19 @@ function ProjectImageCell({
       onClick={onClick}
       aria-label={`View ${image.alt} full screen`}
       className={cn(
-        'group relative block h-[320px] w-full cursor-zoom-in overflow-hidden sm:h-[400px] lg:h-auto lg:min-h-[460px]',
+        'group relative block h-[320px] w-full cursor-zoom-in overflow-hidden bg-[#e2e2e2] sm:h-[400px] lg:h-auto lg:min-h-[460px]',
         className,
       )}
     >
-      <Image
+      <BlurImage
         src={image.src}
         alt={image.alt}
         fill
         sizes="(max-width: 1024px) 50vw, 25vw"
+        priority={priority}
+        // Media is already stored as <=1024px WebP in R2, so skip the on-demand
+        // Next optimizer encode and let the browser fetch the stored file directly.
+        unoptimized
         className="object-cover transition-transform duration-300 group-hover:scale-105"
       />
     </button>
@@ -87,7 +94,14 @@ function ProjectImageCell({
  * become a slider showing 2 at a time, advancing one image per arrow, with
  * smaller indicator dots below (mirrors the Offers section).
  */
-function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
+function ProjectImagesCarousel({
+  images,
+  priority,
+}: {
+  images: ProjectImage[];
+  /** Eager-load the images — set only for the first project row. */
+  priority?: boolean;
+}) {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
@@ -117,6 +131,7 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
         <ProjectImageCell
           image={images[0]}
           onClick={() => setLightboxIndex(0)}
+          priority={priority}
         />
         <ImageLightbox
           images={images}
@@ -142,6 +157,7 @@ function ProjectImagesCarousel({ images }: { images: ProjectImage[] }) {
               <ProjectImageCell
                 image={image}
                 onClick={() => setLightboxIndex(i)}
+                priority={priority && i < 2}
               />
             </CarouselItem>
           ))}
@@ -209,8 +225,12 @@ function ProjectRow({
 
   return (
     <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
-      {/* image side: single image fills the area, 2+ become a slider */}
-      <ProjectImagesCarousel images={project.project_images} />
+      {/* image side: single image fills the area, 2+ become a slider. The first
+          row is above the fold, so its images load eagerly (LCP). */}
+      <ProjectImagesCarousel
+        images={project.project_images}
+        priority={index === 0}
+      />
 
       {/* right side content card (moves to the left on alternating rows). The
           min-h keeps it the original height (it no longer stretches to the image

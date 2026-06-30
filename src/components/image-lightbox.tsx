@@ -9,6 +9,7 @@
  */
 import { useCallback, useRef } from 'react';
 import Image from 'next/image';
+import { BlurImage } from '@/components/blur-image';
 import { ChevronRight, ChevronLeft, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -118,10 +119,12 @@ export function ImageLightbox({
               )}
 
               <div className="relative h-[calc(100vh-140px)] w-full">
-                <Image
+                <BlurImage
                   src={images[index].src}
                   alt={images[index].alt}
                   fill
+                  // Media is already a <=1024px WebP in R2; serve it directly
+                  // instead of paying an on-demand full-screen AVIF encode.
                   unoptimized
                   className="object-contain"
                 />

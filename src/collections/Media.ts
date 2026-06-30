@@ -13,10 +13,10 @@ export const Media: CollectionConfig = {
   // lag). Payload runs this through `sharp` and updates the filename (.webp),
   // mimeType, filesize, and width/height automatically.
   upload: {
-    // Cap the longest edge at 2048px (no upscaling of already-smaller images).
+    // Cap the longest edge at 1024px (no upscaling of already-smaller images).
     resizeOptions: {
-      width: 2048,
-      height: 2048,
+      width: 1024,
+      height: 1024,
       fit: 'inside',
       withoutEnlargement: true,
     },

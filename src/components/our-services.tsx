@@ -60,7 +60,9 @@ export default function OurServices() {
                 className="size-[88px] shrink-0 object-contain sm:size-[150px] lg:size-[184px] 2xl:size-[220px]"
               />
               <div className="flex min-w-0 flex-1 flex-col">
-                <h3 className="text-[21px] font-bold uppercase leading-[23px] tracking-normal text-[#141414] sm:text-[26px] sm:leading-[28px] [font-family:var(--font-microgramma),sans-serif]">
+                {/* >1440px (laptops/PCs): Microgramma D Extended 700, 26px/28px,
+                    uppercase, 0 letter-spacing, vertically centered — per design spec. */}
+                <h3 className="text-[21px] font-bold uppercase leading-[23px] tracking-normal text-[#141414] sm:text-[26px] sm:leading-[28px] min-[1440px]:text-[26px] min-[1440px]:font-bold min-[1440px]:uppercase min-[1440px]:leading-[28px] min-[1440px]:tracking-[0] min-[1440px]:align-middle [font-family:var(--font-microgramma),sans-serif]">
                   {service.title}
                 </h3>
                 <p
