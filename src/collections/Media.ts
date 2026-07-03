@@ -64,7 +64,11 @@ export const Media: CollectionConfig = {
           new PutObjectCommand({
             Bucket: process.env.S3_BUCKET || '',
             Key: doc.filename,
-            Body: file.data,
+            // file.data can arrive backed by a SharedArrayBuffer (Node's fetch
+            // when Payload pulls the client-uploaded original back from R2 to
+            // run sharp), and the AWS SDK's request signer rejects those.
+            // Copy into a plain ArrayBuffer-backed Buffer before sending.
+            Body: Buffer.from(new Uint8Array(file.data)),
             ContentType: doc.mimeType ?? 'image/webp',
           }),
         );
