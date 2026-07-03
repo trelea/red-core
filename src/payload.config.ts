@@ -51,6 +51,14 @@ export default buildConfig({
   plugins: [
     s3Storage({
       enabled: Boolean(process.env.S3_BUCKET),
+      // Upload straight from the browser to R2 via a presigned URL. Vercel
+      // functions reject request bodies over 4.5 MB, so routing phone photos
+      // (often 5-10 MB) through the server fails with "request too large".
+      // Requires a CORS rule on the R2 bucket allowing PUT from the site
+      // origins. NOTE: the plugin does NOT store the sharp-converted WebP for
+      // client uploads (only the raw browser-uploaded file lands in R2) — the
+      // Media collection's afterChange hook stores it; see Media.ts.
+      clientUploads: true,
       collections: {
         // served through Payload's media route (no public bucket URL needed)
         media: true,

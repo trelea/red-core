@@ -1,4 +1,20 @@
 import type { CollectionConfig } from 'payload';
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
+
+const s3 = () =>
+  new S3Client({
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+    },
+    region: process.env.S3_REGION,
+    endpoint: process.env.S3_ENDPOINT,
+    forcePathStyle: true,
+  });
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -24,6 +40,51 @@ export const Media: CollectionConfig = {
       format: 'webp',
       options: { quality: 80 },
     },
+  },
+  hooks: {
+    afterChange: [
+      // With `clientUploads: true` the browser PUTs the RAW file to R2 via a
+      // presigned URL, and the storage plugin then skips its own server-side
+      // upload for that file (it filters out files carrying a
+      // clientUploadContext — see @payloadcms/plugin-cloud-storage
+      // hooks/afterChange). Payload core still runs the sharp pipeline above
+      // and renames the doc to `<name>.webp`, so without this hook the doc
+      // points at a .webp object that was never stored (404). Store the
+      // converted buffer ourselves and drop the raw original.
+      async ({ doc, req }) => {
+        const ctx = (req.context?._payloadCloudStorage ?? {}) as {
+          file?: typeof req.file;
+        };
+        const file = req.file ?? ctx.file;
+        if (!file?.clientUploadContext || !file.data?.length || !doc?.filename)
+          return doc;
+
+        const client = s3();
+        await client.send(
+          new PutObjectCommand({
+            Bucket: process.env.S3_BUCKET || '',
+            Key: doc.filename,
+            Body: file.data,
+            ContentType: doc.mimeType ?? 'image/webp',
+          }),
+        );
+
+        // The raw client-uploaded object sits under the original filename;
+        // remove it when the pipeline renamed the file (e.g. .jpg -> .webp).
+        if (file.name && file.name !== doc.filename) {
+          await client
+            .send(
+              new DeleteObjectCommand({
+                Bucket: process.env.S3_BUCKET || '',
+                Key: file.name,
+              }),
+            )
+            .catch(() => {}); // best effort — an orphan original is harmless
+        }
+
+        return doc;
+      },
+    ],
   },
   fields: [
     {
