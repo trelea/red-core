@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
     // project images across the 4 service pages) are served instantly instead of
     // re-fetching/re-optimizing from the private R2 media route each time.
     minimumCacheTTL: 2678400,
+    // Allow next/image to optimize media served directly from the R2 public
+    // bucket domain (see the s3Storage config in payload.config.ts).
+    remotePatterns: process.env.S3_PUBLIC_URL
+      ? [new URL(`${process.env.S3_PUBLIC_URL}/**`)]
+      : [],
   },
   async headers() {
     return [

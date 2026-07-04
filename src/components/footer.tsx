@@ -260,8 +260,6 @@ export default function Footer() {
                   <li className="flex items-start gap-2.5">
                     <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#c70017]" />
                     <span className="text-base leading-normal">
-                      321 Springfield St
-                      <br />
                       Agawam, MA 01001
                     </span>
                   </li>
