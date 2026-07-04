@@ -60,8 +60,21 @@ export default buildConfig({
       // Media collection's afterChange hook stores it; see Media.ts.
       clientUploads: true,
       collections: {
-        // served through Payload's media route (no public bucket URL needed)
-        media: true,
+        // When S3_PUBLIC_URL is set (the R2 bucket's public domain, e.g.
+        // https://pub-xxxx.r2.dev or a custom domain), media URLs point
+        // straight at R2 and the browser downloads files directly. This
+        // avoids proxying every image through /payload-api/media/file/*,
+        // which is slower and logs an AbortError whenever the browser
+        // cancels an in-flight image (navigation, lazy-load, etc.).
+        // Without the env var it falls back to serving through Payload's
+        // media route (no public bucket URL needed).
+        media: process.env.S3_PUBLIC_URL
+          ? {
+              disablePayloadAccessControl: true,
+              generateFileURL: ({ filename }) =>
+                `${process.env.S3_PUBLIC_URL}/${encodeURIComponent(filename)}`,
+            }
+          : true,
       },
       bucket: process.env.S3_BUCKET || '',
       config: {

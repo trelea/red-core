@@ -12,8 +12,8 @@ export type ProjectCollectionSlug =
 /**
  * Fetches a service page's projects from Payload and maps them to the shape the
  * `OurProjects` component expects ({ ..., project_images: { src, alt }[] }).
- * Sorted by id so the admin's insertion order (and the alternating layout) is
- * preserved.
+ * Sorted by creation date, newest first, so the latest projects render at the
+ * top of the list.
  */
 export async function getProjects(
   slug: ProjectCollectionSlug,
@@ -23,7 +23,7 @@ export async function getProjects(
     collection: slug,
     limit: 100,
     depth: 2, // populate the media upload relationship
-    sort: 'id',
+    sort: '-createdAt',
   });
 
   return docs.map((d) => ({
