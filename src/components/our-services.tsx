@@ -6,28 +6,28 @@ import { inter, microgramma } from '@/lib/fonts';
 
 const services = [
   {
-    icon: '/icons/core-drilling-icon.svg',
+    icon: '/icons/Core-Drilling-icon.png',
     title: 'Core Drilling',
     href: '/core-drilling',
     description:
       'Precision holes for plumbing, electrical, HVAC, and structural openings.',
   },
   {
-    icon: '/icons/slab-cutting-icon.svg',
+    icon: '/icons/Slab-Cutting-icon.png',
     title: 'Slab Cutting',
     href: '/slab-cutting',
     description:
       'Clean concrete slab cutting for trenches, openings, and utility access.',
   },
   {
-    icon: '/icons/small-demolition-icon.svg',
+    icon: '/icons/Small-Demolition-icon.png',
     title: 'Small Demolition',
     href: '/small-demolition',
     description:
       'Controlled concrete removal with minimal damage to surrounding areas.',
   },
   {
-    icon: '/icons/wall-saw-cutting-icon.svg',
+    icon: '/icons/Wall-Saw-Cutting-icon.png',
     title: 'Wall Saw Cutting',
     href: '/wall-saw-cutting',
     description:
