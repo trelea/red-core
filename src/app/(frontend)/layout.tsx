@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     template: '%s | Red Core',
   },
   description:
-    'Red Core provides professional concrete cutting and core drilling services including slab cutting, wall saw cutting, and small demolition. Precision work for residential and commercial projects.',
+    'Red Core provides professional concrete cutting and core drilling services including slab cutting, wall saw cutting, and demolition & cutting. Precision work for residential and commercial projects.',
   keywords: [
     'core drilling',
     'concrete cutting',
     'slab cutting',
     'wall saw cutting',
-    'small demolition',
+    'demolition and cutting',
     'concrete drilling',
     'precision cutting',
     'construction services',
@@ -143,7 +143,7 @@ const localBusinessJsonLd = {
     'Core Drilling',
     'Slab Cutting',
     'Wall Saw Cutting',
-    'Small Demolition',
+    'Demolition & Cutting',
   ],
   priceRange: '$$',
   openingHoursSpecification: {

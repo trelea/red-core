@@ -71,7 +71,7 @@ export interface Config {
     media: Media;
     'core-drilling-projects': CoreDrillingProject;
     'slab-cutting-projects': SlabCuttingProject;
-    'small-demolition-projects': SmallDemolitionProject;
+    'demolition-cutting-projects': DemolitionCuttingProject;
     'wall-saw-cutting-projects': WallSawCuttingProject;
     'payload-kv': PayloadKv;
     'payload-preferences': PayloadPreference;
@@ -83,7 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     'core-drilling-projects': CoreDrillingProjectsSelect<false> | CoreDrillingProjectsSelect<true>;
     'slab-cutting-projects': SlabCuttingProjectsSelect<false> | SlabCuttingProjectsSelect<true>;
-    'small-demolition-projects': SmallDemolitionProjectsSelect<false> | SmallDemolitionProjectsSelect<true>;
+    'demolition-cutting-projects': DemolitionCuttingProjectsSelect<false> | DemolitionCuttingProjectsSelect<true>;
     'wall-saw-cutting-projects': WallSawCuttingProjectsSelect<false> | WallSawCuttingProjectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -218,9 +218,9 @@ export interface SlabCuttingProject {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "small-demolition-projects".
+ * via the `definition` "demolition-cutting-projects".
  */
-export interface SmallDemolitionProject {
+export interface DemolitionCuttingProject {
   id: number;
   /**
    * Shown as the project heading and in the "Service" badge.
@@ -391,9 +391,9 @@ export interface SlabCuttingProjectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "small-demolition-projects_select".
+ * via the `definition` "demolition-cutting-projects_select".
  */
-export interface SmallDemolitionProjectsSelect<T extends boolean = true> {
+export interface DemolitionCuttingProjectsSelect<T extends boolean = true> {
   project_title?: T;
   project_location?: T;
   project_price?: T;

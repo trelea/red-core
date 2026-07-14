@@ -38,7 +38,7 @@ export function ContactUsTemplate({
                 <tbody>
                   {/* Logo bar */}
                   <tr>
-                    <td style={{ backgroundColor: '#1E2C32', padding: '24px 40px' }}>
+                    <td style={{ backgroundColor: '#ffffff', padding: '24px 40px' }}>
                       <img
                         src={`${BASE_URL}/logo.svg`}
                         alt="Red Core"
@@ -108,10 +108,10 @@ export function ContactUsTemplate({
                   {/* Footer */}
                   <tr>
                     <td style={{ backgroundColor: '#1E2C32', padding: '24px 40px', textAlign: 'center' }}>
-                      <p style={{ margin: 0, fontSize: 13, color: '#ffffff', opacity: 0.5 }}>
+                      <p style={{ margin: 0, fontSize: 13, color: '#ffffff' }}>
                         Red Core Company &bull; (413)-666-2026 &bull; redcoreusa@gmail.com
                       </p>
-                      <p style={{ margin: '6px 0 0', fontSize: 11, color: '#ffffff', opacity: 0.3 }}>
+                      <p style={{ margin: '6px 0 0', fontSize: 11, color: '#cbd5e1' }}>
                         321 Springfield St, Agawam, MA
                       </p>
                     </td>

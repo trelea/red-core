@@ -56,8 +56,10 @@ const projectFields: Field[] = [
 const makeProjectsCollection = (
   slug: string,
   label: string,
+  dbName?: string,
 ): CollectionConfig => ({
   slug,
+  ...(dbName ? { dbName } : {}),
   labels: { singular: `${label} Project`, plural: `${label} Projects` },
   // Off to avoid the admin SSR/client `disabled` hydration mismatch on a
   // single-admin CMS (locking toggles every field's disabled state).
@@ -74,9 +76,11 @@ export const SlabCuttingProjects = makeProjectsCollection(
   'slab-cutting-projects',
   'Slab Cutting',
 );
-export const SmallDemolitionProjects = makeProjectsCollection(
-  'small-demolition-projects',
-  'Small Demolition',
+// dbName keeps the original table so projects created before the rename survive.
+export const DemolitionCuttingProjects = makeProjectsCollection(
+  'demolition-cutting-projects',
+  'Demolition & Cutting',
+  'small_demolition_projects',
 );
 export const WallSawCuttingProjects = makeProjectsCollection(
   'wall-saw-cutting-projects',

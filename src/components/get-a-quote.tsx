@@ -51,7 +51,7 @@ const SERVICE_OPTIONS = [
   'Concrete Openings & Wall Sawing',
   'Core Drilling',
   'Slab / Foundation Cutting',
-  'Small Demolition',
+  'Demolition & Cutting',
 ];
 
 const OFFER_OPTIONS = [

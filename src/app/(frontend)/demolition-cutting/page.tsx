@@ -11,33 +11,33 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Small Demolition Services in Agawam & Springfield MA',
+  title: 'Demolition & Cutting Services in Agawam & Springfield MA',
   description:
-    'Professional small demolition services in Agawam, Springfield, and Western Massachusetts. Controlled removal of concrete sections without damaging surrounding structures for renovations and repairs.',
+    'Professional demolition and cutting services in Agawam, Springfield, and Western Massachusetts. Controlled removal of concrete sections without damaging surrounding structures for renovations and repairs.',
   alternates: {
-    canonical: `${siteUrl}/small-demolition`,
+    canonical: `${siteUrl}/demolition-cutting`,
   },
   openGraph: {
-    title: 'Small Demolition Services | Red Core',
+    title: 'Demolition & Cutting Services | Red Core',
     description:
       'Controlled removal of concrete sections without damaging surrounding structures. Serving Agawam, Springfield, and Western MA.',
-    url: `${siteUrl}/small-demolition`,
+    url: `${siteUrl}/demolition-cutting`,
   },
 };
 
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Small Demolition',
+  name: 'Demolition & Cutting',
   description:
     'Controlled removal of concrete sections without damaging surrounding structures. Clean and safe process for renovations and repairs.',
   provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
   areaServed: 'Agawam, Springfield, Western Massachusetts',
-  url: `${siteUrl}/small-demolition`,
+  url: `${siteUrl}/demolition-cutting`,
 };
 
-export default async function SmallDemolitionPage() {
-  const projects = await getProjects('small-demolition-projects');
+export default async function DemolitionCuttingPage() {
+  const projects = await getProjects('demolition-cutting-projects');
   return (
     <>
       <script
@@ -47,9 +47,9 @@ export default async function SmallDemolitionPage() {
       <Hero
         title={
           <>
-            <span className="font-bold">Small</span>
+            <span className="font-bold">Demolition</span>
             <br />
-            <span className="font-bold">demolition</span>
+            <span className="font-bold">&amp; cutting</span>
           </>
         }
         description={
@@ -69,8 +69,8 @@ export default async function SmallDemolitionPage() {
           </>
         }
         image={{
-          src: '/small-demolition-img.svg',
-          alt: 'Small demolition of concrete structure',
+          src: '/demolition-cutting-img.svg',
+          alt: 'Demolition and cutting of concrete structure',
         }}
         render_buttons={false}
       />

@@ -33,7 +33,7 @@ export default function HeroActions() {
       <button
         type="button"
         onClick={() => {
-          window.location.href = '/core-drilling#projects';
+          window.location.href = '/demolition-cutting#projects';
         }}
         className={cn(btnBase, 'bg-[#4F4F4F] hover:bg-[#3f3f3f]')}
       >
