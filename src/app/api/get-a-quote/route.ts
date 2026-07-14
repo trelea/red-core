@@ -1,4 +1,5 @@
 import { GetAQuoteTemplate } from '@/components/get-a-quote.template';
+import { ConfirmationTemplate } from '@/components/confirmation.template';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -64,6 +65,19 @@ export async function POST(request: Request) {
     if (error) {
       console.error('Resend error:', error);
       return Response.json({ error: error.message }, { status: 500 });
+    }
+
+    // Auto-reply to the customer. A failure here must not fail the form —
+    // the internal notification already went through.
+    const confirmation = await resend.emails.send({
+      from: 'Red Core <redcore@redcoreconcrete.com>',
+      to: [email],
+      replyTo: 'redcoreusa@gmail.com',
+      subject: "We've received your request — Red Core",
+      react: ConfirmationTemplate({ fullName, kind: 'quote' }),
+    });
+    if (confirmation.error) {
+      console.error('Confirmation email error:', confirmation.error);
     }
 
     return Response.json({ success: true, id: data?.id });

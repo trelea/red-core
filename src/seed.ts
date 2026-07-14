@@ -87,16 +87,16 @@ const data: Record<string, SeedProject[]> = {
       ],
     },
   ],
-  'small-demolition-projects': [
+  'demolition-cutting-projects': [
     {
-      project_title: 'Small Demolition',
+      project_title: 'Demolition & Cutting',
       project_location: 'East Taunton, MA',
       project_price: 2500,
       project_description:
         'Work completed at Hood through our contractor: expanded existing concrete block door opening to 90” wide and 11’ high, followed by saw cutting, block removal, and manual debris removal due to limited interior access.',
       project_images: [
-        { file: 'small-demolition-assets/img1.png', alt: 'Saw cutting a concrete block door opening' },
-        { file: 'small-demolition-assets/img2.png', alt: 'Debris removal after small demolition' },
+        { file: 'demolition-cutting-assets/img1.png', alt: 'Saw cutting a concrete block door opening' },
+        { file: 'demolition-cutting-assets/img2.png', alt: 'Debris removal after demolition' },
       ],
     },
   ],

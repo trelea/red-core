@@ -6,7 +6,7 @@ import type { Media } from '@/payload-types';
 export type ProjectCollectionSlug =
   | 'core-drilling-projects'
   | 'slab-cutting-projects'
-  | 'small-demolition-projects'
+  | 'demolition-cutting-projects'
   | 'wall-saw-cutting-projects';
 
 /**

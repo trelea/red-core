@@ -11,7 +11,7 @@ import { Media } from './collections/Media';
 import {
   CoreDrillingProjects,
   SlabCuttingProjects,
-  SmallDemolitionProjects,
+  DemolitionCuttingProjects,
   WallSawCuttingProjects,
 } from './collections/projects';
 
@@ -34,7 +34,7 @@ export default buildConfig({
     Media,
     CoreDrillingProjects,
     SlabCuttingProjects,
-    SmallDemolitionProjects,
+    DemolitionCuttingProjects,
     WallSawCuttingProjects,
   ],
   editor: lexicalEditor(),

@@ -18,6 +18,17 @@ const nextConfig: NextConfig = {
       ? [new URL(`${process.env.S3_PUBLIC_URL}/**`)]
       : [],
   },
+  async redirects() {
+    return [
+      {
+        // Service renamed "Small Demolition" → "Demolition & Cutting"; keep the
+        // old Google-indexed URL working.
+        source: '/small-demolition',
+        destination: '/demolition-cutting',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

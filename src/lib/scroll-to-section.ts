@@ -24,8 +24,14 @@ function smoothScrollTo(target: number, duration = 1100) {
 }
 
 export function scrollToId(id: string, align: 'center' | 'top' = 'top') {
-  const el = document.getElementById(id);
+  let el = document.getElementById(id);
   if (!el) return;
+
+  // On phones the services section's badge + padding push the cards ~200px
+  // below the landing point; scroll straight to the cards grid instead.
+  if (id === 'services' && window.innerWidth < 640) {
+    el = document.getElementById('services-cards') ?? el;
+  }
 
   const rect = el.getBoundingClientRect();
   const elementTop = window.scrollY + rect.top;
