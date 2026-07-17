@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       from: 'Red Core <redcore@redcoreconcrete.com>',
       to: [email],
       replyTo: 'redcoreusa@gmail.com',
-      subject: "We've received your request — Red Core",
+      subject: "We've received your project request — REDCORE",
       react: ConfirmationTemplate({ fullName, kind: 'consultation' }),
     });
     if (confirmation.error) {
