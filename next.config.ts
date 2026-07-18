@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Consolidate www onto the apex domain with a permanent (308) redirect
+        // so Google stops treating www URLs as separate pages. (The Vercel
+        // dashboard domain redirect issues a temporary 307 — if that one is
+        // active it fires before this rule, so also set it to permanent there.)
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.redcoreconcrete.com' }],
+        destination: 'https://redcoreconcrete.com/:path*',
+        permanent: true,
+      },
+      {
         // Service renamed "Small Demolition" → "Demolition & Cutting"; keep the
         // old Google-indexed URL working.
         source: '/small-demolition',
