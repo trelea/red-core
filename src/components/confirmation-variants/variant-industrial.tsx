@@ -36,7 +36,7 @@ export function ConfirmationIndustrial({ referenceId }: ConfirmationVariantProps
                 <tbody>
                   <tr>
                     <td align="center" style={{ paddingBottom: 28 }}>
-                      <img src={BRAND.logo} alt={BRAND.name} width={140} height={26} style={{ display: 'block', border: 0 }} />
+                      <img src={BRAND.logo} alt={BRAND.name} width={140} height={23} style={{ display: 'block', border: 0 }} />
                     </td>
                   </tr>
                 </tbody>

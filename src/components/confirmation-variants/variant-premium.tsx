@@ -40,7 +40,7 @@ export function ConfirmationPremium({ referenceId }: ConfirmationVariantProps) {
                   {/* Logo */}
                   <tr>
                     <td align="center" style={{ padding: '64px 60px 0' }}>
-                      <img src={BRAND.logo} alt={BRAND.name} width={140} height={26} style={{ display: 'block', border: 0 }} />
+                      <img src={BRAND.logo} alt={BRAND.name} width={140} height={23} style={{ display: 'block', border: 0 }} />
                     </td>
                   </tr>
 

@@ -15,11 +15,11 @@ export const BRAND = {
   url: BASE_URL,
   domain: 'redcoreconcrete.com',
   logo: `${BASE_URL}/logo.svg`,
-  // Clients call the Project Manager's direct line (customer request).
-  phone: '+1 (413) 250-2099',
-  phoneHref: 'tel:+14132502099',
+  // General office number (customer request); the PM's direct line is PM.phone.
+  phone: '+1 (413) 666-2026',
+  phoneHref: 'tel:+14136662026',
   email: 'redcoreusa@gmail.com',
-  address: '321 Springfield St, Agawam, MA',
+  address: 'Agawam, MA',
 } as const;
 
 export const COLORS = {
@@ -44,6 +44,7 @@ export function Fonts() {
       dangerouslySetInnerHTML={{
         __html: `
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root { color-scheme: light dark; supported-color-schemes: light dark; }
 @font-face {
   font-family: 'Microgramma';
   src: url('${BASE_URL}/assets/Microgramma%20D%20Extended%20Bold.otf') format('opentype');
@@ -51,6 +52,29 @@ export function Fonts() {
   font-style: normal;
   font-display: swap;
 }
+/* Theme-adaptive palette. Inline styles are the light default; these class
+   rules (!important to beat inline) switch to an intentional dark palette in
+   clients that honor prefers-color-scheme (Apple Mail, Outlook mobile,
+   Thunderbird, Samsung Mail). Gmail supports neither and force-inverts the
+   light palette instead — which lands close to these same colors. */
+@media (prefers-color-scheme: dark) {
+  .em-bg { background-color: #161616 !important; }
+  .em-ink { color: #f2f2f2 !important; }
+  .em-body { color: #c7c7c7 !important; }
+  .em-muted { color: #9a9a9a !important; }
+  .em-border { border-color: #4a4a4a !important; }
+  .em-red { color: #ff5a66 !important; }
+  .em-logo { background-color: #f5f5f5 !important; padding: 10px 14px !important; border-radius: 6px !important; }
+}
+/* Outlook.com / Office 365 web dark mode: ignores the media query but keeps
+   these attribute-prefixed rules ([data-ogsc] text, [data-ogsb] background). */
+[data-ogsc] .em-ink { color: #f2f2f2 !important; }
+[data-ogsc] .em-body { color: #c7c7c7 !important; }
+[data-ogsc] .em-muted { color: #9a9a9a !important; }
+[data-ogsc] .em-red { color: #ff5a66 !important; }
+[data-ogsc] .em-border { border-color: #4a4a4a !important; }
+[data-ogsb] .em-bg { background-color: #161616 !important; }
+[data-ogsb] .em-logo { background-color: #f5f5f5 !important; padding: 10px 14px !important; border-radius: 6px !important; }
 `,
       }}
     />

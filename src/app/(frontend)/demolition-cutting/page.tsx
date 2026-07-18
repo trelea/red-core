@@ -2,6 +2,14 @@ import type { Metadata } from 'next';
 import Hero from '@/components/hero';
 import { OurProjects } from '@/components/our-projects';
 import OurServices from '@/components/our-services';
+import FaqSection, { type FaqItem } from '@/components/faq-section';
+import {
+  Building2,
+  Hammer,
+  Phone,
+  ShieldCheck,
+  Truck,
+} from 'lucide-react';
 import { getProjects } from '@/lib/projects';
 
 const siteUrl =
@@ -35,6 +43,39 @@ const serviceJsonLd = {
   areaServed: 'Agawam, Springfield, Western Massachusetts',
   url: `${siteUrl}/demolition-cutting`,
 };
+
+const faqItems: FaqItem[] = [
+  {
+    question: 'What kind of demolition work do you handle?',
+    icon: <Hammer />,
+    answer:
+      'We specialize in selective, small-to-mid scale demolition: removing concrete walls and wall sections, steps, stoops, small slabs, patios, chimneys, and interior masonry — the precise removal work that large wrecking companies are not set up for.',
+  },
+  {
+    question: 'Will demolition damage the surrounding structure?',
+    icon: <ShieldCheck />,
+    answer:
+      'No. We use controlled methods — saw cutting the boundaries first, then breaking out only the section inside the cuts — so adjacent walls, slabs, and finishes stay untouched.',
+  },
+  {
+    question: 'Do you haul away the debris?',
+    icon: <Truck />,
+    answer:
+      'Yes. We break the removed concrete and masonry into manageable pieces and can haul the debris away, leaving the site clean and ready for the next phase of your project.',
+  },
+  {
+    question: 'Do you work on both residential and commercial projects?',
+    icon: <Building2 />,
+    answer:
+      'Yes. We handle everything from a homeowner removing old concrete steps to commercial renovations that need sections of slab or wall removed, across Agawam, Springfield, and Western Massachusetts.',
+  },
+  {
+    question: 'How do I get a demolition quote?',
+    icon: <Phone />,
+    answer:
+      'Call 413-666-2026 or use the quote form on this site. Describe what needs to be removed — photos help — and we will give you a free, transparent estimate. Our phone line is open 24/7.',
+  },
+];
 
 export default async function DemolitionCuttingPage() {
   const projects = await getProjects('demolition-cutting-projects');
@@ -75,6 +116,7 @@ export default async function DemolitionCuttingPage() {
         render_buttons={false}
       />
       <OurProjects projects={projects} />
+      {/* <FaqSection items={faqItems} /> */}
       <OurServices />
     </>
   );

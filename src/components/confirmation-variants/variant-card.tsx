@@ -42,7 +42,7 @@ export function ConfirmationCard({ referenceId }: ConfirmationVariantProps) {
                   {/* Logo */}
                   <tr>
                     <td align="center" style={{ padding: '36px 56px 28px' }}>
-                      <img src={BRAND.logo} alt={BRAND.name} width={150} height={28} style={{ display: 'block', border: 0 }} />
+                      <img src={BRAND.logo} alt={BRAND.name} width={150} height={25} style={{ display: 'block', border: 0 }} />
                     </td>
                   </tr>
 
