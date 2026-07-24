@@ -85,7 +85,7 @@ export default function OurServices() {
                 </p>
                 <Link
                   href={service.href}
-                  className="mt-auto inline-flex h-[36px] w-[150px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[18px] text-[10px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:bg-[#1E2C32] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
+                  className="mt-auto inline-flex h-[36px] w-[150px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[18px] text-[10px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:border-[#c70017] hover:bg-[#c70017] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
                 >
                   View services
                   <ChevronRightIcon className="size-4" />
