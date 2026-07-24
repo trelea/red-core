@@ -3,34 +3,64 @@ import { Marquee } from '@/components/ui/marquee';
 
 const feedbacks = [
   {
-    name: 'Ethan R.',
+    name: 'Michael B.',
     feedback:
-      'REDCORE did an amazing job rebuilding our back deck. The crew was professional, fast, and explained every step clearly. The new decking feels solid and looks beautiful. Pricing was fair and communication was excellent from start to finish.',
+      'Excellent demolition work. Everything was completed safely, the cuts were clean, and the site was left ready for the next phase of construction.',
   },
   {
-    name: 'Melissa T.',
+    name: 'Sarah L.',
     feedback:
-      'We had several old windows replaced and the difference is incredible. Everything was installed cleanly and professionally, and they made sure the trim and sealing looked perfect. Very reliable company and easy to work with.',
+      'The new basement window opening came out perfectly. Everything was straight, clean, and ready for installation. Great experience from start to finish.',
   },
   {
-    name: 'Jonathan K.',
+    name: 'Daniel S.',
     feedback:
-      'Highly recommend REDCORE’s door installation services. They installed our new front entry quickly and made sure everything closed perfectly and sealed. Great attention to detail and a respectful team.',
+      'Excellent core drilling service. Every hole was drilled accurately, and the crew kept the work area clean and organized.',
   },
   {
-    name: 'Kelly G.',
+    name: 'Brian T.',
     feedback:
-      'Would highly recommend. Great service and value. Their communication was amazing and I’m very grateful they were willing to help me out. Thank you!',
+      'Perfect slab cutting for our plumbing installation. The cuts were accurate, cleanup was excellent, and everything stayed on schedule.',
+  },
+  {
+    name: 'Robert K.',
+    feedback:
+      'Very impressed with the quality of work. The crew completed the concrete cutting exactly as planned and left the area clean before leaving.',
+  },
+  {
+    name: 'Christopher W.',
+    feedback:
+      'The foundation opening was completed with great precision. The crew arrived on time, worked efficiently, and communicated throughout the project.',
+  },
+  {
+    name: 'Anthony C.',
+    feedback:
+      'We hired REDCORE for several core holes, and everything was completed exactly as requested. Fast, clean, and professional service.',
   },
   {
     name: 'James R.',
     feedback:
-      'Top-notch core drilling service. Clean cuts, no mess, and very reasonable rates. The crew was friendly and knew exactly what they were doing.',
+      'The team handled our project professionally from beginning to end. They kept the work area organized and finished on schedule.',
   },
   {
-    name: 'Anna P.',
+    name: 'Andrew P.',
     feedback:
-      'Called on short notice and they showed up the next day. Professional from start to finish. Great communication throughout the entire process.',
+      'The trench cutting was done with excellent precision. Everything was prepared perfectly for the plumbing contractor.',
+  },
+  {
+    name: 'Mark G.',
+    feedback:
+      'The wall opening was exactly what we needed. Clean edges, accurate measurements, and no unnecessary damage to the surrounding concrete.',
+  },
+  {
+    name: 'Kevin H.',
+    feedback:
+      'The slab cutting was completed quickly and professionally. Everything was ready for the next stage without any issues.',
+  },
+  {
+    name: 'Steven L.',
+    feedback:
+      'The crew used professional equipment and completed the drilling with impressive accuracy. I would definitely use their services again.',
   },
 ];
 
@@ -47,7 +77,7 @@ export default function Feedbacks() {
 
       {/* full-width marquee with white edge fades */}
       <div className="relative mt-8 sm:mt-10 lg:mt-12">
-        <Marquee pauseOnHover className="[--duration:70s] [--gap:1.25rem]">
+        <Marquee pauseOnHover className="[--duration:140s] [--gap:1.25rem]">
           {feedbacks.map((item) => (
             <FeedbackCard
               key={item.name}

@@ -24,8 +24,8 @@ interface ContactItemProps {
 }
 
 /**
- * A single hero contact CTA. Starts closed (icon only). The value slides open
- * by either dragging/swiping the icon left↔right (snaps open/closed on release)
+ * A single hero contact CTA. Starts open (icon + value). The value slides
+ * closed/open by either dragging/swiping the icon left↔right (snaps on release)
  * or tapping the icon to toggle. Clicking the revealed value fires the action.
  */
 function ContactItem({
@@ -38,7 +38,7 @@ function ContactItem({
   onLinkClick,
   linkRel,
 }: ContactItemProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   // Live width (px) while dragging; null when resting (class-driven + animated).
   const [dragWidth, setDragWidth] = useState<number | null>(null);
 
@@ -152,8 +152,8 @@ function ContactItem({
 }
 
 /**
- * Phone / Mail CTAs used in the hero. Both start closed (icon only) and slide
- * open via drag/swipe or tap. The icons are always rendered.
+ * Phone / Mail CTAs used in the hero. Both start open (icon + value) and can
+ * be collapsed via drag/swipe or tap. The icons are always rendered.
  */
 export default function ContactButtons({ small = false }: { small?: boolean }) {
   return (

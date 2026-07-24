@@ -27,7 +27,7 @@ const items: InfoItem[] = [
   {
     Icon: MapPinIcon,
     title: 'Our Location',
-    text: '321 Springfield St Agawam, MA 01001',
+    text: 'Agawam, MA 01001',
   },
   {
     Icon: TruckIcon,
