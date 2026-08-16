@@ -1,11 +1,13 @@
 import type * as React from 'react';
 import type { ConfirmationVariantProps } from './shared';
+import { ConfirmationFigma } from './variant-figma';
 import { ConfirmationCorporate } from './variant-corporate';
 import { ConfirmationIndustrial } from './variant-industrial';
 import { ConfirmationCard } from './variant-card';
 import { ConfirmationPremium } from './variant-premium';
 
 export type { ConfirmationVariantProps } from './shared';
+export { ConfirmationFigma } from './variant-figma';
 export { ConfirmationCorporate } from './variant-corporate';
 export { ConfirmationIndustrial } from './variant-industrial';
 export { ConfirmationCard } from './variant-card';
@@ -20,6 +22,12 @@ export interface VariantEntry {
 
 /** Ordered list of confirmation-email variants shown on the preview page. */
 export const VARIANTS: VariantEntry[] = [
+  {
+    id: 'figma-final',
+    name: 'Figma Final',
+    description: 'Approved Figma design — grey logo bar, PM contact block, red services strip.',
+    Component: ConfirmationFigma,
+  },
   {
     id: 'clean-classic',
     name: 'Clean Classic',
