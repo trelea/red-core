@@ -87,6 +87,7 @@ export const SERVICES = [
   { label: 'Slab Cutting', href: `${BASE_URL}/slab-cutting` },
   { label: 'Wall Saw', href: `${BASE_URL}/wall-saw-cutting` },
   { label: 'Demolition', href: `${BASE_URL}/demolition-cutting` },
+  { label: 'Concrete Restoration', href: `${BASE_URL}/concrete-restoration` },
 ] as const;
 
 /** Project Manager direct contact shown in the email body. */

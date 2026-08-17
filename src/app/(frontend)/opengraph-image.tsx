@@ -128,7 +128,7 @@ export default async function OgImage() {
                 gap: "24px",
               }}
             >
-              {["Core Drilling", "Slab Cutting", "Wall Saw", "Demolition & Cutting"].map(
+              {["Core Drilling", "Slab Cutting", "Wall Saw", "Demolition & Cutting", "Concrete Restoration"].map(
                 (service) => (
                   <div
                     key={service}

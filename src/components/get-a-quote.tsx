@@ -52,6 +52,7 @@ const SERVICE_OPTIONS = [
   'Core Drilling',
   'Slab / Foundation Cutting',
   'Demolition & Cutting',
+  'Concrete Restoration',
 ];
 
 const OFFER_OPTIONS = [

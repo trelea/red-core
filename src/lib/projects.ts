@@ -7,7 +7,8 @@ export type ProjectCollectionSlug =
   | 'core-drilling-projects'
   | 'slab-cutting-projects'
   | 'demolition-cutting-projects'
-  | 'wall-saw-cutting-projects';
+  | 'wall-saw-cutting-projects'
+  | 'concrete-restoration-projects';
 
 /**
  * Fetches a service page's projects from Payload and maps them to the shape the

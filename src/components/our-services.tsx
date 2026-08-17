@@ -36,6 +36,16 @@ const services = [
     // same visual size as the other icons.
     iconClassName: 'p-2.5 sm:p-2 lg:p-2.5',
   },
+  {
+    icon: '/icons/Concrete-Restoration-icon.png',
+    title: 'Concrete Restoration',
+    href: '/concrete-restoration',
+    description:
+      'Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete.',
+    // Wide (landscape) artwork letterboxes inside the square frame and reads
+    // smaller than the others; scale it up a touch to match.
+    iconClassName: 'scale-105 sm:scale-[1.15] lg:scale-[1.18]',
+  },
 ];
 
 export default function OurServices() {
@@ -53,10 +63,20 @@ export default function OurServices() {
           id="services-cards"
           className="mt-6 grid auto-rows-fr grid-cols-1 gap-3 sm:mt-10 sm:gap-5 lg:grid-cols-2"
         >
-          {services.map((service) => (
+          {services.map((service, i) => {
+            // With an odd number of services the last card would sit alone in
+            // the left column at lg+; span both columns and center it at the
+            // same width as its neighbours (50% minus half the 20px gap).
+            const isLoneLast =
+              i === services.length - 1 && services.length % 2 === 1;
+            return (
             <div
               key={service.title}
-              className="flex gap-3 bg-[#f5f5f5] px-4 py-3 sm:gap-8 sm:p-10 lg:gap-10 lg:p-[52px] "
+              className={cn(
+                'flex gap-3 bg-[#f5f5f5] px-4 py-3 sm:gap-8 sm:px-10 sm:py-8 lg:gap-10 lg:px-[52px] lg:py-10',
+                isLoneLast &&
+                  'lg:col-span-2 lg:w-[calc(50%-10px)] lg:justify-self-center',
+              )}
             >
               <div className="flex size-[108px] shrink-0 items-center justify-center self-center sm:size-[130px] lg:size-[160px] 2xl:size-[188px]">
                 <Image
@@ -92,7 +112,8 @@ export default function OurServices() {
                 </Link>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
