@@ -13,6 +13,7 @@ import {
   SlabCuttingProjects,
   DemolitionCuttingProjects,
   WallSawCuttingProjects,
+  ConcreteRestorationProjects,
 } from './collections/projects';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,6 +37,7 @@ export default buildConfig({
     SlabCuttingProjects,
     DemolitionCuttingProjects,
     WallSawCuttingProjects,
+    ConcreteRestorationProjects,
   ],
   editor: lexicalEditor(),
   // Required in Payload v3 for upload image processing (formatOptions/imageSizes).

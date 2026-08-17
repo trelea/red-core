@@ -86,3 +86,7 @@ export const WallSawCuttingProjects = makeProjectsCollection(
   'wall-saw-cutting-projects',
   'Wall Saw Cutting',
 );
+export const ConcreteRestorationProjects = makeProjectsCollection(
+  'concrete-restoration-projects',
+  'Concrete Restoration',
+);

@@ -73,6 +73,7 @@ export interface Config {
     'slab-cutting-projects': SlabCuttingProject;
     'demolition-cutting-projects': DemolitionCuttingProject;
     'wall-saw-cutting-projects': WallSawCuttingProject;
+    'concrete-restoration-projects': ConcreteRestorationProject;
     'payload-kv': PayloadKv;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +86,7 @@ export interface Config {
     'slab-cutting-projects': SlabCuttingProjectsSelect<false> | SlabCuttingProjectsSelect<true>;
     'demolition-cutting-projects': DemolitionCuttingProjectsSelect<false> | DemolitionCuttingProjectsSelect<true>;
     'wall-saw-cutting-projects': WallSawCuttingProjectsSelect<false> | WallSawCuttingProjectsSelect<true>;
+    'concrete-restoration-projects': ConcreteRestorationProjectsSelect<false> | ConcreteRestorationProjectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -264,6 +266,29 @@ export interface WallSawCuttingProject {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "concrete-restoration-projects".
+ */
+export interface ConcreteRestorationProject {
+  id: number;
+  /**
+   * Shown as the project heading and in the "Service" badge.
+   */
+  project_title: string;
+  project_location: string;
+  project_price: number;
+  project_description: string;
+  /**
+   * Add one or more images for this project (2+ enables a slider).
+   */
+  project_images: {
+    image: number | Media;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -412,6 +437,24 @@ export interface DemolitionCuttingProjectsSelect<T extends boolean = true> {
  * via the `definition` "wall-saw-cutting-projects_select".
  */
 export interface WallSawCuttingProjectsSelect<T extends boolean = true> {
+  project_title?: T;
+  project_location?: T;
+  project_price?: T;
+  project_description?: T;
+  project_images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "concrete-restoration-projects_select".
+ */
+export interface ConcreteRestorationProjectsSelect<T extends boolean = true> {
   project_title?: T;
   project_location?: T;
   project_price?: T;

@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     'slab cutting',
     'wall saw cutting',
     'demolition and cutting',
+    'concrete restoration',
+    'concrete repair',
+    'concrete resurfacing',
     'concrete drilling',
     'precision cutting',
     'construction services',
@@ -144,6 +147,7 @@ const localBusinessJsonLd = {
     'Slab Cutting',
     'Wall Saw Cutting',
     'Demolition & Cutting',
+    'Concrete Restoration',
   ],
   priceRange: '$$',
   openingHoursSpecification: {

@@ -11,6 +11,15 @@ interface HeroProps {
     src: string;
     alt: string;
   };
+  /**
+   * How the passed `image` is treated on phones (below lg):
+   * - 'illustration' (default): a transparent SVG drawing layered behind the
+   *   text, scaled up and faded in.
+   * - 'photo': an opaque photograph rendered as its own full-width band below
+   *   the text (never overlapping it), edge-to-edge with a soft fade from the
+   *   gray text band. Desktop layout is identical for both.
+   */
+  imageStyle?: 'illustration' | 'photo';
 
   // Optional props to control what is rendered
   render_desc?: boolean;
@@ -29,6 +38,7 @@ export default function Hero({
   ),
   description = 'Professional concrete cutting, core drilling, slab sawing, and controlled demolition with clean results, precise work, and reliable scheduling.',
   image,
+  imageStyle = 'illustration',
   render_desc = true,
   render_buttons = true,
 }: HeroProps) {
@@ -49,6 +59,9 @@ export default function Hero({
   // centered band we size the hero to its content and pin it just under the
   // navbar, with the image absolutely centered in the right half.
   const service = render_desc && !render_buttons;
+  // Opaque photo on phones: stack text over an in-flow image band instead of
+  // layering the image behind the text.
+  const photo = hasImage && imageStyle === 'photo';
   return (
     <section
       className={cn(
@@ -56,12 +69,18 @@ export default function Hero({
         'relative isolate w-screen overflow-hidden bg-[#d9d9d9] sm:h-auto sm:w-auto lg:min-h-0 lg:max-h-screen',
         // Phones: full-screen for the full hero, half-screen for title-only.
         compact ? 'h-[50vh] sm:min-h-[420px]' : 'h-screen sm:min-h-[700px]',
+        // Photo band: column layout that grows past the viewport if the text
+        // needs the room, so the photo is never overlapped by the copy.
+        photo && 'flex h-auto min-h-screen flex-col lg:block',
       )}
     >
       {/* Mobile (below lg): the FULL image fills the section from the top edge
           down. The gradient overlay below keeps the upper area legible for the
           navbar/title without leaving a gray strip above the image. */}
-      <div aria-hidden className="absolute inset-0 -z-10 lg:hidden">
+      <div
+        aria-hidden
+        className={cn('absolute inset-0 -z-10 lg:hidden', photo && 'hidden')}
+      >
         <Image
           src={desktopImage.src}
           alt={desktopImage.alt}
@@ -173,6 +192,25 @@ export default function Hero({
           </div>
         </div>
       </div>
+
+      {/* Photo band (mobile, below lg, photo mode only): fills the remaining
+          viewport under the text; the top edge fades in from the gray band. */}
+      {photo && (
+        <div className="relative w-full flex-1 min-h-[260px] lg:hidden">
+          <Image
+            src={desktopImage.src}
+            alt={desktopImage.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#d9d9d9] to-transparent"
+          />
+        </div>
+      )}
 
       {/* Contacts (mobile, below lg) — smaller, pinned to the bottom-right of the
           image where the hero stacks vertically. */}
