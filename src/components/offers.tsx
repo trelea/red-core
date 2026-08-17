@@ -12,19 +12,32 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
+import ConcreteRestorationPromo from '@/components/offers/concrete-restoration-promo';
 
 // To reorder the carousel, change each card's `order` value (lowest shows
 // first). Filenames and alt text stay exactly as they are — only the numbers
 // decide the display sequence.
 type Offer = {
-  src: string;
   alt: string;
   order: number;
-  /** Optional dedicated image shown only on small screens (below md). */
-  smSrc?: string;
-};
+} & (
+  | {
+      src: string;
+      /** Optional dedicated image shown only on small screens (below md). */
+      smSrc?: string;
+    }
+  | {
+      /** Slide built in markup instead of a pre-rendered banner image. */
+      content: React.ReactNode;
+    }
+);
 
 const offers: Offer[] = [
+  {
+    content: <ConcreteRestorationPromo />,
+    alt: 'Concrete step polishing — 25% off plus a free protective sealer',
+    order: 6,
+  },
   {
     src: '/offers/banner_1.png',
     alt: 'Concrete door or window opening — $1,000 flat rate',
@@ -85,10 +98,18 @@ export default function Offers() {
             <CarouselContent>
               {offers.map((offer) => (
                 <CarouselItem
-                  key={offer.src}
+                  key={offer.alt}
                   className="basis-full md:basis-[72%]"
                 >
-                  {offer.smSrc ? (
+                  {'content' in offer ? (
+                    <div
+                      role="img"
+                      aria-label={offer.alt}
+                      className="aspect-[3/2] w-full md:aspect-[2/1]"
+                    >
+                      {offer.content}
+                    </div>
+                  ) : offer.smSrc ? (
                     <>
                       {/* Small screens (below md): dedicated banner, same
                           aspect/height as the other slides. */}
@@ -114,7 +135,7 @@ export default function Offers() {
                       alt={offer.alt}
                       width={1740}
                       height={870}
-                      priority={offer.src === offers[0].src}
+                      priority={offer === offers[0]}
                       className="aspect-[3/2] w-full object-cover object-right md:aspect-[2/1] md:object-center"
                     />
                   )}
