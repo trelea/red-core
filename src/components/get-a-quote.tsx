@@ -60,6 +60,7 @@ const OFFER_OPTIONS = [
   'Core Drilling — Volume Pricing',
   'Foundation Cutting — 50% Off Debris Loading',
   'Demolition — 30% Off + Free Cleanup',
+  'Concrete Step Polishing — 25% Off + Free Sealer',
 ];
 
 interface GetAQuoteDialogProps {
