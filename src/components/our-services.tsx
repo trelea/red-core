@@ -37,7 +37,9 @@ const services = [
     iconClassName: 'p-2.5 sm:p-2 lg:p-2.5',
   },
   {
-    icon: '/icons/Concrete-Restoration-icon.png',
+    // "-v2" busts browser/CDN caches: the optimized responses for the old
+    // (blurry) file are cached for up to 31 days under the old URL.
+    icon: '/icons/Concrete-Restoration-icon-v2.png',
     title: 'Concrete Restoration',
     href: '/concrete-restoration',
     description:
@@ -84,6 +86,10 @@ export default function OurServices() {
                   alt={service.title}
                   width={214}
                   height={214}
+                  // Line-art icons lose their fine hatching at the default
+                  // AVIF q75; they're small enough that q100 costs almost
+                  // nothing (quality must be listed in next.config qualities).
+                  quality={100}
                   className={cn('size-full object-contain', service.iconClassName)}
                 />
               </div>
