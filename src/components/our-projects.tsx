@@ -71,7 +71,7 @@ function ProjectImageCell({
       onClick={onClick}
       aria-label={`View ${image.alt} full screen`}
       className={cn(
-        'group relative block h-[320px] w-full cursor-zoom-in overflow-hidden bg-[#e2e2e2] sm:h-[400px] lg:h-auto lg:min-h-[460px]',
+        'group relative block h-full w-full cursor-zoom-in overflow-hidden bg-[#e2e2e2] min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]',
         className,
       )}
     >
@@ -90,24 +90,12 @@ function ProjectImageCell({
   );
 }
 
-/**
- * Image area for a project. A single image fills the whole side; 2+ images
- * become a slider showing 2 at a time, advancing one image per arrow, with
- * smaller indicator dots below (mirrors the Offers section).
- */
-function ProjectImagesCarousel({
-  images,
-  priority,
-}: {
-  images: ProjectImage[];
-  /** Eager-load the images — set only for the first project row. */
-  priority?: boolean;
-}) {
+/** Shared slider state, owned by ProjectRow so both the carousel and the
+ * dots (below the row on desktop, under the photos on mobile) stay in sync. */
+function useCarouselState() {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
-  // Index of the image open in the full-screen lightbox, or null when closed.
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -125,10 +113,74 @@ function ProjectImagesCarousel({
     };
   }, [api]);
 
+  return { api, setApi, selected, count };
+}
+
+/** Pagination dots — one per scroll position (snap), not per image. Renders
+ * nothing when there is a single snap (or before the slider initializes). */
+function ProjectDots({
+  count,
+  selected,
+  onSelect,
+  className,
+}: {
+  count: number;
+  selected: number;
+  onSelect: (index: number) => void;
+  className?: string;
+}) {
+  if (count <= 1) return null;
+  return (
+    <div className={cn('flex justify-center', className)}>
+      <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f0f0f0] px-2.5 py-1.5 sm:gap-2 sm:px-3 sm:py-2">
+        {Array.from({ length: count }).map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={`Go to image ${i + 1}`}
+            aria-current={i === selected}
+            onClick={() => onSelect(i)}
+            className={cn(
+              'size-1.5 rounded-full transition-colors sm:size-2',
+              i === selected
+                ? 'bg-black/75'
+                : 'bg-[#c9c9c9] hover:bg-[#a0a0a0]',
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Image area for a project. A single image fills the whole side; 2+ images
+ * become a slider showing 2 at a time, advancing one image per arrow.
+ * Pagination dots are rendered by ProjectRow (below the row on desktop) and
+ * inline under the photos on mobile — never inside the stretched row, so they
+ * add no height to either column.
+ */
+function ProjectImagesCarousel({
+  images,
+  priority,
+  carousel,
+}: {
+  images: ProjectImage[];
+  /** Eager-load the images — set only for the first project row. */
+  priority?: boolean;
+  carousel: ReturnType<typeof useCarouselState>;
+}) {
+  const { api, setApi, selected, count } = carousel;
+  // Index of the image open in the full-screen lightbox, or null when closed.
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
   // A single image (or none) fills the entire image side — no slider chrome.
+  // Wrapped so the grid's stretch gives it height; the cell itself is h-full
+  // with a min-h, so short text keeps the current 320/400/460px look and only
+  // taller text stretches it.
   if (images.length <= 1) {
     return images[0] ? (
-      <>
+      <div className="h-full min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]">
         <ProjectImageCell
           image={images[0]}
           onClick={() => setLightboxIndex(0)}
@@ -139,22 +191,27 @@ function ProjectImagesCarousel({
           index={lightboxIndex}
           onIndexChange={setLightboxIndex}
         />
-      </>
+      </div>
     ) : null;
   }
 
   return (
-    // Images keep their full height; the dots sit in the strip below them. The
-    // row uses items-start (see ProjectRow), so this taller column does not
-    // stretch the details card alongside it.
-    <div>
+    // Stretched by the row (items-stretch) only when the text card is taller
+    // than the image min-h. The h-full chain (outer -> carousel -> viewport ->
+    // slides -> cells) carries the extra height to the images, which crop via
+    // object-cover. Dots sit in-flow below the slider.
+    <div className="flex h-full min-h-[320px] flex-col sm:min-h-[400px] lg:min-h-[460px]">
       <Carousel
         setApi={setApi}
         opts={{ align: 'start', slidesToScroll: 1, containScroll: 'trimSnaps' }}
+        className="flex-1 [&_[data-slot=carousel-content]]:h-full [&_[data-slot=carousel-content]>div]:h-full"
       >
-        <CarouselContent className="-ml-5">
+        <CarouselContent className="-ml-5 h-full">
           {images.map((image, i) => (
-            <CarouselItem key={`${image.src}-${i}`} className="basis-1/2 pl-5">
+            <CarouselItem
+              key={`${image.src}-${i}`}
+              className="h-full basis-1/2 pl-5"
+            >
               <ProjectImageCell
                 image={image}
                 onClick={() => setLightboxIndex(i)}
@@ -178,31 +235,14 @@ function ProjectImagesCarousel({
         />
       </Carousel>
 
-      {/* dots — one per scroll position (snap), not per image. The slider shows
-          2 images per view and advances one at a time, so there are
-          images.length - 1 snaps (this is `count` from scrollSnapList, the same
-          value the arrows use). Only worth showing when there's more than one. */}
-      {count > 1 && (
-        <div className="mt-3 flex justify-center">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f0f0f0] px-2.5 py-1.5 sm:gap-2 sm:px-3 sm:py-2">
-            {Array.from({ length: count }).map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Go to image ${i + 1}`}
-                aria-current={i === selected}
-                onClick={() => api?.scrollTo(i)}
-                className={cn(
-                  'size-1.5 rounded-full transition-colors sm:size-2',
-                  i === selected
-                    ? 'bg-black/75'
-                    : 'bg-[#c9c9c9] hover:bg-[#a0a0a0]',
-                )}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* mobile dots stay glued under the photos (desktop uses the bar below
+          the row rendered by ProjectRow instead). */}
+      <ProjectDots
+        count={count}
+        selected={selected}
+        onSelect={(i) => api?.scrollTo(i)}
+        className="mt-3 lg:hidden"
+      />
 
       <ImageLightbox
         images={images}
@@ -213,109 +253,116 @@ function ProjectImagesCarousel({
   );
 }
 
-function ProjectRow({
-  project,
-  index,
-}: {
-  project: Project;
-  index: number;
-}) {
+function ProjectRow({ project, index }: { project: Project; index: number }) {
   // Alternate the layout by position: odd rows (2nd, 4th, …) flip so the
   // details card sits on the left and the images on the right.
   const reversed = index % 2 === 1;
+  const carousel = useCarouselState();
 
   return (
-    <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
-      {/* image side: single image fills the area, 2+ become a slider. The first
-          row is above the fold, so its images load eagerly (LCP). */}
-      <ProjectImagesCarousel
-        images={project.project_images}
-        priority={index === 0}
-      />
+    <div>
+      <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2">
+        {/* image side: single image fills the area, 2+ become a slider. The first
+          row is above the fold, so its images load eagerly (LCP). Stretches
+          only when the text card is taller (min-h preserved otherwise). */}
+        <ProjectImagesCarousel
+          images={project.project_images}
+          priority={index === 0}
+          carousel={carousel}
+        />
 
-      {/* right side content card (moves to the left on alternating rows). The
-          min-h keeps it the original height (it no longer stretches to the image
-          column, which can be taller when slider dots are shown). */}
-      <Card
-        className={cn(
-          'gap-0 rounded-none border-0 bg-[#f5f5f5] py-0 shadow-none lg:min-h-[460px]',
-          reversed && 'lg:order-first',
-        )}
-      >
-        <CardContent className="flex flex-col gap-6 px-6 py-8 sm:px-8">
-          <h3
-            className={cn(
-              microgramma.variable,
-              'text-[24px] font-bold uppercase leading-[1.1] tracking-[0] text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[30.64px] sm:leading-[33px]',
-            )}
-          >
-            {project.project_title}
-          </h3>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
-            {/* description */}
-            <p
+        {/* right side content card (moves to the left on alternating rows). The
+          min-h keeps the current look for short text; the row's stretch makes
+          the shorter column match the taller one. */}
+        <Card
+          className={cn(
+            'h-full gap-0 rounded-none border-0 bg-[#f5f5f5] py-0 shadow-none lg:min-h-[460px]',
+            reversed && 'lg:order-first',
+          )}
+        >
+          <CardContent className="flex flex-col gap-6 px-6 py-8 sm:px-8">
+            <h3
               className={cn(
-                urbanist.className,
-                'text-[15px] font-normal leading-[1.4] tracking-[0.02em] text-black/90 sm:text-[18px] sm:leading-[25.2px]',
+                microgramma.variable,
+                'text-[24px] font-bold uppercase leading-[1.1] tracking-[0] text-[#141414] [font-family:var(--font-microgramma),sans-serif] sm:text-[30.64px] sm:leading-[33px]',
               )}
             >
-              {project.project_description}
-            </p>
+              {project.project_title}
+            </h3>
 
-            {/* service / location / price */}
-            <ul className={cn(inter.className, 'flex flex-col gap-4')}>
-              <li className="flex flex-col gap-2">
-                <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
-                  Service:
-                </span>
-                <Badge
-                  variant="secondary"
-                  className={cn(inter.className, detailPillClass)}
-                >
-                  {project.project_title}
-                </Badge>
-              </li>
-              <li className="flex flex-col gap-2">
-                <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
-                  Location:
-                </span>
-                <Badge
-                  variant="secondary"
-                  className={cn(inter.className, detailPillClass)}
-                >
-                  {project.project_location}
-                </Badge>
-              </li>
-              <li className="flex flex-col gap-2">
-                <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
-                  Total price:
-                </span>
-                <Badge
-                  className={cn(
-                    inter.className,
-                    'w-1/2 justify-center gap-2 rounded-[74px] bg-[#C70017] px-[30px] py-3 text-[15px] font-bold text-white',
-                  )}
-                >
-                  <span>
-                    {priceFormatter
-                      .formatToParts(project.project_price)
-                      .map((part, idx) =>
-                        part.type === 'currency' ? (
-                          <span key={idx} className="text-[#14AD00]">
-                            {part.value}
-                          </span>
-                        ) : (
-                          part.value
-                        ),
-                      )}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
+              {/* description */}
+              <p
+                className={cn(
+                  urbanist.className,
+                  'text-[15px] font-normal leading-[1.4] tracking-[0.02em] text-black/90 sm:text-[18px] sm:leading-[25.2px]',
+                )}
+              >
+                {project.project_description}
+              </p>
+
+              {/* service / location / price */}
+              <ul className={cn(inter.className, 'flex flex-col gap-4')}>
+                <li className="flex flex-col gap-2">
+                  <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
+                    Service:
                   </span>
-                </Badge>
-              </li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
+                  <Badge
+                    variant="secondary"
+                    className={cn(inter.className, detailPillClass)}
+                  >
+                    {project.project_title}
+                  </Badge>
+                </li>
+                <li className="flex flex-col gap-2">
+                  <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
+                    Location:
+                  </span>
+                  <Badge
+                    variant="secondary"
+                    className={cn(inter.className, detailPillClass)}
+                  >
+                    {project.project_location}
+                  </Badge>
+                </li>
+                <li className="flex flex-col gap-2">
+                  <span className="text-[16px] font-normal leading-none tracking-normal text-[#1E2C32]">
+                    Total price:
+                  </span>
+                  <Badge
+                    className={cn(
+                      inter.className,
+                      'w-1/2 justify-center gap-2 rounded-[74px] bg-[#C70017] px-[30px] py-3 text-[15px] font-bold text-white',
+                    )}
+                  >
+                    <span>
+                      {priceFormatter
+                        .formatToParts(project.project_price)
+                        .map((part, idx) =>
+                          part.type === 'currency' ? (
+                            <span key={idx} className="text-[#14AD00]">
+                              {part.value}
+                            </span>
+                          ) : (
+                            part.value
+                          ),
+                        )}
+                    </span>
+                  </Badge>
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      {/* desktop dots live below the row (under the image half), outside the
+          stretched grid, so they never extend either column. */}
+      <ProjectDots
+        count={carousel.count}
+        selected={carousel.selected}
+        onSelect={(i) => carousel.api?.scrollTo(i)}
+        className={cn('mt-3 hidden lg:flex lg:w-1/2', reversed && 'lg:ml-auto')}
+      />
     </div>
   );
 }
