@@ -1,0 +1,249 @@
+{
+  "exportFormatVersion": 2,
+  "containerVersion": {
+    "tag": [
+      {
+        "name": "GA4 - All Events",
+        "type": "gaawc",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "{{_event}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "G-6K1RFQLDMS"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "event_detail" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{event_detail}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "form_contact" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{form_contact}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "form_project" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{form_project}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "form_message" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{form_message}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "client_ip" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{client_ip}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "client_location" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{client_location}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "device_summary" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{device_summary}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "hardware_summary" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{hardware_summary}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "gpu_info" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{gpu_info}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "display_summary" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{display_summary}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "network_summary" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{network_summary}}" }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  { "type": "TEMPLATE", "key": "parameter", "value": "visitor_summary" },
+                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{visitor_summary}}" }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": ["999001"]
+      }
+    ],
+    "trigger": [
+      {
+        "triggerId": "999001",
+        "name": "GA4 - All Custom Events",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(view_service|view_item|service_card_click|select_content|quote_modal_open|form_start|form_field_change|form_callback_step_open|form_abandon|form_submission|generate_lead|phone_click|email_click|contact|social_click|project_image_open|project_image_carousel_change|lightbox_image_change|lightbox_close|projects_page_change|offer_slide_change|nav_scroll_to_section|section_view|section_time_spent|page_time_spent|scroll_depth|button_click)$"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "name": "event_detail",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "event_detail" }
+        ]
+      },
+      {
+        "name": "form_contact",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "form_contact" }
+        ]
+      },
+      {
+        "name": "form_project",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "form_project" }
+        ]
+      },
+      {
+        "name": "form_message",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "form_message" }
+        ]
+      },
+      {
+        "name": "client_ip",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "client_ip" }
+        ]
+      },
+      {
+        "name": "client_location",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "client_location" }
+        ]
+      },
+      {
+        "name": "device_summary",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "device_summary" }
+        ]
+      },
+      {
+        "name": "hardware_summary",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "hardware_summary" }
+        ]
+      },
+      {
+        "name": "gpu_info",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "gpu_info" }
+        ]
+      },
+      {
+        "name": "display_summary",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "display_summary" }
+        ]
+      },
+      {
+        "name": "network_summary",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "network_summary" }
+        ]
+      },
+      {
+        "name": "visitor_summary",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
+          { "type": "TEMPLATE", "key": "name", "value": "visitor_summary" }
+        ]
+      }
+    ]
+  }
+}

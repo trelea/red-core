@@ -3,28 +3,7 @@
 const META_TRACKING_ENABLED =
   process.env.META_TRACKING_ENABLED === 'true' ||
   process.env.NEXT_PUBLIC_META_TRACKING_ENABLED === 'true';
-const GA4_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA4_ID || 'G-6K1RFQLDMS';
 const IS_DEV = process.env.NODE_ENV === 'development';
-
-/**
- * Pushes a standard Google Tag command (`arguments` object) into GTM's existing `window.dataLayer`.
- * Uses GTM's `GA4 - Base Config` tag (no extra script tag needed) to forward all parameters to GA4.
- */
-function pushGa4EventViaDataLayer(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _command: 'event',
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _eventName: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _params: Record<string, unknown>,
-): void {
-  if (typeof window === 'undefined') return;
-  window.dataLayer = window.dataLayer || [];
-  // Must push the actual `arguments` object so Google Tag inside GTM processes the event + all parameters
-  // eslint-disable-next-line prefer-rest-params
-  window.dataLayer.push(arguments);
-}
 
 export interface UserContactInfo {
   fullName?: string;
@@ -880,7 +859,7 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     );
   }
 
-  // 1a. GTM dataLayer object push -> triggers GTM Custom Event triggers (Google Ads)
+  // 1. GTM dataLayer push -> Google Ads & GA4
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event: options.event,
@@ -898,41 +877,6 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
       custom_event_name: options.event,
       ...baseParams,
     });
-  }
-
-  // 1b. GTM dataLayer command push -> forwards all parameters automatically to GA4 (G-6K1RFQLDMS)
-  // via GTM's `GA4 - Base Config` tag with zero manual GTM variables needed
-  if (GA4_MEASUREMENT_ID) {
-    const ga4Params: Record<string, unknown> = {
-      send_to: GA4_MEASUREMENT_ID,
-      event_id: eventId,
-      event_detail,
-      form_contact,
-      form_project,
-      form_message,
-      client_ip: client_ip_value,
-      client_location,
-      device_summary,
-      hardware_summary,
-      gpu_info,
-      display_summary,
-      network_summary,
-      visitor_summary,
-      page_path: pagePath,
-      ...p,
-    };
-
-    pushGa4EventViaDataLayer('event', options.event, ga4Params);
-
-    if (
-      options.ga4StandardEvent &&
-      options.ga4StandardEvent !== options.event
-    ) {
-      pushGa4EventViaDataLayer('event', options.ga4StandardEvent, {
-        ...ga4Params,
-        custom_event_name: options.event,
-      });
-    }
   }
 
   // Only run Meta Pixel + Meta CAPI when META_TRACKING_ENABLED is true (or in dev mode for server terminal logging)
