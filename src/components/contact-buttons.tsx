@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { MailIcon, PhoneIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { trackPhoneClick } from '@/lib/gtag';
+import { trackEmailClick, trackPhoneClick } from '@/lib/gtag';
 
 const MAX_WIDTH = 280; // px the value slides out to when fully open
 const DRAG_GAIN = 1.8; // panel moves faster than the finger for a snappier feel
@@ -165,6 +165,7 @@ export default function ContactButtons({ small = false }: { small?: boolean }) {
         href="mailto:redcoreusa@gmail.com"
         toggleLabel="Toggle email address"
         linkLabel="Email us"
+        onLinkClick={trackEmailClick}
       />
       <ContactItem
         small={small}

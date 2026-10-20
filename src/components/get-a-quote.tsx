@@ -233,7 +233,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
 
       if (res.ok) {
         setStatus('success');
-        trackFormConversion();
+        trackFormConversion('quote');
         resetForm();
         setCallbackOpen(false);
         onOpenChange(false);

@@ -24,7 +24,11 @@ import { cn } from '@/lib/utils';
 import { inter, microgramma } from '@/lib/fonts';
 import { scrollToSection } from '@/lib/scroll-to-section';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
-import { trackFormConversion, trackPhoneClick } from '@/lib/gtag';
+import {
+  trackEmailClick,
+  trackFormConversion,
+  trackPhoneClick,
+} from '@/lib/gtag';
 import {
   Dialog,
   DialogContent,
@@ -199,7 +203,7 @@ export default function Footer() {
 
       if (res.ok) {
         setStatus('success');
-        trackFormConversion();
+        trackFormConversion('consultation');
         formRef.current?.reset();
         setCaptured(null);
         resetCallbackState();
@@ -256,6 +260,7 @@ export default function Footer() {
                   <li>
                     <a
                       href="mailto:redcoreusa@gmail.com"
+                      onClick={trackEmailClick}
                       className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
                     >
                       <MailIcon className="size-[17px] shrink-0 text-[#c70017]" />

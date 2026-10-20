@@ -1,20 +1,30 @@
-const AW_CONVERSION_ID = 'AW-17966730832';
-const AW_CONVERSION_LABEL = 'QB3ZCIXtrI4cENCcmvdC';
-
-/** Fire a Google Ads conversion event after successful form submission */
-export function trackFormConversion(): void {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'conversion', {
-      send_to: `${AW_CONVERSION_ID}/${AW_CONVERSION_LABEL}`,
-    });
+function pushToDataLayer(payload: Record<string, unknown>): void {
+  if (typeof window !== 'undefined') {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
   }
 }
 
-/** Fire a Google Ads conversion event on phone link click */
+/** Push a GTM event after a successful form submission */
+export function trackFormConversion(
+  formType: 'quote' | 'consultation' = 'quote',
+): void {
+  pushToDataLayer({
+    event: 'form_submission',
+    form_type: formType,
+  });
+}
+
+/** Push a GTM event on phone link click */
 export function trackPhoneClick(): void {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'conversion', {
-      send_to: `${AW_CONVERSION_ID}/${AW_CONVERSION_LABEL}`,
-    });
-  }
+  pushToDataLayer({
+    event: 'phone_click',
+  });
+}
+
+/** Push a GTM event on email link click */
+export function trackEmailClick(): void {
+  pushToDataLayer({
+    event: 'email_click',
+  });
 }

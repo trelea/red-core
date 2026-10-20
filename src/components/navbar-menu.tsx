@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { scrollToSection, scrollToId } from '@/lib/scroll-to-section';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
-import { trackPhoneClick } from '@/lib/gtag';
+import { trackEmailClick, trackPhoneClick } from '@/lib/gtag';
 import { useEffect, useState } from 'react';
 
 const mobileLinks = [
@@ -108,6 +108,7 @@ export function NavbarMobileMenu() {
           <SheetClose asChild>
             <a
               href="mailto:redcoreusa@gmail.com"
+              onClick={trackEmailClick}
               className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
             >
               <MailIcon className="size-4" />
