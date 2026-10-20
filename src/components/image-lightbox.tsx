@@ -7,7 +7,7 @@
  * close. Supports prev/next arrows, keyboard arrows, touch swipe and a
  * thumbnail strip. Shared by the projects carousel and the project gallery.
  */
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { BlurImage } from '@/components/blur-image';
 import { ChevronRight, ChevronLeft, X } from 'lucide-react';
@@ -19,6 +19,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import {
+  trackLightboxClose,
+  trackLightboxImageChange,
+} from '@/lib/tracking';
 
 export interface LightboxImage {
   src: string;
@@ -31,26 +35,72 @@ interface ImageLightboxProps {
   index: number | null;
   /** Receives the new index, or `null` to close. */
   onIndexChange: (index: number | null) => void;
+  /** Optional project title for analytics context. */
+  projectTitle?: string;
 }
 
 export function ImageLightbox({
   images,
   index,
   onIndexChange,
+  projectTitle,
 }: ImageLightboxProps) {
   // Touch swipe state
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
+  // Analytics tracking state for lightbox session
+  const openedAtRef = useRef<number | null>(null);
+  const viewedIndicesRef = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    if (index !== null) {
+      if (openedAtRef.current === null) {
+        openedAtRef.current = Date.now();
+        viewedIndicesRef.current = new Set([index]);
+      } else {
+        viewedIndicesRef.current.add(index);
+      }
+    } else if (openedAtRef.current !== null) {
+      const durationSeconds = Math.max(
+        1,
+        Math.round((Date.now() - openedAtRef.current) / 1000),
+      );
+      trackLightboxClose({
+        projectTitle,
+        durationSeconds,
+        imagesViewedCount: viewedIndicesRef.current.size,
+      });
+      openedAtRef.current = null;
+      viewedIndicesRef.current = new Set();
+    }
+  }, [index, projectTitle]);
+
   const goToPrevious = useCallback(() => {
     if (index === null) return;
-    onIndexChange(index === 0 ? images.length - 1 : index - 1);
-  }, [index, images.length, onIndexChange]);
+    const nextIdx = index === 0 ? images.length - 1 : index - 1;
+    trackLightboxImageChange({
+      projectTitle,
+      imageIndex: nextIdx,
+      totalImages: images.length,
+      imageAlt: images[nextIdx]?.alt || '',
+      navigationMethod: 'prev',
+    });
+    onIndexChange(nextIdx);
+  }, [index, images, onIndexChange, projectTitle]);
 
   const goToNext = useCallback(() => {
     if (index === null) return;
-    onIndexChange(index === images.length - 1 ? 0 : index + 1);
-  }, [index, images.length, onIndexChange]);
+    const nextIdx = index === images.length - 1 ? 0 : index + 1;
+    trackLightboxImageChange({
+      projectTitle,
+      imageIndex: nextIdx,
+      totalImages: images.length,
+      imageAlt: images[nextIdx]?.alt || '',
+      navigationMethod: 'next',
+    });
+    onIndexChange(nextIdx);
+  }, [index, images, onIndexChange, projectTitle]);
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -148,7 +198,16 @@ export function ImageLightbox({
                   <button
                     key={i}
                     type="button"
-                    onClick={() => onIndexChange(i)}
+                    onClick={() => {
+                      trackLightboxImageChange({
+                        projectTitle,
+                        imageIndex: i,
+                        totalImages: images.length,
+                        imageAlt: img.alt,
+                        navigationMethod: 'thumbnail',
+                      });
+                      onIndexChange(i);
+                    }}
                     className={cn(
                       'relative h-12 w-16 overflow-hidden rounded-sm border-2 transition-opacity sm:h-16 sm:w-24',
                       index === i

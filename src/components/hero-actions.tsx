@@ -25,7 +25,7 @@ export default function HeroActions() {
     >
       <button
         type="button"
-        onClick={openQuote}
+        onClick={() => openQuote('hero')}
         className={cn(btnBase, 'bg-[#c70017] hover:bg-[#9a0012]')}
       >
         Get a quote

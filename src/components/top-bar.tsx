@@ -8,10 +8,12 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/tooltip';
+import { trackEmailClick } from '@/lib/tracking';
 export default function TopBar() {
   const [copied, setCopied] = useState(false);
 
   async function copyAddress() {
+    trackEmailClick('topbar_copy');
     try {
       await navigator.clipboard.writeText('redcoreusa@gmail.com');
       setCopied(true);

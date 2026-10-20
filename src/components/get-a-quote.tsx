@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import {
   PaperclipIcon,
@@ -24,7 +24,15 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { inter, montserrat, microgramma } from '@/lib/fonts';
-import { trackFormConversion } from '@/lib/gtag';
+import {
+  generateEventId,
+  getClientEnvironmentContext,
+  trackFormAbandon,
+  trackFormCallbackStepOpen,
+  trackFormConversion,
+  trackFormFieldChange,
+  trackFormStart,
+} from '@/lib/tracking';
 import {
   Dialog,
   DialogContent,
@@ -99,6 +107,138 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
 
   const [dialogError, setDialogError] = useState<string | null>(null);
 
+  // Funnel & abandonment tracking state
+  const openedAtRef = useRef<number | null>(null);
+  const formStartedRef = useRef(false);
+  const reachedCallbackStepRef = useRef(false);
+  const submittedRef = useRef(false);
+
+  function collectQuoteFormData(): {
+    filled: string[];
+    values: {
+      fullName?: string;
+      phone?: string;
+      email?: string;
+      offer?: string;
+      service?: string;
+      message?: string;
+    };
+  } {
+    const filled: string[] = [];
+    let fullName = '';
+    let phone = '';
+    let email = '';
+    let message = '';
+
+    const form = formRef.current;
+    if (form) {
+      fullName =
+        (
+          form.elements.namedItem('fullName') as HTMLInputElement | null
+        )?.value?.trim() || '';
+      phone =
+        (
+          form.elements.namedItem('phone') as HTMLInputElement | null
+        )?.value?.trim() || '';
+      email =
+        (
+          form.elements.namedItem('email') as HTMLInputElement | null
+        )?.value?.trim() || '';
+      message =
+        (
+          form.elements.namedItem('message') as HTMLTextAreaElement | null
+        )?.value?.trim() || '';
+    } else if (captured) {
+      fullName = captured.fullName?.trim() || '';
+      phone = captured.phone?.trim() || '';
+      email = captured.email?.trim() || '';
+      message = captured.message?.trim() || '';
+    }
+
+    if (fullName) filled.push('fullName');
+    if (phone) filled.push('phone');
+    if (email) filled.push('email');
+    if (offer) filled.push('offer');
+    if (service) filled.push('service');
+    if (message) filled.push('message');
+    if (files.length > 0) filled.push('photos');
+
+    return {
+      filled,
+      values: {
+        fullName: fullName || undefined,
+        phone: phone || undefined,
+        email: email || undefined,
+        offer: offer || undefined,
+        service: service || undefined,
+        message: message || undefined,
+      },
+    };
+  }
+
+  function handleFormFocus() {
+    if (!formStartedRef.current) {
+      formStartedRef.current = true;
+      trackFormStart('quote');
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      openedAtRef.current = Date.now();
+      formStartedRef.current = false;
+      reachedCallbackStepRef.current = false;
+      submittedRef.current = false;
+    } else if (openedAtRef.current !== null && !submittedRef.current) {
+      const timeSpentSeconds = Math.max(
+        1,
+        Math.round((Date.now() - openedAtRef.current) / 1000),
+      );
+      const { filled, values } = collectQuoteFormData();
+      trackFormAbandon({
+        formType: 'quote',
+        abandonedAtStep: reachedCallbackStepRef.current
+          ? 'picking_callback_time'
+          : formStartedRef.current || filled.length > 0
+            ? 'filling_fields'
+            : 'modal_opened',
+        filledFields: filled,
+        formValues: values,
+        timeSpentSeconds,
+      });
+      openedAtRef.current = null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      if (openedAtRef.current !== null && !submittedRef.current) {
+        const timeSpentSeconds = Math.max(
+          1,
+          Math.round((Date.now() - openedAtRef.current) / 1000),
+        );
+        const { filled, values } = collectQuoteFormData();
+        trackFormAbandon({
+          formType: 'quote',
+          abandonedAtStep: reachedCallbackStepRef.current
+            ? 'picking_callback_time'
+            : formStartedRef.current || filled.length > 0
+              ? 'filling_fields'
+              : 'modal_opened',
+          filledFields: filled,
+          formValues: values,
+          timeSpentSeconds,
+          useBeacon: true,
+        });
+        openedAtRef.current = null;
+      }
+    };
+    window.addEventListener('pagehide', handlePageHide);
+    return () => window.removeEventListener('pagehide', handlePageHide);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offer, service, files.length, captured]);
+
   const today = useMemo(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -127,7 +267,11 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(e.target.files || []);
-    setFiles((prev) => [...prev, ...selected].slice(0, 5));
+    setFiles((prev) => {
+      const next = [...prev, ...selected].slice(0, 5);
+      trackFormFieldChange('quote', 'photos_attached', next.length);
+      return next;
+    });
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
@@ -154,14 +298,17 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     setStatus('idle');
 
     const form = e.currentTarget;
-    setCaptured({
+    const nextCaptured = {
       fullName: (form.elements.namedItem('fullName') as HTMLInputElement).value,
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
       offer,
       service,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
-    });
+    };
+    setCaptured(nextCaptured);
+    reachedCallbackStepRef.current = true;
+    trackFormCallbackStepOpen('quote', nextCaptured);
     setCallbackOpen(true);
   }
 
@@ -214,6 +361,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
           ? 'Within the next hour'
           : `${hourNum}:${String(minuteNum).padStart(2, '0')} ${specificPeriod}`;
 
+    const eventId = generateEventId();
     const formData = new FormData();
     formData.append('fullName', captured.fullName);
     formData.append('phone', captured.phone);
@@ -223,6 +371,11 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     formData.append('message', captured.message);
     formData.append('callbackDay', callbackDay);
     formData.append('callbackTime', callbackTime);
+    formData.append('eventId', eventId);
+    formData.append(
+      'clientContext',
+      JSON.stringify(getClientEnvironmentContext()),
+    );
     files.forEach((file) => formData.append('images', file));
 
     try {
@@ -232,8 +385,22 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
       });
 
       if (res.ok) {
+        submittedRef.current = true;
+        openedAtRef.current = null;
         setStatus('success');
-        trackFormConversion('quote');
+        trackFormConversion('quote', {
+          service: captured.service,
+          offer: captured.offer,
+          message: captured.message,
+          callbackDay,
+          callbackTime,
+          userData: {
+            fullName: captured.fullName,
+            email: captured.email,
+            phone: captured.phone,
+          },
+          eventId,
+        });
         resetForm();
         setCallbackOpen(false);
         onOpenChange(false);
@@ -292,6 +459,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
 
             <form
               ref={formRef}
+              onFocus={handleFormFocus}
               onSubmit={handleSubmit}
               className="mt-7 grid grid-cols-1 gap-x-11 gap-y-8 lg:grid-cols-2 lg:items-start"
             >
@@ -303,6 +471,14 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   type="text"
                   required
                   placeholder="Full Name"
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    trackFormFieldChange(
+                      'quote',
+                      'fullName',
+                      e.target.value.trim(),
+                    )
+                  }
                   className={fieldClass}
                 />
                 <Input
@@ -311,6 +487,14 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   type="tel"
                   required
                   placeholder="Phone number"
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    trackFormFieldChange(
+                      'quote',
+                      'phone',
+                      e.target.value.trim(),
+                    )
+                  }
                   className={fieldClass}
                 />
                 <Input
@@ -319,10 +503,25 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   type="email"
                   required
                   placeholder="Email"
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    trackFormFieldChange(
+                      'quote',
+                      'email',
+                      e.target.value.trim(),
+                    )
+                  }
                   className={fieldClass}
                 />
 
-                <Select value={offer} onValueChange={setOffer}>
+                <Select
+                  value={offer}
+                  onValueChange={(val) => {
+                    handleFormFocus();
+                    setOffer(val);
+                    trackFormFieldChange('quote', 'offer', val);
+                  }}
+                >
                   <SelectTrigger
                     aria-label="Select special offer"
                     className={cn(
@@ -341,7 +540,14 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   </SelectContent>
                 </Select>
 
-                <Select value={service} onValueChange={setService}>
+                <Select
+                  value={service}
+                  onValueChange={(val) => {
+                    handleFormFocus();
+                    setService(val);
+                    trackFormFieldChange('quote', 'service', val);
+                  }}
+                >
                   <SelectTrigger
                     aria-label="Select service"
                     className={cn(
@@ -367,6 +573,14 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   id="message"
                   name="message"
                   placeholder="Message"
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    trackFormFieldChange(
+                      'quote',
+                      'message',
+                      e.target.value.trim(),
+                    )
+                  }
                   className="h-[240px] resize-none rounded-none border border-black/40 bg-transparent px-4 py-3 text-[16px] font-normal text-black shadow-none placeholder:text-black/45 focus-visible:border-black focus-visible:ring-0 sm:h-[300px]"
                 />
 

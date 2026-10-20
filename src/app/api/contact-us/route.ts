@@ -1,13 +1,23 @@
 import React from 'react';
 import { ContactUsTemplate } from '@/components/contact-us.template';
 import { ConfirmationTemplate } from '@/components/confirmation.template';
+import { sendMetaCapiEvents } from '@/lib/meta-capi';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const { fullName, phone, email, callbackDay, callbackTime } = await request.json();
+    const {
+      fullName,
+      phone,
+      email,
+      callbackDay,
+      callbackTime,
+      eventId,
+      clientContext,
+    } = await request.json();
+    const resolvedEventId = eventId || `consultation_${Date.now()}`;
 
     if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
       return Response.json(
@@ -40,6 +50,37 @@ export async function POST(request: Request) {
     if (confirmation.error) {
       console.error('Confirmation email error:', confirmation.error);
     }
+
+    // Server-side Meta CAPI Lead + form_submission (plain form data + full device context)
+    const sharedCustomData = {
+      ...(typeof clientContext === 'object' && clientContext
+        ? clientContext
+        : {}),
+      form_type: 'consultation',
+      full_name: fullName,
+      phone,
+      email,
+      callback_day: callbackDay,
+      callback_time: callbackTime,
+      currency: 'USD',
+    };
+    await sendMetaCapiEvents(
+      [
+        {
+          eventName: 'Lead',
+          eventId: resolvedEventId,
+          customData: sharedCustomData,
+          userData: { fullName, email, phone },
+        },
+        {
+          eventName: 'form_submission',
+          eventId: `${resolvedEventId}_custom`,
+          customData: sharedCustomData,
+          userData: { fullName, email, phone },
+        },
+      ],
+      request,
+    );
 
     return Response.json({ success: true, id: data?.id });
   } catch (error) {

@@ -3,6 +3,9 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  env: {
+    META_TRACKING_ENABLED: process.env.META_TRACKING_ENABLED ?? 'false',
+  },
   images: {
     qualities: [75, 100],
     // AVIF first (≈20–30% smaller than WebP for these photos); browsers that

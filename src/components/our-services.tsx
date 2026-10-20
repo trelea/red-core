@@ -1,8 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRightIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { inter, microgramma } from '@/lib/fonts';
+import { trackServiceCardClick } from '@/lib/tracking';
 
 const services = [
   {
@@ -111,6 +114,9 @@ export default function OurServices() {
                 </p>
                 <Link
                   href={service.href}
+                  onClick={() =>
+                    trackServiceCardClick(service.title, service.href)
+                  }
                   className="mt-auto inline-flex h-[36px] w-[150px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[18px] text-[10px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:border-[#c70017] hover:bg-[#c70017] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
                 >
                   View services

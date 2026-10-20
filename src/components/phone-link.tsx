@@ -12,7 +12,7 @@ export default function PhoneLink({
       href="tel:+14136662026"
       rel="nofollow"
       className={className}
-      onClick={trackPhoneClick}
+      onClick={() => trackPhoneClick('phone_link')}
       {...props}
     >
       {children}

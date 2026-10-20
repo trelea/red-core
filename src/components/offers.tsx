@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import ConcreteRestorationPromo from '@/components/offers/concrete-restoration-promo';
+import { trackOfferSlideChange } from '@/lib/tracking';
 
 // To reorder the carousel, change each card's `order` value (lowest shows
 // first). Filenames and alt text stay exactly as they are — only the numbers
@@ -59,12 +60,24 @@ export default function Offers() {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(offers.length);
+  const prevSlideRef = useRef(0);
 
   useEffect(() => {
     if (!api) return;
     setCount(api.scrollSnapList().length);
     setSelected(api.selectedScrollSnap());
-    const onSelect = () => setSelected(api.selectedScrollSnap());
+    const onSelect = () => {
+      const idx = api.selectedScrollSnap();
+      setSelected(idx);
+      if (idx !== prevSlideRef.current) {
+        prevSlideRef.current = idx;
+        trackOfferSlideChange(
+          idx,
+          api.scrollSnapList().length,
+          offers[idx]?.alt || `Offer ${idx + 1}`,
+        );
+      }
+    };
     api.on('select', onSelect);
     api.on('reInit', () => {
       setCount(api.scrollSnapList().length);

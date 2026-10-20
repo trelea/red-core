@@ -64,6 +64,7 @@ export default function Hero({
   const photo = hasImage && imageStyle === 'photo';
   return (
     <section
+      id="hero"
       className={cn(
         microgramma.variable,
         'relative isolate w-screen overflow-hidden bg-[#d9d9d9] sm:h-auto sm:w-auto lg:min-h-0 lg:max-h-screen',

@@ -5,6 +5,7 @@ import './globals.css';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ScrollDownIndicator from '@/components/scroll-down-indicator';
+import AnalyticsProvider from '@/components/analytics-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QuoteDialogProvider } from '@/components/quote-dialog-provider';
 
@@ -203,6 +204,7 @@ export default function RootLayout({
         </noscript>
         <TooltipProvider>
           <QuoteDialogProvider>
+            <AnalyticsProvider />
             <main>
               <Navbar />
               {children}

@@ -23,6 +23,11 @@ import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import { ImageLightbox } from '@/components/image-lightbox';
 import { cn } from '@/lib/utils';
 import { inter, urbanist, microgramma } from '@/lib/fonts';
+import {
+  trackProjectImageCarouselChange,
+  trackProjectImageOpen,
+  trackProjectsPageChange,
+} from '@/lib/tracking';
 
 interface ProjectImage {
   src: string;
@@ -162,10 +167,14 @@ function ProjectDots({
  */
 function ProjectImagesCarousel({
   images,
+  projectTitle,
+  projectLocation,
   priority,
   carousel,
 }: {
   images: ProjectImage[];
+  projectTitle: string;
+  projectLocation: string;
   /** Eager-load the images — set only for the first project row. */
   priority?: boolean;
   carousel: ReturnType<typeof useCarouselState>;
@@ -173,6 +182,30 @@ function ProjectImagesCarousel({
   const { api, setApi, selected, count } = carousel;
   // Index of the image open in the full-screen lightbox, or null when closed.
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const prevSelectedRef = useRef(0);
+
+  useEffect(() => {
+    if (count > 1 && selected !== prevSelectedRef.current) {
+      prevSelectedRef.current = selected;
+      trackProjectImageCarouselChange({
+        projectTitle,
+        slideIndex: selected,
+        totalSlides: count,
+        interactionType: 'carousel',
+      });
+    }
+  }, [selected, count, projectTitle]);
+
+  const handleOpenImage = (idx: number) => {
+    trackProjectImageOpen({
+      projectTitle,
+      projectLocation,
+      imageIndex: idx,
+      totalImages: images.length,
+      imageAlt: images[idx]?.alt || projectTitle,
+    });
+    setLightboxIndex(idx);
+  };
 
   // A single image (or none) fills the entire image side — no slider chrome.
   // Wrapped so the grid's stretch gives it height; the cell itself is h-full
@@ -183,13 +216,14 @@ function ProjectImagesCarousel({
       <div className="h-full min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]">
         <ProjectImageCell
           image={images[0]}
-          onClick={() => setLightboxIndex(0)}
+          onClick={() => handleOpenImage(0)}
           priority={priority}
         />
         <ImageLightbox
           images={images}
           index={lightboxIndex}
           onIndexChange={setLightboxIndex}
+          projectTitle={projectTitle}
         />
       </div>
     ) : null;
@@ -214,7 +248,7 @@ function ProjectImagesCarousel({
             >
               <ProjectImageCell
                 image={image}
-                onClick={() => setLightboxIndex(i)}
+                onClick={() => handleOpenImage(i)}
                 priority={priority && i < 2}
               />
             </CarouselItem>
@@ -248,6 +282,7 @@ function ProjectImagesCarousel({
         images={images}
         index={lightboxIndex}
         onIndexChange={setLightboxIndex}
+        projectTitle={projectTitle}
       />
     </div>
   );
@@ -267,6 +302,8 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
           only when the text card is taller (min-h preserved otherwise). */}
         <ProjectImagesCarousel
           images={project.project_images}
+          projectTitle={project.project_title}
+          projectLocation={project.project_location}
           priority={index === 0}
           carousel={carousel}
         />
@@ -382,6 +419,12 @@ export function OurProjects({ projects }: OurProjectsProps) {
   );
 
   const goToPage = (next: number) => {
+    trackProjectsPageChange({
+      fromPage: page + 1,
+      toPage: next + 1,
+      totalPages: pageCount,
+      totalProjects: projects.length,
+    });
     setPage(next);
     // Bring the first project of the new page into view.
     sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -478,7 +521,7 @@ export function OurProjects({ projects }: OurProjectsProps) {
         <div className="mt-12 flex justify-center sm:mt-16">
           <Button
             type="button"
-            onClick={openQuote}
+            onClick={() => openQuote('projects_section')}
             className="h-auto rounded-full bg-[#C70017] px-10 py-4 text-[13px] font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#a80014] lg:text-sm"
           >
             Start your project

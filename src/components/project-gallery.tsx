@@ -6,6 +6,7 @@ import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { oswald } from '@/lib/fonts';
 import { ImageLightbox } from '@/components/image-lightbox';
+import { trackProjectImageOpen } from '@/lib/tracking';
 
 interface Props {
   images: {
@@ -34,7 +35,15 @@ export default function ProjectGallery({ images }: Props) {
             <button
               key={index}
               type="button"
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => {
+                trackProjectImageOpen({
+                  projectTitle: 'Project Gallery',
+                  imageIndex: index,
+                  totalImages: images.length,
+                  imageAlt: image.alt,
+                });
+                setSelectedIndex(index);
+              }}
               className="group relative h-[200px] cursor-zoom-in overflow-hidden sm:h-[250px] lg:h-[294px]"
             >
               <Image

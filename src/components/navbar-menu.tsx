@@ -43,7 +43,7 @@ export function NavbarMobileMenu() {
   // The "quote" item opens the global quote dialog instead of scrolling.
   const handleNavClick = (e: React.MouseEvent, id: string) => {
     if (id === 'quote') {
-      openQuote();
+      openQuote('mobile_menu');
     } else {
       scrollToSection(e, id);
     }
@@ -98,7 +98,7 @@ export function NavbarMobileMenu() {
           <SheetClose asChild>
             <a
               href="tel:+14136662026"
-              onClick={trackPhoneClick}
+              onClick={() => trackPhoneClick('mobile_menu')}
               className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
             >
               <PhoneIcon className="size-4" />
@@ -108,7 +108,7 @@ export function NavbarMobileMenu() {
           <SheetClose asChild>
             <a
               href="mailto:redcoreusa@gmail.com"
-              onClick={trackEmailClick}
+              onClick={() => trackEmailClick('mobile_menu')}
               className="flex items-center justify-center gap-2 rounded-full bg-[#c70017] px-5 py-3.5 text-sm font-bold uppercase tracking-[0.04em] text-white shadow-sm transition-colors hover:bg-[#9a0012]"
             >
               <MailIcon className="size-4" />

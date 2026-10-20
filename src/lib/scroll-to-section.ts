@@ -1,3 +1,5 @@
+import { trackNavScrollToSection } from '@/lib/tracking';
+
 function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -48,6 +50,7 @@ export function scrollToId(id: string, align: 'center' | 'top' = 'top') {
 }
 
 export function scrollToSection(e: React.MouseEvent, id: string, align: 'center' | 'top' = 'top') {
+  trackNavScrollToSection(id);
   const el = document.getElementById(id);
   if (el) {
     e.preventDefault();

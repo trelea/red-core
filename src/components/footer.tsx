@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -25,10 +25,17 @@ import { inter, microgramma } from '@/lib/fonts';
 import { scrollToSection } from '@/lib/scroll-to-section';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import {
+  generateEventId,
+  getClientEnvironmentContext,
   trackEmailClick,
+  trackFormAbandon,
+  trackFormCallbackStepOpen,
   trackFormConversion,
+  trackFormFieldChange,
+  trackFormStart,
   trackPhoneClick,
-} from '@/lib/gtag';
+  trackSocialClick,
+} from '@/lib/tracking';
 import {
   Dialog,
   DialogContent,
@@ -90,6 +97,94 @@ export default function Footer() {
 
   const [dialogError, setDialogError] = useState<string | null>(null);
 
+  // Funnel & abandonment state for consultation form
+  const formStartedAtRef = useRef<number | null>(null);
+  const reachedCallbackRef = useRef(false);
+  const submittedRef = useRef(false);
+
+  function collectConsultationFormData(): {
+    filled: string[];
+    values: {
+      fullName?: string;
+      phone?: string;
+      email?: string;
+    };
+  } {
+    const filled: string[] = [];
+    let fullName = '';
+    let phone = '';
+    let email = '';
+
+    const form = formRef.current;
+    if (form) {
+      fullName =
+        (
+          form.elements.namedItem('contactName') as HTMLInputElement | null
+        )?.value?.trim() || '';
+      phone =
+        (
+          form.elements.namedItem('contactPhone') as HTMLInputElement | null
+        )?.value?.trim() || '';
+      email =
+        (
+          form.elements.namedItem('contactEmail') as HTMLInputElement | null
+        )?.value?.trim() || '';
+    } else if (captured) {
+      fullName = captured.fullName?.trim() || '';
+      phone = captured.phone?.trim() || '';
+      email = captured.email?.trim() || '';
+    }
+
+    if (fullName) filled.push('fullName');
+    if (phone) filled.push('phone');
+    if (email) filled.push('email');
+
+    return {
+      filled,
+      values: {
+        fullName: fullName || undefined,
+        phone: phone || undefined,
+        email: email || undefined,
+      },
+    };
+  }
+
+  function handleFormFocus() {
+    if (formStartedAtRef.current === null) {
+      formStartedAtRef.current = Date.now();
+      submittedRef.current = false;
+      trackFormStart('consultation');
+    }
+  }
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      if (formStartedAtRef.current !== null && !submittedRef.current) {
+        const { filled, values } = collectConsultationFormData();
+        if (filled.length > 0 || reachedCallbackRef.current) {
+          const timeSpentSeconds = Math.max(
+            1,
+            Math.round((Date.now() - formStartedAtRef.current) / 1000),
+          );
+          trackFormAbandon({
+            formType: 'consultation',
+            abandonedAtStep: reachedCallbackRef.current
+              ? 'picking_callback_time'
+              : 'filling_fields',
+            filledFields: filled,
+            formValues: values,
+            timeSpentSeconds,
+            useBeacon: true,
+          });
+          formStartedAtRef.current = null;
+        }
+      }
+    };
+    window.addEventListener('pagehide', handlePageHide);
+    return () => window.removeEventListener('pagehide', handlePageHide);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [captured]);
+
   const today = useMemo(() => {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -112,14 +207,17 @@ export default function Footer() {
     setStatus('idle');
 
     const form = e.currentTarget;
-    setCaptured({
+    const nextCaptured = {
       fullName: (form.elements.namedItem('contactName') as HTMLInputElement)
         .value,
       phone: (form.elements.namedItem('contactPhone') as HTMLInputElement)
         .value,
       email: (form.elements.namedItem('contactEmail') as HTMLInputElement)
         .value,
-    });
+    };
+    setCaptured(nextCaptured);
+    reachedCallbackRef.current = true;
+    trackFormCallbackStepOpen('consultation', nextCaptured);
     setCallbackOpen(true);
   }
 
@@ -188,6 +286,8 @@ export default function Footer() {
           ? 'Within the next hour'
           : `${hourNum}:${String(minuteNum).padStart(2, '0')} ${specificPeriod}`;
 
+    const eventId = generateEventId();
+
     try {
       const res = await fetch('/api/contact-us', {
         method: 'POST',
@@ -198,12 +298,26 @@ export default function Footer() {
           email: captured.email,
           callbackDay,
           callbackTime,
+          eventId,
+          clientContext: getClientEnvironmentContext(),
         }),
       });
 
       if (res.ok) {
+        submittedRef.current = true;
+        formStartedAtRef.current = null;
+        reachedCallbackRef.current = false;
         setStatus('success');
-        trackFormConversion('consultation');
+        trackFormConversion('consultation', {
+          callbackDay,
+          callbackTime,
+          userData: {
+            fullName: captured.fullName,
+            email: captured.email,
+            phone: captured.phone,
+          },
+          eventId,
+        });
         formRef.current?.reset();
         setCaptured(null);
         resetCallbackState();
@@ -260,7 +374,7 @@ export default function Footer() {
                   <li>
                     <a
                       href="mailto:redcoreusa@gmail.com"
-                      onClick={trackEmailClick}
+                      onClick={() => trackEmailClick('footer')}
                       className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
                     >
                       <MailIcon className="size-[17px] shrink-0 text-[#c70017]" />
@@ -270,7 +384,7 @@ export default function Footer() {
                   <li>
                     <a
                       href="tel:+14136662026"
-                      onClick={trackPhoneClick}
+                      onClick={() => trackPhoneClick('footer')}
                       className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
                     >
                       <PhoneIcon className="size-4 shrink-0 text-[#c70017]" />
@@ -289,7 +403,7 @@ export default function Footer() {
                           href={link.href}
                           onClick={(e) =>
                             id === 'quote'
-                              ? (e.preventDefault(), openQuote())
+                              ? (e.preventDefault(), openQuote('footer'))
                               : scrollToSection(e, id)
                           }
                           className="text-base text-black transition-colors hover:text-[#c70017]"
@@ -310,6 +424,9 @@ export default function Footer() {
                     <li key={social.label}>
                       <a
                         href={social.href}
+                        onClick={() =>
+                          trackSocialClick(social.label, social.href)
+                        }
                         target={social.href !== '#' ? '_blank' : undefined}
                         rel={
                           social.href !== '#'
@@ -346,6 +463,7 @@ export default function Footer() {
             <p className="text-2xl font-normal sm:text-3xl">Free consultation</p>
             <form
               ref={formRef}
+              onFocus={handleFormFocus}
               onSubmit={handleSubmit}
               className="mt-7 flex flex-col gap-6"
             >
@@ -355,6 +473,14 @@ export default function Footer() {
                 type="text"
                 placeholder="Full Name"
                 required
+                onBlur={(e) =>
+                  e.target.value.trim() &&
+                  trackFormFieldChange(
+                    'consultation',
+                    'contactName',
+                    e.target.value.trim(),
+                  )
+                }
                 className="h-auto rounded-none border-0 border-b border-black/15 bg-transparent px-0 pb-3 text-base text-black shadow-none placeholder:text-[#717171] focus-visible:border-[#c70017] focus-visible:ring-0"
               />
               <Input
@@ -363,6 +489,14 @@ export default function Footer() {
                 type="tel"
                 placeholder="Phone Number"
                 required
+                onBlur={(e) =>
+                  e.target.value.trim() &&
+                  trackFormFieldChange(
+                    'consultation',
+                    'contactPhone',
+                    e.target.value.trim(),
+                  )
+                }
                 className="h-auto rounded-none border-0 border-b border-black/15 bg-transparent px-0 pb-3 text-base text-black shadow-none placeholder:text-[#717171] focus-visible:border-[#c70017] focus-visible:ring-0"
               />
               <Input
@@ -371,6 +505,14 @@ export default function Footer() {
                 type="email"
                 placeholder="Email"
                 required
+                onBlur={(e) =>
+                  e.target.value.trim() &&
+                  trackFormFieldChange(
+                    'consultation',
+                    'contactEmail',
+                    e.target.value.trim(),
+                  )
+                }
                 className="h-auto rounded-none border-0 border-b border-black/15 bg-transparent px-0 pb-3 text-base text-black shadow-none placeholder:text-[#717171] focus-visible:border-[#c70017] focus-visible:ring-0"
               />
               {status === 'error' && (
@@ -397,6 +539,20 @@ export default function Footer() {
         open={callbackOpen}
         onOpenChange={(open) => {
           if (!loading) {
+            if (!open && !submittedRef.current && formStartedAtRef.current !== null) {
+              const timeSpentSeconds = Math.max(
+                1,
+                Math.round((Date.now() - formStartedAtRef.current) / 1000),
+              );
+              const { filled, values } = collectConsultationFormData();
+              trackFormAbandon({
+                formType: 'consultation',
+                abandonedAtStep: 'picking_callback_time',
+                filledFields: filled,
+                formValues: values,
+                timeSpentSeconds,
+              });
+            }
             setCallbackOpen(open);
             if (!open) resetCallbackState();
           }
@@ -427,6 +583,20 @@ export default function Footer() {
               type="button"
               onClick={() => {
                 if (loading) return;
+                if (!submittedRef.current && formStartedAtRef.current !== null) {
+                  const timeSpentSeconds = Math.max(
+                    1,
+                    Math.round((Date.now() - formStartedAtRef.current) / 1000),
+                  );
+                  const { filled, values } = collectConsultationFormData();
+                  trackFormAbandon({
+                    formType: 'consultation',
+                    abandonedAtStep: 'picking_callback_time',
+                    filledFields: filled,
+                    formValues: values,
+                    timeSpentSeconds,
+                  });
+                }
                 setCallbackOpen(false);
                 resetCallbackState();
               }}

@@ -57,7 +57,7 @@ export default function Navbar() {
                 type="button"
                 onClick={(e) =>
                   item.id === 'quote'
-                    ? openQuote()
+                    ? openQuote('navbar')
                     : scrollToSection(e, item.id)
                 }
                 className={cn(

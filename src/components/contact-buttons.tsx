@@ -165,7 +165,9 @@ export default function ContactButtons({ small = false }: { small?: boolean }) {
         href="mailto:redcoreusa@gmail.com"
         toggleLabel="Toggle email address"
         linkLabel="Email us"
-        onLinkClick={trackEmailClick}
+        onLinkClick={() =>
+          trackEmailClick(small ? 'hero_mobile' : 'hero_desktop')
+        }
       />
       <ContactItem
         small={small}
@@ -178,7 +180,9 @@ export default function ContactButtons({ small = false }: { small?: boolean }) {
         href="tel:+14136662026"
         toggleLabel="Toggle phone number"
         linkLabel="Call us"
-        onLinkClick={trackPhoneClick}
+        onLinkClick={() =>
+          trackPhoneClick(small ? 'hero_mobile' : 'hero_desktop')
+        }
       />
     </>
   );

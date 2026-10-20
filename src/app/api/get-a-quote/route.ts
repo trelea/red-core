@@ -1,5 +1,6 @@
 import { GetAQuoteTemplate } from '@/components/get-a-quote.template';
 import { ConfirmationTemplate } from '@/components/confirmation.template';
+import { sendMetaCapiEvents } from '@/lib/meta-capi';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -16,6 +17,16 @@ export async function POST(request: Request) {
     const message = formData.get('message') as string;
     const callbackDay = formData.get('callbackDay') as string;
     const callbackTime = formData.get('callbackTime') as string;
+    const eventId = (formData.get('eventId') as string) || `quote_${Date.now()}`;
+    const rawClientContext = formData.get('clientContext') as string | null;
+    let clientContext: Record<string, unknown> = {};
+    if (rawClientContext) {
+      try {
+        clientContext = JSON.parse(rawClientContext);
+      } catch {
+        // ignore invalid json
+      }
+    }
     const files = formData.getAll('images') as File[];
 
     if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
@@ -79,6 +90,38 @@ export async function POST(request: Request) {
     if (confirmation.error) {
       console.error('Confirmation email error:', confirmation.error);
     }
+
+    // Server-side Meta CAPI Lead + form_submission (plain form data + full device context)
+    const sharedCustomData = {
+      ...clientContext,
+      form_type: 'quote',
+      full_name: fullName,
+      phone,
+      email,
+      service_name: service || undefined,
+      offer_name: offer || undefined,
+      message: message || undefined,
+      callback_day: callbackDay,
+      callback_time: callbackTime,
+      currency: 'USD',
+    };
+    await sendMetaCapiEvents(
+      [
+        {
+          eventName: 'Lead',
+          eventId,
+          customData: sharedCustomData,
+          userData: { fullName, email, phone },
+        },
+        {
+          eventName: 'form_submission',
+          eventId: `${eventId}_custom`,
+          customData: sharedCustomData,
+          userData: { fullName, email, phone },
+        },
+      ],
+      request,
+    );
 
     return Response.json({ success: true, id: data?.id });
   } catch (error) {
