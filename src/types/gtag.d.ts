@@ -1,5 +1,5 @@
 interface Window {
-  dataLayer?: Record<string, unknown>[];
+  dataLayer?: unknown[];
   fbq?: (
     command: 'init' | 'track' | 'trackCustom',
     eventNameOrId: string,

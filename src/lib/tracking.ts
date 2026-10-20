@@ -3,7 +3,28 @@
 const META_TRACKING_ENABLED =
   process.env.META_TRACKING_ENABLED === 'true' ||
   process.env.NEXT_PUBLIC_META_TRACKING_ENABLED === 'true';
+const GA4_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA4_ID || 'G-6K1RFQLDMS';
 const IS_DEV = process.env.NODE_ENV === 'development';
+
+/**
+ * Pushes a standard Google Tag command (`arguments` object) into GTM's existing `window.dataLayer`.
+ * Uses GTM's `GA4 - Base Config` tag (no extra script tag needed) to forward all parameters to GA4.
+ */
+function pushGa4EventViaDataLayer(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _command: 'event',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _eventName: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _params: Record<string, unknown>,
+): void {
+  if (typeof window === 'undefined') return;
+  window.dataLayer = window.dataLayer || [];
+  // Must push the actual `arguments` object so Google Tag inside GTM processes the event + all parameters
+  // eslint-disable-next-line prefer-rest-params
+  window.dataLayer.push(arguments);
+}
 
 export interface UserContactInfo {
   fullName?: string;
@@ -715,12 +736,132 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
   const pageUrl = window.location.href;
   const clientEnv = getClientEnvironmentContext();
   const sessionForm = getSessionFormContext();
+  const p = options.params ?? {};
+
+  // Build 12 dedicated, non-truncated (<100 chars each) fields for GA4 (well under GA4's 25-param limit)
+  const eventSpecificEntries = Object.entries(p)
+    .filter(
+      ([k, v]) =>
+        v !== undefined &&
+        v !== null &&
+        v !== '' &&
+        ![
+          'full_name',
+          'phone',
+          'email',
+          'service_name',
+          'offer_name',
+          'message',
+          'callback_day',
+          'callback_time',
+        ].includes(k),
+    )
+    .map(([k, v]) => `${k}:${String(v)}`)
+    .join(' | ')
+    .slice(0, 100);
+  const event_detail =
+    eventSpecificEntries || `${options.event} | ${pagePath}`.slice(0, 100);
+
+  const mergedForm = {
+    full_name: (p.full_name as string | undefined) || sessionForm.full_name,
+    phone: (p.phone as string | undefined) || sessionForm.phone,
+    email: (p.email as string | undefined) || sessionForm.email,
+    service_name:
+      (p.service_name as string | undefined) || sessionForm.service_name,
+    offer_name: (p.offer_name as string | undefined) || sessionForm.offer_name,
+    message: (p.message as string | undefined) || sessionForm.message,
+    callback_day:
+      (p.callback_day as string | undefined) || sessionForm.callback_day,
+    callback_time:
+      (p.callback_time as string | undefined) || sessionForm.callback_time,
+  };
+
+  const form_contact =
+    [mergedForm.full_name, mergedForm.phone, mergedForm.email]
+      .filter(Boolean)
+      .join(' | ')
+      .slice(0, 100) || 'none';
+
+  const form_project =
+    [
+      mergedForm.service_name,
+      mergedForm.offer_name,
+      mergedForm.callback_day,
+      mergedForm.callback_time,
+    ]
+      .filter(Boolean)
+      .join(' | ')
+      .slice(0, 100) || 'none';
+
+  const form_message = (mergedForm.message || 'none').slice(0, 100);
+
+  const client_ip_value = (clientEnv.client_ip || '127.0.0.1').slice(0, 100);
+
+  const client_location =
+    [
+      clientEnv.client_country,
+      clientEnv.client_region,
+      clientEnv.client_city,
+      clientEnv.client_postal_code,
+      clientEnv.client_latitude && clientEnv.client_longitude
+        ? `${clientEnv.client_latitude},${clientEnv.client_longitude}`
+        : undefined,
+      clientEnv.client_asn ? `ASN:${clientEnv.client_asn}` : undefined,
+    ]
+      .filter(Boolean)
+      .join(' | ')
+      .slice(0, 100) || 'local';
+
+  const device_summary = `${clientEnv.device_type} | ${clientEnv.os_name} ${clientEnv.os_version} | ${clientEnv.browser_name} ${clientEnv.browser_version} | ${clientEnv.device_model} | ${clientEnv.cpu_architecture || clientEnv.platform}`.slice(
+    0,
+    100,
+  );
+
+  const hardware_summary = `cores:${clientEnv.cpu_cores ?? '?'} | ram:${clientEnv.device_memory_gb ?? '?'}GB | touch:${clientEnv.max_touch_points}(${clientEnv.touch_support}) | bat:${clientEnv.battery_level_percent ?? '?'}%(chg:${clientEnv.battery_charging ?? '?'}) | bot:${clientEnv.is_automated_webdriver}`.slice(
+    0,
+    100,
+  );
+
+  const gpu_info =
+    [clientEnv.gpu_vendor, clientEnv.gpu_renderer]
+      .filter(Boolean)
+      .join(' | ')
+      .slice(0, 100) || 'unknown_gpu';
+
+  const display_summary = `scr:${clientEnv.screen_resolution} | avail:${clientEnv.screen_available_resolution} | vp:${clientEnv.viewport_size} | dpr:${clientEnv.device_pixel_ratio} | ${clientEnv.color_depth ?? 24}bit | ${clientEnv.color_scheme_preference}`.slice(
+    0,
+    100,
+  );
+
+  const network_summary = `type:${clientEnv.connection_effective_type || clientEnv.connection_type || 'net'} | dl:${clientEnv.connection_downlink_mbps ?? '?'}Mbps | rtt:${clientEnv.connection_rtt_ms ?? '?'}ms | save:${clientEnv.connection_save_data ?? false} | online:${clientEnv.online_status}`.slice(
+    0,
+    100,
+  );
+
+  const visitor_summary = `v:${clientEnv.visitor_id.slice(0, 12)} | s:${clientEnv.session_id.slice(0, 12)} | visits:${clientEnv.visit_count} | ${clientEnv.timezone} | ${clientEnv.language} | ref:${clientEnv.initial_referrer}`.slice(
+    0,
+    100,
+  );
+
+  // Full payload for GTM dataLayer, Console, and Server CAPI
   const baseParams: Record<string, unknown> = {
+    event_detail,
+    form_contact,
+    form_project,
+    form_message,
+    client_location,
+    device_summary,
+    hardware_summary,
+    gpu_info,
+    display_summary,
+    network_summary,
+    visitor_summary,
+    ...sessionForm,
+    ...p,
     page_path: pagePath,
     page_location: pageUrl,
     ...clientEnv,
-    ...sessionForm,
-    ...options.params,
+    client_ip: client_ip_value,
   };
 
   if (IS_DEV) {
@@ -739,7 +880,7 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     );
   }
 
-  // 1. GTM dataLayer -> Google Ads & GA4
+  // 1a. GTM dataLayer object push -> triggers GTM Custom Event triggers (Google Ads)
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event: options.event,
@@ -757,6 +898,41 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
       custom_event_name: options.event,
       ...baseParams,
     });
+  }
+
+  // 1b. GTM dataLayer command push -> forwards all parameters automatically to GA4 (G-6K1RFQLDMS)
+  // via GTM's `GA4 - Base Config` tag with zero manual GTM variables needed
+  if (GA4_MEASUREMENT_ID) {
+    const ga4Params: Record<string, unknown> = {
+      send_to: GA4_MEASUREMENT_ID,
+      event_id: eventId,
+      event_detail,
+      form_contact,
+      form_project,
+      form_message,
+      client_ip: client_ip_value,
+      client_location,
+      device_summary,
+      hardware_summary,
+      gpu_info,
+      display_summary,
+      network_summary,
+      visitor_summary,
+      page_path: pagePath,
+      ...p,
+    };
+
+    pushGa4EventViaDataLayer('event', options.event, ga4Params);
+
+    if (
+      options.ga4StandardEvent &&
+      options.ga4StandardEvent !== options.event
+    ) {
+      pushGa4EventViaDataLayer('event', options.ga4StandardEvent, {
+        ...ga4Params,
+        custom_event_name: options.event,
+      });
+    }
   }
 
   // Only run Meta Pixel + Meta CAPI when META_TRACKING_ENABLED is true (or in dev mode for server terminal logging)
