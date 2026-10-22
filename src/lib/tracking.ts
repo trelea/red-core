@@ -710,7 +710,22 @@ export function getClientEnvironmentContext(): ClientEnvironmentContext {
  */
 export function trackUnifiedEvent(options: UnifiedEventOptions): string {
   const eventId = options.eventId || generateEventId();
-  if (IS_DEV) return eventId;
+  if (IS_DEV) {
+    console.log(
+      `%c[Tracking]%c ${options.event}`,
+      'background:#c70017;color:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;',
+      'font-weight:bold;color:#1E2C32;',
+      {
+        eventId,
+        customEvent: options.event,
+        ga4StandardEvent: options.ga4StandardEvent ?? null,
+        metaStandardEvent: options.metaStandardEvent ?? null,
+        metaTrackingEnabled: META_TRACKING_ENABLED,
+        params: options.params ?? {},
+      },
+    );
+    return eventId;
+  }
   if (typeof window === 'undefined') return eventId;
 
   const pagePath = window.location.pathname;
@@ -844,22 +859,6 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     ...clientEnv,
     client_ip: client_ip_value,
   };
-
-  if (IS_DEV) {
-    console.log(
-      `%c[Tracking]%c ${options.event}`,
-      'background:#c70017;color:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;',
-      'font-weight:bold;color:#1E2C32;',
-      {
-        eventId,
-        customEvent: options.event,
-        ga4StandardEvent: options.ga4StandardEvent ?? null,
-        metaStandardEvent: options.metaStandardEvent ?? null,
-        metaTrackingEnabled: META_TRACKING_ENABLED,
-        params: baseParams,
-      },
-    );
-  }
 
   // 1. GTM dataLayer push -> Google Ads & GA4
   window.dataLayer = window.dataLayer || [];

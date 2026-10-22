@@ -118,7 +118,6 @@ export async function sendMetaCapiEvents(
   events: MetaCapiEventInput[],
   request?: Request,
 ): Promise<void> {
-  if (IS_DEV) return;
   const reqMeta = request ? extractRequestMeta(request) : {};
 
   if (IS_DEV && events.length > 0) {
@@ -134,6 +133,8 @@ export async function sendMetaCapiEvents(
       );
     }
   }
+
+  if (IS_DEV) return;
 
   if (
     !META_TRACKING_ENABLED ||
@@ -213,9 +214,17 @@ export async function sendMetaCapiEvents(
       body: JSON.stringify(body),
     });
 
+    let resBody: unknown = null;
+    try {
+      resBody = await res.json();
+    } catch {
+      resBody = await res.text().catch(() => null);
+    }
+
     if (!res.ok) {
-      const errText = await res.text();
-      console.error('Meta CAPI error:', res.status, errText);
+      console.error('Meta CAPI error:', res.status, resBody);
+    } else {
+      console.info('Meta CAPI sent:', resBody);
     }
   } catch (error) {
     console.error('Failed to send Meta CAPI event:', error);
