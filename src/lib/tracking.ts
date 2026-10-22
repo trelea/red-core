@@ -1454,6 +1454,17 @@ export function trackScrollDepth(depthPercent: number): void {
   });
 }
 
+/** 24a. FAQ Item Opened */
+export function trackFaqOpen(question: string): void {
+  trackUnifiedEvent({
+    event: 'faq_open',
+    params: {
+      question,
+      section_id: 'faq',
+    },
+  });
+}
+
 /** 24. Global Button / CTA Click */
 export function trackButtonClick(options: {
   buttonText: string;

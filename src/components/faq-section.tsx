@@ -1,35 +1,5 @@
 import type { ReactNode } from 'react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-
-/**
- * Automatically turns phone numbers and email addresses found in FAQ answers
- * into clickable mailto: / tel: links styled in the brand red.
- */
-function linkifyText(text: string): ReactNode[] {
-  const pattern = /(redcoreusa@gmail\.com|\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/g;
-  const parts = text.split(pattern);
-  return parts.map((part, i) => {
-    if (i % 2 === 0) return part;
-    const isEmail = /@/.test(part);
-    const href = isEmail
-      ? `mailto:${part}`
-      : `tel:+1${part.replace(/\D/g, '')}`;
-    return (
-      <a
-        key={i}
-        href={href}
-        className="text-[#C70017] underline-offset-2 hover:underline"
-      >
-        {part}
-      </a>
-    );
-  });
-}
+import FaqAccordion from '@/components/faq-accordion';
 
 export type FaqItem = {
   question: string;
@@ -56,7 +26,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
   };
 
   return (
-    <section className="bg-white py-12 sm:py-16 lg:py-20">
+    <section id="faq" className="bg-white py-12 sm:py-16 lg:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -68,35 +38,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
             <span className="hidden sm:inline">Frequently asked questions</span>
           </h2>
 
-          <Accordion type="single" collapsible className="mt-8 sm:mt-10">
-            {items.map((item, index) => (
-              <AccordionItem
-                key={item.question}
-                value={`faq-${index}`}
-                className="border-[#1E2C32]/10"
-              >
-                <AccordionTrigger className="items-center gap-4 rounded-none py-5 text-base font-semibold text-[#1E2C32] hover:no-underline sm:gap-7 sm:py-9 sm:text-xl lg:text-2xl [&>svg]:size-5 [&>svg]:text-[#C70017] sm:[&>svg]:size-6">
-                  {item.icon && (
-                    <span
-                      aria-hidden
-                      className="flex size-10 shrink-0 items-center justify-center bg-[#C70017] text-white sm:size-14 [&_svg]:size-5 sm:[&_svg]:size-6"
-                    >
-                      {item.icon}
-                    </span>
-                  )}
-                  <span className="flex-1">{item.question}</span>
-                </AccordionTrigger>
-                <AccordionContent
-                  forceMount
-                  className="in-data-[state=closed]:hidden pb-6 pl-0 pr-4 sm:pb-8 sm:pl-[84px] sm:pr-20"
-                >
-                  <p className="text-[15px] leading-relaxed text-[#5b5b5b] sm:text-lg">
-                    {linkifyText(item.answer)}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <FaqAccordion items={items} />
         </div>
       </div>
     </section>
