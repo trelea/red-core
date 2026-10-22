@@ -1,3 +1,5 @@
+import { createHash } from 'crypto';
+
 const META_TRACKING_ENABLED =
   process.env.META_TRACKING_ENABLED !== 'false' &&
   process.env.NEXT_PUBLIC_META_TRACKING_ENABLED !== 'false';
@@ -114,6 +116,29 @@ export function extractRequestMeta(request: Request): {
  * Sends one or more events to Meta Conversions API (CAPI) with plain form data + server request metadata.
  * Safe no-op if META_TRACKING_ENABLED is false or credentials are not configured.
  */
+function sha256(value: string): string {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function normalizeEmail(value?: string): string | undefined {
+  const v = value?.trim().toLowerCase();
+  return v || undefined;
+}
+
+function normalizePhone(value?: string): string | undefined {
+  const v = value?.replace(/\D/g, '');
+  return v || undefined;
+}
+
+function splitName(value?: string): { fn?: string; ln?: string } {
+  const parts = (value || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return {};
+  return {
+    fn: parts[0],
+    ln: parts.length > 1 ? parts.slice(1).join(' ') : undefined,
+  };
+}
+
 export async function sendMetaCapiEvents(
   events: MetaCapiEventInput[],
   request?: Request,
@@ -150,14 +175,23 @@ export async function sendMetaCapiEvents(
   const data = events.map((evt) => {
     const user = evt.userData ?? {};
 
+    const emailNorm = normalizeEmail(user.email);
+    const phoneNorm = normalizePhone(user.phone);
+    const { fn: firstName, ln: lastName } = splitName(user.fullName);
+
     const userDataPayload: Record<string, unknown> = {
       client_ip_address: user.clientIpAddress || reqMeta.clientIpAddress,
       client_user_agent: user.clientUserAgent || reqMeta.clientUserAgent,
       fbp: user.fbp || reqMeta.fbp,
       fbc: user.fbc || reqMeta.fbc,
-      email: user.email || undefined,
-      phone: user.phone || undefined,
-      full_name: user.fullName || undefined,
+      em: emailNorm ? [sha256(emailNorm)] : undefined,
+      ph: phoneNorm ? [sha256(phoneNorm)] : undefined,
+      fn: firstName ? [sha256(firstName)] : undefined,
+      ln: lastName ? [sha256(lastName)] : undefined,
+      ct: reqMeta.city || undefined,
+      st: reqMeta.region || undefined,
+      country: reqMeta.country || undefined,
+      zp: reqMeta.postalCode || undefined,
     };
 
     Object.keys(userDataPayload).forEach((key) => {
