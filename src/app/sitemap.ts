@@ -6,7 +6,7 @@ const siteUrl =
 // Real content-change dates. Google ignores lastmod values that change on
 // every fetch (which `new Date()` did) — bump these only when a page's
 // content actually changes.
-const lastModified = new Date("2026-07-18");
+const lastModified = new Date("2026-10-22");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

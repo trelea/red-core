@@ -29,12 +29,14 @@ export const BLUR_DATA_URL =
 export function BlurImage({ className, onLoad, onError, ...props }: ImageProps) {
   const ref = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
+  const isVisible = loaded || Boolean(props.priority);
 
   // When the src changes (incl. first mount), if the browser already has the
   // image decoded/cached, mark it loaded immediately — no loader flash for a
   // previously-viewed image.
   useEffect(() => {
     const img = ref.current;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoaded(Boolean(img?.complete && img.naturalWidth > 0));
   }, [props.src]);
 
@@ -42,6 +44,7 @@ export function BlurImage({ className, onLoad, onError, ...props }: ImageProps) 
     <>
       <Image
         {...props}
+        alt={props.alt}
         ref={ref}
         onLoad={(e) => {
           setLoaded(true);
@@ -54,10 +57,10 @@ export function BlurImage({ className, onLoad, onError, ...props }: ImageProps) 
         className={cn(
           className,
           'transition-opacity duration-300',
-          loaded ? 'opacity-100' : 'opacity-0',
+          isVisible ? 'opacity-100' : 'opacity-0',
         )}
       />
-      {!loaded && (
+      {!isVisible && (
         <span className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
           <span className="relative flex aspect-square w-2/5 max-w-[140px] items-center justify-center overflow-hidden rounded-md">
             {/* eslint-disable-next-line @next/next/no-img-element */}

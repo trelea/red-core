@@ -58,7 +58,7 @@ interface CapturedFields {
 const SERVICE_OPTIONS = [
   'Concrete Openings & Wall Sawing',
   'Core Drilling',
-  'Slab / Foundation Cutting',
+  'Slab / Asphalt Cutting',
   'Demolition & Cutting',
   'Concrete Restoration',
 ];

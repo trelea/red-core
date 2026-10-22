@@ -74,7 +74,7 @@ function ProjectImageCell({
     <button
       type="button"
       onClick={onClick}
-      aria-label={`View ${image.alt} full screen`}
+      aria-label={`View ${image.alt || 'project photo'} full screen`}
       className={cn(
         'group relative block h-full w-full cursor-zoom-in overflow-hidden bg-[#e2e2e2] min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]',
         className,
@@ -82,7 +82,7 @@ function ProjectImageCell({
     >
       <BlurImage
         src={image.src}
-        alt={image.alt}
+        alt={image.alt || 'REDCORE project photo'}
         fill
         sizes="(max-width: 1024px) 50vw, 25vw"
         priority={priority}
@@ -325,6 +325,12 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
               )}
             >
               {project.project_title}
+              {project.project_location && (
+                <span className="sr-only">
+                  {' '}
+                  in {project.project_location}
+                </span>
+              )}
             </h3>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
@@ -413,10 +419,6 @@ export function OurProjects({ projects }: OurProjectsProps) {
   const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(projects.length / PROJECTS_PER_PAGE);
-  const visibleProjects = projects.slice(
-    page * PROJECTS_PER_PAGE,
-    (page + 1) * PROJECTS_PER_PAGE,
-  );
 
   const goToPage = (next: number) => {
     trackProjectsPageChange({
@@ -444,22 +446,30 @@ export function OurProjects({ projects }: OurProjectsProps) {
     >
       <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         {/* head text */}
-        <Badge
-          variant="secondary"
-          className="rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black"
-        >
-          Our Projects
-        </Badge>
+        <h2 className="inline-block">
+          <Badge
+            variant="secondary"
+            className="rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black"
+          >
+            Our Projects
+          </Badge>
+        </h2>
 
-        {/* projects (current page only) */}
+        {/* projects (all rendered in SSR DOM for SEO; non-active pages hidden via CSS) */}
         <div className="mt-8 flex flex-col gap-[50px] sm:mt-10">
-          {visibleProjects.map((project, i) => (
-            <ProjectRow
-              key={`${project.project_title}-${page * PROJECTS_PER_PAGE + i}`}
-              project={project}
-              index={i}
-            />
-          ))}
+          {projects.map((project, idx) => {
+            const projectPage = Math.floor(idx / PROJECTS_PER_PAGE);
+            const indexInPage = idx % PROJECTS_PER_PAGE;
+            const isVisible = projectPage === page;
+            return (
+              <div
+                key={`${project.project_title}-${idx}`}
+                className={cn(!isVisible && 'hidden')}
+              >
+                <ProjectRow project={project} index={indexInPage} />
+              </div>
+            );
+          })}
         </div>
 
         {/* page switcher — only when the projects don't fit on one page */}

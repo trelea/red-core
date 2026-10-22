@@ -36,23 +36,35 @@ type Offer = {
 const offers: Offer[] = [
   {
     content: <ConcreteRestorationPromo />,
-    alt: 'Concrete step polishing — 25% off plus a free protective sealer',
+    alt: 'Concrete step polishing & restoration — 25% off plus a free protective sealer in Massachusetts',
     order: 6,
   },
   {
     src: '/offers/banner_1.png',
-    alt: 'Concrete door or window opening — $1,000 flat rate',
+    alt: 'Concrete door or egress window opening — $1,000 flat rate special offer in Massachusetts',
     order: 1,
   },
-  { src: '/offers/banner_2.png', alt: 'Core drilling offer', order: 4 },
+  {
+    src: '/offers/banner_2.png',
+    alt: 'Core drilling volume pricing offer — precision concrete coring in Agawam, Springfield & MA',
+    order: 4,
+  },
   {
     src: '/offers/banner_3.png',
-    alt: 'Concrete cutting offer',
+    alt: 'Concrete demolition & cutting offer — 30% off plus free debris cleanup in Massachusetts',
     order: 2,
     smSrc: '/offers/banner_3_sm_screens.png',
   },
-  { src: '/offers/banner_4.png', alt: 'Wall sawing offer', order: 3 },
-  { src: '/offers/banner_5.png', alt: 'Slab cutting offer', order: 5 },
+  {
+    src: '/offers/banner_4.png',
+    alt: 'Wall saw cutting & foundation cutting offer — 50% off debris loading in Massachusetts',
+    order: 3,
+  },
+  {
+    src: '/offers/banner_5.png',
+    alt: 'Concrete slab cutting & plumbing trench sawing special offer in Massachusetts',
+    order: 5,
+  },
 ].sort((a, b) => a.order - b.order);
 
 export default function Offers() {
@@ -96,9 +108,9 @@ export default function Offers() {
       {/* container */}
       <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
         {/* head left side top */}
-        <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+        <h2 className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
           Our Offers
-        </span>
+        </h2>
 
         {/* carousel with 5 images + dots below */}
         <div className="mt-8 sm:mt-10 lg:mt-12">

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const alt =
-  "Red Core - Professional Concrete Cutting & Core Drilling Services";
+  "REDCORE — Professional Concrete Cutting & Core Drilling Services";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -68,7 +68,7 @@ export default async function OgImage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logoBase64}
-              alt="Red Core"
+              alt="REDCORE"
               height={56}
             />
           </div>

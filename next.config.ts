@@ -4,7 +4,7 @@ import { withPayload } from "@payloadcms/next/withPayload";
 const nextConfig: NextConfig = {
   trailingSlash: false,
   env: {
-    META_TRACKING_ENABLED: process.env.META_TRACKING_ENABLED ?? 'false',
+    META_TRACKING_ENABLED: process.env.META_TRACKING_ENABLED ?? 'true',
   },
   images: {
     qualities: [75, 100],

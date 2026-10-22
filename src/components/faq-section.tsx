@@ -6,6 +6,31 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
+/**
+ * Automatically turns phone numbers and email addresses found in FAQ answers
+ * into clickable mailto: / tel: links styled in the brand red.
+ */
+function linkifyText(text: string): ReactNode[] {
+  const pattern = /(redcoreusa@gmail\.com|\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/g;
+  const parts = text.split(pattern);
+  return parts.map((part, i) => {
+    if (i % 2 === 0) return part;
+    const isEmail = /@/.test(part);
+    const href = isEmail
+      ? `mailto:${part}`
+      : `tel:+1${part.replace(/\D/g, '')}`;
+    return (
+      <a
+        key={i}
+        href={href}
+        className="text-[#C70017] underline-offset-2 hover:underline"
+      >
+        {part}
+      </a>
+    );
+  });
+}
+
 export type FaqItem = {
   question: string;
   answer: string;
@@ -38,10 +63,10 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
       />
       <div className="rounded-[24px] bg-[#f3f3f3] py-8 sm:rounded-[32px] sm:py-10 lg:rounded-[45px] lg:py-14">
         <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-          <span className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+          <h2 className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
             <span className="sm:hidden">FAQ</span>
             <span className="hidden sm:inline">Frequently asked questions</span>
-          </span>
+          </h2>
 
           <Accordion type="single" collapsible className="mt-8 sm:mt-10">
             {items.map((item, index) => (
@@ -66,7 +91,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
                   className="in-data-[state=closed]:hidden pb-6 pl-0 pr-4 sm:pb-8 sm:pl-[84px] sm:pr-20"
                 >
                   <p className="text-[15px] leading-relaxed text-[#5b5b5b] sm:text-lg">
-                    {item.answer}
+                    {linkifyText(item.answer)}
                   </p>
                 </AccordionContent>
               </AccordionItem>

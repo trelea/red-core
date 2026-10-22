@@ -57,6 +57,7 @@
   --radius-4xl: calc(var(--radius) + 16px);
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-phone-ring: phone-ring 1.2s ease-in-out 1;
   @keyframes marquee {
   from {
     transform: translateX(0);
@@ -71,6 +72,41 @@
     }
   to {
     transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes phone-ring {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+    }
+  10% {
+    transform: rotate(-12deg) translate(-1px, -1px);
+    }
+  20% {
+    transform: rotate(12deg) translate(1px, -1px);
+    }
+  30% {
+    transform: rotate(-10deg) translate(-1px, 0);
+    }
+  40% {
+    transform: rotate(10deg) translate(1px, 0);
+    }
+  50% {
+    transform: rotate(-8deg) translate(-1px, 1px);
+    }
+  60% {
+    transform: rotate(8deg) translate(1px, 1px);
+    }
+  70% {
+    transform: rotate(-5deg) translate(0, 1px);
+    }
+  80% {
+    transform: rotate(5deg) translate(0, 1px);
+    }
+  90% {
+    transform: rotate(-2deg);
+    }
+  100% {
+    transform: rotate(0deg) translate(0, 0);
     }
   }
 }

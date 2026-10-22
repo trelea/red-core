@@ -19,37 +19,94 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Wall Saw Cutting Services in Agawam & Springfield MA',
+  title: 'Wall Saw Cutting, Door & Egress Openings in MA',
   description:
-    'Professional wall saw cutting services in Agawam, Springfield, and Western Massachusetts. Heavy-duty cutting for doorways, windows, and large structural openings with straight, smooth edges.',
+    'Precision track wall saw cutting in Agawam, Springfield, West Springfield, Northampton & across Massachusetts. Clean reinforced concrete foundation cuts for egress windows, doorways, structural openings & wall removal.',
+  keywords: [
+    'wall saw cutting',
+    'wall saw',
+    'egress window cutting',
+    'concrete door opening',
+    'concrete window opening',
+    'wall removal services in West Springfield',
+    'foundation wall cutting MA',
+    'structural concrete openings',
+    'wall sawing Massachusetts',
+    'wall saw cutting Springfield MA',
+    'wall saw cutting Agawam MA',
+  ],
   alternates: {
     canonical: `${siteUrl}/wall-saw-cutting`,
   },
   openGraph: {
-    title: 'Wall Saw Cutting Services | Red Core',
+    title: 'Wall Saw Cutting, Door & Egress Openings in MA | REDCORE',
     description:
-      'Heavy-duty cutting for doorways, windows, and large structural openings. Serving Agawam, Springfield, and Western MA.',
+      'Heavy-duty concrete wall sawing for doorways, egress windows, and large structural openings across Agawam, Springfield, and Massachusetts.',
     url: `${siteUrl}/wall-saw-cutting`,
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'REDCORE — Wall Saw Cutting & Egress Window Openings in MA',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wall Saw Cutting, Door & Egress Openings in MA | REDCORE',
+    description:
+      'Precision concrete wall saw cutting for doorways, egress windows, and structural openings across Massachusetts.',
+    images: ['/opengraph-image'],
   },
 };
 
-const serviceJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Wall Saw Cutting',
-  description:
-    'Heavy-duty cutting for doorways, windows, and large structural openings. Provides straight, smooth edges with minimal vibration.',
-  provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
-  areaServed: 'Agawam, Springfield, Western Massachusetts',
-  url: `${siteUrl}/wall-saw-cutting`,
-};
+const serviceJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Wall Saw Cutting',
+    serviceType: 'Concrete Wall Sawing, Door & Egress Window Cutting',
+    description:
+      'Heavy-duty track wall saw cutting for doorways, egress windows, and large structural openings in poured concrete and foundation walls across Massachusetts.',
+    provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
+    areaServed: [
+      'Agawam, MA',
+      'Springfield, MA',
+      'West Springfield, MA',
+      'Northampton, MA',
+      'Enfield, CT',
+      'Boston, MA',
+      'Massachusetts',
+    ],
+    url: `${siteUrl}/wall-saw-cutting`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Wall Saw Cutting',
+        item: `${siteUrl}/wall-saw-cutting`,
+      },
+    ],
+  },
+];
 
 const faqItems: FaqItem[] = [
   {
-    question: 'Can you cut a doorway or window opening in a concrete wall?',
+    question: 'Can you cut a doorway or egress window opening in a concrete wall?',
     icon: <DoorOpen />,
     answer:
-      'Yes — this is our most common wall sawing job. We cut precise door, window, and access openings in poured concrete and foundation walls with straight, smooth edges that are ready for framing.',
+      'Yes — doorway and egress window cutting is our most common wall sawing job. We cut precise basement door, egress window, and utility access openings in poured concrete and foundation walls with straight, smooth edges that are ready for framing.',
   },
   {
     question: 'How thick a wall can you cut?',
@@ -61,7 +118,7 @@ const faqItems: FaqItem[] = [
     question: 'Is it safe to cut an opening in a load-bearing wall?',
     icon: <ShieldCheck />,
     answer:
-      'Yes, when done correctly. For structural openings we work to the specifications set by your engineer or contractor, and the wall saw itself cuts with minimal vibration so the surrounding structure is not stressed or cracked.',
+      'Yes, when done correctly. For structural openings and wall removal services in Agawam, Springfield, West Springfield, and across Massachusetts, we work to the specifications set by your engineer or contractor, and the wall saw cuts with minimal vibration so the surrounding structure is not stressed or cracked.',
   },
   {
     question: 'Can wall sawing be done inside a finished or occupied building?',
@@ -73,7 +130,7 @@ const faqItems: FaqItem[] = [
     question: 'What is the difference between wall sawing and demolition?',
     icon: <Scissors />,
     answer:
-      'Wall sawing removes exactly the section you need with clean, straight edges, while general demolition breaks material out less precisely. When a project needs both, we cut the opening first and then remove the cut section as part of our demolition service.',
+      'Wall sawing removes exactly the section you need with clean, straight edges, while general demolition breaks material out less precisely. When a project needs both, we cut the opening first and then remove the cut section as part of our demolition service. Call (413) 666-2026 or email redcoreusa@gmail.com for a free estimate.',
   },
 ];
 
@@ -91,6 +148,10 @@ export default async function WallSawCuttingPage() {
             <span className="font-bold">Wall saw</span>
             <br />
             <span className="font-bold">cutting</span>
+            <span className="sr-only">
+              {' '}
+              for Concrete Door &amp; Egress Window Openings in Massachusetts
+            </span>
           </>
         }
         description={
@@ -100,9 +161,10 @@ export default async function WallSawCuttingPage() {
               structural openings.
             </p>
             <p className="mt-3">
-              We cut clean openings for doors, windows, access points, vents,
-              utilities, and remodeling work with controlled saw cutting and
-              minimal vibration.
+              We cut clean openings for doors, egress windows, access points,
+              vents, utilities, and wall removal with controlled saw cutting and
+              minimal vibration across Agawam, Springfield, West Springfield,
+              Northampton, and Massachusetts.
             </p>
             <p className="mt-3">
               For contractors, builders, homeowners, engineers, and commercial
@@ -112,12 +174,12 @@ export default async function WallSawCuttingPage() {
         }
         image={{
           src: '/wall-saw-cutting.svg',
-          alt: 'Wall saw cutting concrete structure',
+          alt: 'Track wall saw cutting concrete foundation doorway and egress window in MA',
         }}
         render_buttons={false}
       />
       <OurProjects projects={projects} />
-      {/* <FaqSection items={faqItems} /> */}
+      <FaqSection items={faqItems} />
       <OurServices />
     </>
   );

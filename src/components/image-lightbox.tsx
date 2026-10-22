@@ -171,7 +171,7 @@ export function ImageLightbox({
               <div className="relative h-[calc(100vh-140px)] w-full">
                 <BlurImage
                   src={images[index].src}
-                  alt={images[index].alt}
+                  alt={images[index].alt || 'REDCORE project photo'}
                   fill
                   // Media is already a <=1024px WebP in R2; serve it directly
                   // instead of paying an on-demand full-screen AVIF encode.
@@ -203,7 +203,7 @@ export function ImageLightbox({
                         projectTitle,
                         imageIndex: i,
                         totalImages: images.length,
-                        imageAlt: img.alt,
+                        imageAlt: img.alt || 'REDCORE project photo',
                         navigationMethod: 'thumbnail',
                       });
                       onIndexChange(i);
@@ -217,7 +217,7 @@ export function ImageLightbox({
                   >
                     <Image
                       src={img.src}
-                      alt={img.alt}
+                      alt={img.alt || 'REDCORE project photo'}
                       fill
                       className="object-cover"
                       sizes="96px"

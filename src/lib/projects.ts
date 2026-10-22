@@ -27,14 +27,35 @@ export async function getProjects(
     sort: '-createdAt',
   });
 
-  return docs.map((d) => ({
-    project_title: d.project_title,
-    project_location: d.project_location,
-    project_price: d.project_price,
-    project_description: d.project_description,
-    project_images: (d.project_images ?? []).map((pi) => {
-      const img = pi.image as Media;
-      return { src: img?.url ?? '', alt: img?.alt ?? '' };
-    }),
-  }));
+  return docs.map((d) => {
+    const images = d.project_images ?? [];
+    const total = images.length;
+
+    return {
+      project_title: d.project_title,
+      project_location: d.project_location,
+      project_price: d.project_price,
+      project_description: d.project_description,
+      project_images: images.map((pi, index) => {
+        const img = pi.image as Media;
+        const mediaAlt = img?.alt?.trim();
+
+        let alt = mediaAlt;
+        if (!alt) {
+          const base = `${d.project_title} — ${d.project_location}`;
+          const description = d.project_description?.trim();
+          const firstSentence = description
+            ? description.split(/[.!?]\s/)[0].trim()
+            : '';
+          const photoSuffix = total > 1 ? ` (photo ${index + 1} of ${total})` : '';
+          const candidate = firstSentence
+            ? `${base}: ${firstSentence}${photoSuffix}`
+            : `${base}${photoSuffix}`;
+          alt = candidate.length > 125 ? `${base}${photoSuffix}` : candidate;
+        }
+
+        return { src: img?.url ?? '', alt };
+      }),
+    };
+  });
 }

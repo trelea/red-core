@@ -27,12 +27,12 @@ const items: InfoItem[] = [
   {
     Icon: MapPinIcon,
     title: 'Our Location',
-    text: 'Agawam, MA 01001',
+    text: '321 Springfield St,\nAgawam, MA 01001',
   },
   {
     Icon: TruckIcon,
     title: 'Service Area',
-    text: 'New England — including MA, CT, RI, NH, VT, and ME.',
+    text: 'New England, serving Agawam, Springfield, Pioneer Valley, Worcester, Greater Boston, and all of MA, CT, RI, NH, VT, and ME.',
   },
 ];
 
@@ -42,7 +42,7 @@ function InfoCell({ Icon, title, text }: InfoItem) {
       <Icon className="mt-0.5 size-5 shrink-0 text-[#c70017] 2xl:size-6" />
       <div className="text-[16px] font-normal leading-[1.5] text-[#5b5b5b] 2xl:text-[18px]">
         {title && <p className="font-bold text-[#1E2C32]">{title}</p>}
-        <p className={title ? 'mt-1' : undefined}>{text}</p>
+        <p className={cn('whitespace-pre-line', title && 'mt-1')}>{text}</p>
       </div>
     </div>
   );
@@ -64,28 +64,29 @@ function Photo({ src, alt, className }: { src: string; alt: string; className?: 
 
 const IMG_1 = {
   src: '/aboutus-1.png',
-  alt: 'RedCore technician hand-sawing a concrete wall',
+  alt: 'REDCORE technician hand-sawing a concrete wall in Massachusetts',
 };
 const IMG_2 = {
   src: '/aboutus-2.png',
-  alt: 'RedCore technician core drilling on site',
+  alt: 'REDCORE technician diamond core drilling on site in Massachusetts',
 };
 
-function Header() {
+function Header({ duplicate = false }: { duplicate?: boolean }) {
+  const HeadingTag = duplicate ? 'p' : 'h2';
   return (
     <>
       <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
         About Us
       </span>
-      <h2
+      <HeadingTag
         className={cn(
           inter.className,
           'mt-7 max-w-[520px] text-[24px] font-normal leading-[1.3] tracking-tight text-[#1E2C32] 2xl:max-w-[640px] 2xl:text-[30px]',
         )}
       >
-        REDCORE Concrete Services is a reliable team specializing in professional
-        concrete cutting and core drilling across New England.
-      </h2>
+        REDCORE is a reliable team specializing in professional concrete cutting
+        and core drilling across Massachusetts and New England.
+      </HeadingTag>
     </>
   );
 }
@@ -119,8 +120,8 @@ export default function AboutUs() {
         {/* Phone / small screens (below lg): images woven into the sections.
             Row 1: [photo 1] [respond + mission]
             Row 2: [location + service area] [photo 2] */}
-        <div className={cn(inter.className, 'mt-10 lg:hidden')}>
-          <Header />
+        <div aria-hidden className={cn(inter.className, 'mt-10 lg:hidden')}>
+          <Header duplicate />
           <div className="mt-10 grid grid-cols-2 items-stretch gap-x-4 gap-y-8 sm:gap-x-5">
             <Photo {...IMG_1} className="min-h-[420px] rounded-none" />
             <div className="flex flex-col justify-evenly border-y border-[#e0e0e0] py-2">

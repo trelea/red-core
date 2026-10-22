@@ -41,9 +41,9 @@ export default function WhyChooseUs() {
     <section id="why-choose-us" className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="rounded-[24px] bg-[#f3f3f3] py-8 sm:rounded-[32px] sm:py-10 lg:rounded-[45px] lg:py-14">
         <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-          <span className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+          <h2 className="inline-flex items-center rounded-full bg-[#e7e7e7] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
             Why choose us?
-          </span>
+          </h2>
 
           <div className="mt-8 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature) => (
@@ -60,7 +60,9 @@ export default function WhyChooseUs() {
                     className="size-16 shrink-0 lg:size-[70px]"
                   />
                   <CardTitle className="whitespace-pre-line text-[20px] font-bold leading-[1.15] text-[#1E2C32] sm:mt-7 sm:text-[22px] lg:text-[24px] xl:text-[26px] 2xl:text-[30px]">
-                    {feature.title}
+                    <h3 className="font-inherit text-inherit leading-inherit">
+                      {feature.title}
+                    </h3>
                   </CardTitle>
                 </div>
                 <CardDescription className="mt-4 text-[15px] leading-[1.55] text-[#5b5b5b] sm:mt-5 sm:text-[13px] lg:text-[14px] xl:text-[15px] 2xl:text-[17px]">

@@ -1,0 +1,52 @@
+# REDCORE — Full Business Context for LLMs
+
+REDCORE is a concrete cutting and core drilling contractor based in Agawam, Massachusetts, serving residential and commercial customers across Massachusetts and New England.
+
+## Contact Information
+- Business: REDCORE (Red Core / REDCORE Concrete)
+- Phone: +1 (413) 666-2026 (available 24/7)
+- Email: redcoreusa@gmail.com
+- Address: 321 Springfield St, Agawam, MA 01001, USA
+- Website: https://redcoreconcrete.com
+
+## Services
+1. Core Drilling — diamond core drilling of perfectly round holes (1"–14"+) in reinforced concrete, brick, CMU, and stone for HVAC, plumbing, electrical, and utility lines.
+   URL: https://redcoreconcrete.com/core-drilling
+2. Slab Cutting — flat sawing of concrete slabs for trenches, openings, and removal.
+   URL: https://redcoreconcrete.com/slab-cutting
+3. Wall Saw Cutting — track-mounted wall sawing for doors, windows, and openings in vertical concrete.
+   URL: https://redcoreconcrete.com/wall-saw-cutting
+4. Demolition & Cutting — controlled demolition and concrete removal with debris cleanup.
+   URL: https://redcoreconcrete.com/demolition-cutting
+5. Concrete Restoration — crack repair, resurfacing, polishing, and protective sealing.
+   URL: https://redcoreconcrete.com/concrete-restoration
+
+## Service Areas
+Massachusetts: Agawam, Springfield, West Springfield, Holyoke, Northampton, Pittsfield, Worcester, Boston, Lynnfield.
+Also: Connecticut, Rhode Island, New Hampshire, Vermont, Maine.
+
+## Offers
+Current promotions include discounted concrete step polishing/restoration with free sealer, flat-rate door/egress openings, volume core drilling pricing, discounted demolition with free debris cleanup, wall saw cutting discounts, and slab cutting specials. See https://redcoreconcrete.com/#offers
+
+## Key Facts
+- Free estimates.
+- 24/7 availability.
+- Residential and commercial projects.
+- Uses diamond cutting technology for precise, low-damage cuts.
+- Project galleries are published on each service page.
+
+## Frequently Asked Questions
+Q: Do you offer free estimates?
+A: Yes, free estimates are available 24/7 by phone at (413) 666-2026.
+
+Q: What areas do you serve?
+A: Massachusetts and surrounding New England states including Connecticut, Rhode Island, New Hampshire, Vermont, and Maine.
+
+Q: What is core drilling used for?
+A: Creating round holes in concrete for pipes, cables, HVAC ducts, and utility lines.
+
+Q: Do you handle demolition debris?
+A: Yes, demolition services include debris cleanup (see current offers).
+
+## Sitemap
+https://redcoreconcrete.com/sitemap.xml

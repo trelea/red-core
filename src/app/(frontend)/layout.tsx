@@ -21,39 +21,62 @@ const geistMono = Geist_Mono({
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://redcoreconcrete.com';
 
+const metaPixelId =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || '1120187307040000';
+const metaTrackingEnabled =
+  process.env.META_TRACKING_ENABLED !== 'false' &&
+  process.env.NEXT_PUBLIC_META_TRACKING_ENABLED !== 'false';
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default:
-      'Red Core | Professional Concrete Cutting & Core Drilling Services',
-    template: '%s | Red Core',
+      'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
+    template: '%s | REDCORE',
   },
   description:
-    'Red Core provides professional concrete cutting and core drilling services including slab cutting, wall saw cutting, and demolition & cutting. Precision work for residential and commercial projects.',
+    'REDCORE provides professional concrete cutting, core drilling, slab sawing, wall sawing, controlled demolition, and concrete restoration in Agawam, Springfield, Boston, and across Massachusetts & New England. 24/7 service & free estimates: (413) 666-2026.',
   keywords: [
-    'core drilling',
+    'REDCORE',
+    'redcore',
     'concrete cutting',
+    'concrete cutting MA',
+    'concrete cutting Boston',
+    'Boston concrete cutting',
+    'concrete cutting companies near me',
+    'concrete cutting near me',
+    'concrete cutting services near me',
+    'core drilling',
+    'core drilling services near me',
+    'core drilling near me',
+    'concrete core drilling',
     'slab cutting',
+    'concrete saw cutting',
+    'concrete slab removal Massachusetts',
     'wall saw cutting',
+    'egress window cutting',
     'demolition and cutting',
+    'concrete demolition',
+    'concrete demolition contractor',
+    'concrete removal Springfield',
+    'concrete step removal near me',
     'concrete restoration',
-    'concrete repair',
+    'concrete restoration MA',
+    'concrete restoration Massachusetts',
+    'concrete crack repair',
+    'concrete repairs near me',
     'concrete resurfacing',
-    'concrete drilling',
-    'precision cutting',
-    'construction services',
-    'concrete removal',
-    'structural openings',
-    'utility access cutting',
+    'HVAC concrete pad installation',
+    'construction company Agawam MA',
     'concrete cutting Agawam MA',
     'core drilling Massachusetts',
-    'concrete services Springfield',
-    'concrete cutting near me',
+    'concrete services Springfield MA',
     'concrete contractor Western MA',
   ],
-  authors: [{ name: 'Red Core' }],
-  creator: 'Red Core',
-  publisher: 'Red Core',
+  authors: [{ name: 'REDCORE' }],
+  creator: 'REDCORE',
+  publisher: 'REDCORE',
   formatDetection: {
     email: false,
     address: false,
@@ -63,25 +86,27 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: siteUrl,
-    siteName: 'Red Core',
-    title: 'Red Core | Professional Concrete Cutting & Core Drilling Services',
+    siteName: 'REDCORE',
+    title:
+      'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
     description:
-      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition for residential and commercial projects.',
+      'Professional concrete cutting, core drilling, slab cutting, wall saw cutting, controlled demolition, and concrete restoration across Agawam, Springfield, Boston, and Massachusetts.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Red Core - Professional Concrete Cutting & Core Drilling Services',
+        alt: 'REDCORE — Professional Concrete Cutting & Core Drilling Services in Massachusetts',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Red Core | Professional Concrete Cutting & Core Drilling Services',
+    title:
+      'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
     description:
-      'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition.',
-    images: ['/og-image.png'],
+      'Professional concrete cutting, core drilling, slab cutting, wall saw cutting, and controlled demolition across Massachusetts & New England.',
+    images: ['/opengraph-image'],
   },
   robots: {
     index: true,
@@ -120,27 +145,53 @@ export const metadata: Metadata = {
 
 const localBusinessJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
   '@id': `${siteUrl}/#business`,
-  name: 'Red Core',
+  name: 'REDCORE',
+  alternateName: ['REDCORE Concrete', 'Red Core'],
   description:
-    'Professional concrete cutting and core drilling services. Slab cutting, wall saw cutting, and controlled demolition for residential and commercial projects.',
+    'Professional concrete cutting and core drilling services in Massachusetts and New England. Slab cutting, wall saw cutting, controlled demolition, and concrete restoration for residential and commercial projects.',
   url: siteUrl,
   logo: `${siteUrl}/logo.svg`,
-  image: `${siteUrl}/og-image.png`,
+  image: `${siteUrl}/opengraph-image`,
   telephone: '+14136662026',
   email: 'redcoreusa@gmail.com',
+  hasMap: 'https://maps.app.goo.gl/NU1TtaE9qrRtK2o86',
+  sameAs: [
+    'https://www.facebook.com/profile.php?id=61592192361536',
+    'https://www.instagram.com/redcoreusa',
+    'https://maps.app.goo.gl/NU1TtaE9qrRtK2o86',
+    'https://share.google/SCRHv9ju5q3mgFyGb',
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: '321 Springfield St',
     addressLocality: 'Agawam',
     addressRegion: 'MA',
+    postalCode: '01001',
     addressCountry: 'US',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 42.0695,
+    longitude: -72.6227,
   },
   areaServed: [
     { '@type': 'City', name: 'Agawam, MA' },
     { '@type': 'City', name: 'Springfield, MA' },
+    { '@type': 'City', name: 'West Springfield, MA' },
+    { '@type': 'City', name: 'Holyoke, MA' },
+    { '@type': 'City', name: 'Northampton, MA' },
+    { '@type': 'City', name: 'Pittsfield, MA' },
+    { '@type': 'City', name: 'Worcester, MA' },
+    { '@type': 'City', name: 'Boston, MA' },
+    { '@type': 'City', name: 'Lynnfield, MA' },
     { '@type': 'State', name: 'Massachusetts' },
+    { '@type': 'State', name: 'Connecticut' },
+    { '@type': 'State', name: 'Rhode Island' },
+    { '@type': 'State', name: 'New Hampshire' },
+    { '@type': 'State', name: 'Vermont' },
+    { '@type': 'State', name: 'Maine' },
   ],
   serviceType: [
     'Core Drilling',
@@ -149,6 +200,52 @@ const localBusinessJsonLd = {
     'Demolition & Cutting',
     'Concrete Restoration',
   ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Concrete Cutting & Core Drilling Services',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Core Drilling',
+          url: `${siteUrl}/core-drilling`,
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Slab Cutting',
+          url: `${siteUrl}/slab-cutting`,
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Demolition & Cutting',
+          url: `${siteUrl}/demolition-cutting`,
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Wall Saw Cutting',
+          url: `${siteUrl}/wall-saw-cutting`,
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Concrete Restoration',
+          url: `${siteUrl}/concrete-restoration`,
+        },
+      },
+    ],
+  },
   priceRange: '$$',
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
@@ -174,43 +271,75 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          id="google-tag-manager"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        {isProduction && (
+          <script
+            id="google-tag-manager"
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-586Q4LZW');`,
-          }}
-        />
+            }}
+          />
+        )}
+        {isProduction && metaTrackingEnabled && metaPixelId && (
+          <script
+            id="meta-pixel"
+            dangerouslySetInnerHTML={{
+              __html: `!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${metaPixelId}');`,
+            }}
+          />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(localBusinessJsonLd),
           }}
         />
+        <link rel="llms" href="/llms.txt" />
+        <link rel="llms-full" href="/llms-full.txt" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-586Q4LZW"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
+        {isProduction && (
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-586Q4LZW"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
+        {isProduction && metaTrackingEnabled && metaPixelId && (
+          <noscript>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              height="1"
+              width="1"
+              style={{ display: 'none' }}
+              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
         <TooltipProvider>
           <QuoteDialogProvider>
-            <AnalyticsProvider />
-            <main>
-              <Navbar />
-              {children}
-              <Footer />
-              <ScrollDownIndicator />
-            </main>
+            {isProduction && <AnalyticsProvider />}
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <ScrollDownIndicator />
           </QuoteDialogProvider>
         </TooltipProvider>
       </body>

@@ -1,9 +1,11 @@
 const META_TRACKING_ENABLED =
-  process.env.META_TRACKING_ENABLED === 'true' ||
-  process.env.NEXT_PUBLIC_META_TRACKING_ENABLED === 'true';
+  process.env.META_TRACKING_ENABLED !== 'false' &&
+  process.env.NEXT_PUBLIC_META_TRACKING_ENABLED !== 'false';
 const IS_DEV = process.env.NODE_ENV === 'development';
 const META_PIXEL_ID =
-  process.env.NEXT_PUBLIC_META_PIXEL_ID || process.env.META_PIXEL_ID || '';
+  process.env.NEXT_PUBLIC_META_PIXEL_ID ||
+  process.env.META_PIXEL_ID ||
+  '1120187307040000';
 const META_CAPI_ACCESS_TOKEN = process.env.META_CAPI_ACCESS_TOKEN || '';
 const META_TEST_EVENT_CODE = process.env.META_TEST_EVENT_CODE || '';
 const GRAPH_API_VERSION = 'v21.0';
@@ -116,6 +118,7 @@ export async function sendMetaCapiEvents(
   events: MetaCapiEventInput[],
   request?: Request,
 ): Promise<void> {
+  if (IS_DEV) return;
   const reqMeta = request ? extractRequestMeta(request) : {};
 
   if (IS_DEV && events.length > 0) {

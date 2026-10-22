@@ -1,10 +1,22 @@
 {
   "exportFormatVersion": 2,
   "containerVersion": {
+    "container": {
+      "accountId": "0",
+      "containerId": "0",
+      "name": "redcoreconcrete.com",
+      "publicId": "GTM-586Q4LZW",
+      "usageContext": [
+        "WEB"
+      ]
+    },
     "tag": [
       {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "100",
         "name": "GA4 - All Events",
-        "type": "gaawc",
+        "type": "gaawe",
         "parameter": [
           {
             "type": "BOOLEAN",
@@ -20,6 +32,26 @@
             "type": "TEMPLATE",
             "key": "measurementIdOverride",
             "value": "G-6K1RFQLDMS"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableUserProperties",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableEuid",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "migratedToV2",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "demoV2",
+            "value": "false"
           },
           {
             "type": "LIST",
@@ -112,19 +144,28 @@
             ]
           }
         ],
-        "firingTriggerId": ["999001"]
+        "firingTriggerId": [
+          "100"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT"
       }
     ],
     "trigger": [
       {
-        "triggerId": "999001",
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "100",
         "name": "GA4 - All Custom Events",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
           {
             "type": "MATCH_REGEX",
             "parameter": [
-              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
               {
                 "type": "TEMPLATE",
                 "key": "arg1",
@@ -137,6 +178,9 @@
     ],
     "variable": [
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "101",
         "name": "event_detail",
         "type": "v",
         "parameter": [
@@ -146,6 +190,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "102",
         "name": "form_contact",
         "type": "v",
         "parameter": [
@@ -155,6 +202,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "103",
         "name": "form_project",
         "type": "v",
         "parameter": [
@@ -164,6 +214,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "104",
         "name": "form_message",
         "type": "v",
         "parameter": [
@@ -173,6 +226,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "105",
         "name": "client_ip",
         "type": "v",
         "parameter": [
@@ -182,6 +238,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "106",
         "name": "client_location",
         "type": "v",
         "parameter": [
@@ -191,6 +250,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "107",
         "name": "device_summary",
         "type": "v",
         "parameter": [
@@ -200,6 +262,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "108",
         "name": "hardware_summary",
         "type": "v",
         "parameter": [
@@ -209,6 +274,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "109",
         "name": "gpu_info",
         "type": "v",
         "parameter": [
@@ -218,6 +286,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "110",
         "name": "display_summary",
         "type": "v",
         "parameter": [
@@ -227,6 +298,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "111",
         "name": "network_summary",
         "type": "v",
         "parameter": [
@@ -236,6 +310,9 @@
         ]
       },
       {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "112",
         "name": "visitor_summary",
         "type": "v",
         "parameter": [
@@ -243,6 +320,14 @@
           { "type": "BOOLEAN", "key": "setDefaultValue", "value": "false" },
           { "type": "TEMPLATE", "key": "name", "value": "visitor_summary" }
         ]
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "EVENT",
+        "name": "Event"
       }
     ]
   }

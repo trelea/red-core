@@ -1,8 +1,8 @@
 'use client';
 
 const META_TRACKING_ENABLED =
-  process.env.META_TRACKING_ENABLED === 'true' ||
-  process.env.NEXT_PUBLIC_META_TRACKING_ENABLED === 'true';
+  process.env.META_TRACKING_ENABLED !== 'false' &&
+  process.env.NEXT_PUBLIC_META_TRACKING_ENABLED !== 'false';
 const IS_DEV = process.env.NODE_ENV === 'development';
 
 export interface UserContactInfo {
@@ -259,6 +259,7 @@ function getGpuInfo(): { vendor?: string; renderer?: string } {
 
 /** Fetches visitor IP, geo headers, high-entropy UA client hints, and battery status once per session */
 export function initClientTrackingContext(): Promise<void> {
+  if (IS_DEV) return Promise.resolve();
   if (typeof window === 'undefined') return Promise.resolve();
   if (ipFetchPromise) return ipFetchPromise;
 
@@ -709,6 +710,7 @@ export function getClientEnvironmentContext(): ClientEnvironmentContext {
  */
 export function trackUnifiedEvent(options: UnifiedEventOptions): string {
   const eventId = options.eventId || generateEventId();
+  if (IS_DEV) return eventId;
   if (typeof window === 'undefined') return eventId;
 
   const pagePath = window.location.pathname;
@@ -1254,12 +1256,25 @@ export function trackEmailClick(clickLocation = 'unknown'): void {
 export function trackSocialClick(
   platform: string,
   destinationUrl: string,
+  clickLocation = 'unknown',
 ): void {
+  let linkDomain: string | undefined;
+  try {
+    linkDomain = new URL(destinationUrl).hostname;
+  } catch {
+    // Keep tracking even if the URL cannot be parsed
+    linkDomain = undefined;
+  }
+
   trackUnifiedEvent({
     event: 'social_click',
     params: {
       social_platform: platform,
       destination_url: destinationUrl,
+      link_url: destinationUrl,
+      link_domain: linkDomain,
+      click_location: clickLocation,
+      outbound: true,
     },
   });
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { MenuIcon, PhoneIcon, MailIcon } from 'lucide-react';
 import {
   Sheet,
@@ -22,6 +23,14 @@ const mobileLinks = [
   { label: 'Get a quote', id: 'quote' },
   { label: 'Special offers', id: 'offers' },
   { label: 'Contacts', id: 'contacts' },
+];
+
+const serviceSubLinks = [
+  { label: 'Core Drilling', href: '/core-drilling' },
+  { label: 'Slab Cutting', href: '/slab-cutting' },
+  { label: 'Demolition & Cutting', href: '/demolition-cutting' },
+  { label: 'Wall Saw Cutting', href: '/wall-saw-cutting' },
+  { label: 'Concrete Restoration', href: '/concrete-restoration' },
 ];
 
 const mobileRowClass =
@@ -71,9 +80,10 @@ export function NavbarMobileMenu() {
           <SheetTitle>
             <Image
               src="/logo.svg"
-              alt="Red Core Inc."
-              width={280}
-              height={39}
+              alt="REDCORE"
+              width={344}
+              height={57}
+              unoptimized
               className="h-8 w-auto"
             />
           </SheetTitle>
@@ -82,14 +92,39 @@ export function NavbarMobileMenu() {
         {/* Navigation */}
         <nav className="flex flex-1 flex-col px-3 py-4">
           {mobileLinks.map((link) => (
-            <button
-              key={link.id}
-              type="button"
-              className={mobileRowClass}
-              onClick={(e) => handleNavClick(e, link.id)}
-            >
-              {link.label}
-            </button>
+            <div key={link.id}>
+              {link.id === 'quote' ? (
+                <button
+                  type="button"
+                  className={mobileRowClass}
+                  onClick={(e) => handleNavClick(e, link.id)}
+                >
+                  {link.label}
+                </button>
+              ) : (
+                <a
+                  href={`/#${link.id}`}
+                  className={mobileRowClass}
+                  onClick={(e) => handleNavClick(e, link.id)}
+                >
+                  {link.label}
+                </a>
+              )}
+              {link.id === 'services' && (
+                <div className="mb-2 ml-3 flex flex-col border-l border-black/10 pl-3">
+                  {serviceSubLinks.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      onClick={() => setOpen(false)}
+                      className="rounded-md px-2 py-2 text-[13px] font-normal uppercase tracking-[0.04em] text-black/70 transition-colors hover:bg-black/[0.03] hover:text-[#c70017]"
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
 

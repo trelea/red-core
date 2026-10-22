@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { MailIcon, PhoneIcon } from 'lucide-react';
+import { MailIcon, MailOpenIcon, PhoneIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { trackEmailClick, trackPhoneClick } from '@/lib/gtag';
 
@@ -104,7 +104,7 @@ function ContactItem({
   return (
     <div
       className={cn(
-        'flex items-center overflow-hidden rounded-l-full bg-[#FFFFFF73] text-black shadow-lg backdrop-blur-sm',
+        'group flex items-center overflow-hidden rounded-l-full bg-[#FFFFFF73] text-black shadow-lg backdrop-blur-sm transition-colors duration-200 hover:bg-[#C70017] hover:text-white',
         small ? 'h-[54px]' : 'h-[64px]',
       )}
     >
@@ -118,11 +118,22 @@ function ContactItem({
         aria-label={toggleLabel}
         aria-expanded={open}
         className={cn(
-          'flex shrink-0 cursor-pointer touch-pan-y select-none items-center justify-center transition-colors hover:bg-white/40',
+          'flex shrink-0 cursor-pointer touch-pan-y select-none items-center justify-center',
           small ? 'h-[54px] w-[72px]' : 'h-[64px] w-[93px]',
         )}
       >
-        {icon}
+        <span className="relative inline-flex items-center justify-center group-hover:text-white">
+          {value.includes('@') ? (
+            <>
+              <MailIcon className="absolute size-[inherit] transition-all duration-200 ease-out group-hover:scale-75 group-hover:opacity-0" />
+              <MailOpenIcon className="size-[inherit] scale-75 opacity-0 transition-all duration-200 ease-out group-hover:scale-100 group-hover:opacity-100" />
+            </>
+          ) : (
+            <span className="inline-flex transition-transform duration-75 group-hover:animate-phone-ring">
+              <PhoneIcon className="size-[inherit]" />
+            </span>
+          )}
+        </span>
       </button>
       {/* Slides out to the right of the icon; click to perform the action */}
       <a
@@ -142,7 +153,7 @@ function ContactItem({
                 ? 'max-w-[280px] pr-5'
                 : 'max-w-[280px] pr-7'
               : 'max-w-0'),
-          small ? 'text-[13px]' : 'text-sm',
+          small ? 'text-[15px] group-hover:text-white' : 'text-[16px] group-hover:text-white',
         )}
       >
         {value}
@@ -171,11 +182,7 @@ export default function ContactButtons({ small = false }: { small?: boolean }) {
       />
       <ContactItem
         small={small}
-        icon={
-          <PhoneIcon
-            className={cn('text-black', small ? 'size-6' : 'size-7')}
-          />
-        }
+        icon={<PhoneIcon className={cn(small ? 'size-6' : 'size-7')} />}
         value="(413)-666-2026"
         href="tel:+14136662026"
         toggleLabel="Toggle phone number"

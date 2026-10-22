@@ -34,9 +34,13 @@ export default function Hero({
       cutting
       <br />
       experts
+      <span className="sr-only">
+        {' '}
+        in Agawam, Springfield and Massachusetts
+      </span>
     </>
   ),
-  description = 'Professional concrete cutting, core drilling, slab sawing, and controlled demolition with clean results, precise work, and reliable scheduling.',
+  description = 'Professional concrete cutting, core drilling, slab sawing, wall sawing, and controlled demolition across Agawam, Springfield, Boston, and Massachusetts with clean results, precise work, and reliable 24/7 scheduling.',
   image,
   imageStyle = 'illustration',
   render_desc = true,
@@ -46,7 +50,7 @@ export default function Hero({
   // half). A passed `image` (service pages) overrides the default.
   const desktopImage = image ?? {
     src: '/hero-img-flipped.jpg',
-    alt: 'Modern concrete building',
+    alt: 'REDCORE professional concrete cutting and core drilling in Massachusetts',
   };
   // Service pages pass a wide (rectangular) image; the default home image is
   // square. On phones the rectangle is scaled up ~50% so it reads as large as
@@ -86,7 +90,7 @@ export default function Hero({
           src={desktopImage.src}
           alt={desktopImage.alt}
           fill
-          priority
+          priority={!photo}
           sizes="100vw"
           className={cn(
             'object-contain object-right-bottom',
@@ -125,7 +129,7 @@ export default function Hero({
           alt={desktopImage.alt}
           width={722}
           height={754}
-          priority
+          loading="eager"
           quality={100}
           sizes="50vw"
           className={cn(

@@ -19,37 +19,94 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Concrete Restoration Services in Agawam & Springfield MA',
+  title: 'Concrete Restoration & Crack Repair in Springfield & MA',
   description:
-    'Professional concrete restoration in Agawam, Springfield, and Western Massachusetts. Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete steps, walkways, floors, and patios.',
+    'Expert concrete restoration, crack repair, step repair, resurfacing & polishing in Agawam, Springfield, Lynnfield & across Massachusetts. Restore cracked, chipped, and spalled concrete steps, walkways, patios & floors without full replacement.',
+  keywords: [
+    'concrete restoration',
+    'concrete restoration MA',
+    'concrete restoration Massachusetts',
+    'concrete crack repair',
+    'concrete crack repair Lynnfield',
+    'concrete repairs near me',
+    'concrete repair near me',
+    'concrete resurfacing near me',
+    'concrete step repair',
+    'concrete step polishing',
+    'small concrete repairs',
+    'concrete repair Springfield MA',
+    'concrete restoration Agawam MA',
+  ],
   alternates: {
     canonical: `${siteUrl}/concrete-restoration`,
   },
   openGraph: {
-    title: 'Concrete Restoration Services | Red Core',
+    title: 'Concrete Restoration & Crack Repair in Springfield & MA | REDCORE',
     description:
-      'Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete. Serving Agawam, Springfield, and Western MA.',
+      'Repair, crack filling, resurfacing, and polishing of cracked, chipped, and worn concrete steps, walkways, floors, and patios across Massachusetts.',
     url: `${siteUrl}/concrete-restoration`,
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'REDCORE — Concrete Restoration, Step & Crack Repair in Massachusetts',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Concrete Restoration & Crack Repair in Springfield & MA | REDCORE',
+    description:
+      'Professional concrete crack repair, step restoration, and resurfacing across Agawam, Springfield, and Massachusetts.',
+    images: ['/opengraph-image'],
   },
 };
 
-const serviceJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Concrete Restoration',
-  description:
-    'Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete. Restores steps, walkways, floors, and patios without full replacement.',
-  provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
-  areaServed: 'Agawam, Springfield, Western Massachusetts',
-  url: `${siteUrl}/concrete-restoration`,
-};
+const serviceJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Concrete Restoration',
+    serviceType: 'Concrete Restoration, Crack Repair & Resurfacing',
+    description:
+      'Repair, crack repair, resurfacing, and refinishing of cracked, chipped, and worn concrete. Restores steps, walkways, floors, and patios across Massachusetts without full replacement.',
+    provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
+    areaServed: [
+      'Agawam, MA',
+      'Springfield, MA',
+      'Lynnfield, MA',
+      'Boston, MA',
+      'Massachusetts',
+    ],
+    url: `${siteUrl}/concrete-restoration`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Concrete Restoration',
+        item: `${siteUrl}/concrete-restoration`,
+      },
+    ],
+  },
+];
 
 const faqItems: FaqItem[] = [
   {
     question: 'Can cracked or chipped concrete be repaired instead of replaced?',
     icon: <Hammer />,
     answer:
-      'In most cases, yes. Surface cracks, spalling, chipped step edges, and worn patches can be repaired and resurfaced at a fraction of the cost of tearing out and repouring. We recommend replacement only when the slab is structurally failing.',
+      'In most cases, yes. Surface cracks, spalling, chipped step edges, and worn patches can be repaired and resurfaced at a fraction of the cost of tearing out and repouring. We recommend replacement only when the slab is structurally failing. Call (413) 666-2026 or email redcoreusa@gmail.com for a free estimate.',
   },
   {
     question: 'What does concrete resurfacing involve?',
@@ -67,13 +124,13 @@ const faqItems: FaqItem[] = [
     question: 'Will the repair last, or will the cracks come back?',
     icon: <ShieldCheck />,
     answer:
-      'Properly prepared and bonded repairs last for years. We address the cause of the damage — drainage, movement, or surface wear — not just the symptom, so the restored concrete holds up.',
+      'Properly prepared and bonded concrete crack repairs last for years. We address the cause of the damage — drainage, movement, or surface wear — not just the symptom, so the restored concrete holds up through New England winters.',
   },
   {
-    question: 'Do you restore both indoor and outdoor concrete?',
+    question: 'Do you restore both indoor and outdoor concrete in Massachusetts?',
     icon: <Sun />,
     answer:
-      'Yes. We restore exterior steps, walkways, driveways, and patios as well as interior floors in basements, garages, and commercial spaces. Dust-controlled grinding keeps interior work clean.',
+      'Yes. We restore exterior steps, walkways, driveways, and patios as well as interior floors in basements, garages, and commercial spaces across Agawam, Springfield, Lynnfield, and Massachusetts. Dust-controlled grinding keeps interior work clean.',
   },
 ];
 
@@ -91,16 +148,23 @@ export default async function ConcreteRestorationPage() {
             <span className="font-bold">Concrete</span>
             <br />
             <span className="font-bold">restoration</span>
+            <span className="sr-only">
+              {' '}
+              and Concrete Crack &amp; Step Repair in Massachusetts
+            </span>
           </>
         }
         description={
           <>
             <p>
-              For safe, smooth, and professionally restored concrete steps.
+              For safe, smooth, and professionally restored concrete steps,
+              walkways, patios, and floors.
             </p>
             <p className="mt-3">
-              We repair cracks, chips, worn edges, and damaged surfaces, then
-              grind, polish, and seal the concrete for a clean, durable finish.
+              We perform concrete crack repair, fix chips, spalling, and worn
+              edges, and grind, resurface, polish, and seal concrete for a
+              clean, durable finish across Agawam, Springfield, and
+              Massachusetts.
             </p>
             <p className="mt-3">
               For homeowners, contractors, builders, local businesses, and
@@ -110,13 +174,13 @@ export default async function ConcreteRestorationPage() {
         }
         image={{
           src: '/concrete-restoration-img.jpg',
-          alt: 'Restored concrete entrance steps with exposed-aggregate treads',
+          alt: 'Restored concrete entrance steps and crack repair in Massachusetts',
         }}
         imageStyle="photo"
         render_buttons={false}
       />
       <OurProjects projects={projects} />
-      {/* <FaqSection items={faqItems} /> */}
+      <FaqSection items={faqItems} />
       <OurServices />
     </>
   );

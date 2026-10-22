@@ -19,37 +19,96 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Core Drilling Services in Agawam & Springfield MA',
+  title: 'Core Drilling Services in Springfield, Agawam & MA',
   description:
-    'Professional core drilling services in Agawam, Springfield, and Western Massachusetts. Precision drilling of perfectly round holes in concrete, brick, and stone for pipes, cables, ventilation, and utility lines.',
+    'Precision diamond concrete core drilling and coring in Agawam, Springfield, Northampton, Worcester, and across Massachusetts. Clean 1"–14"+ holes in reinforced concrete, foundations & brick for HVAC, plumbing & electrical. 24/7 free quotes: (413) 666-2026.',
+  keywords: [
+    'core drilling',
+    'core drilling services near me',
+    'core drilling near me',
+    'concrete core drilling',
+    'concrete coring',
+    'core drill',
+    'concrete core drill',
+    'core drilling company near me',
+    'core drilling contractors',
+    'concrete drilling Northampton',
+    'core drilling Springfield MA',
+    'core drilling Agawam MA',
+    'core drilling Worcester MA',
+    'core drilling Massachusetts',
+  ],
   alternates: {
     canonical: `${siteUrl}/core-drilling`,
   },
   openGraph: {
-    title: 'Core Drilling Services | Red Core',
+    title: 'Core Drilling Services in Springfield, Agawam & MA | REDCORE',
     description:
-      'Precision drilling of perfectly round holes in concrete, brick, and stone. Serving Agawam, Springfield, and Western MA.',
+      'Precision diamond core drilling of round holes in concrete, brick, and stone. Serving Agawam, Springfield, Northampton, Worcester, and Massachusetts.',
     url: `${siteUrl}/core-drilling`,
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'REDCORE — Core Drilling Services in Massachusetts',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Core Drilling Services in Springfield, Agawam & MA | REDCORE',
+    description:
+      'Precision diamond core drilling in concrete, brick, and foundations across Agawam, Springfield, and Massachusetts.',
+    images: ['/opengraph-image'],
   },
 };
 
-const serviceJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Core Drilling',
-  description:
-    'Precision drilling of perfectly round holes in concrete, brick, and stone. Used for pipes, cables, ventilation, and utility lines.',
-  provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
-  areaServed: 'Agawam, Springfield, Western Massachusetts',
-  url: `${siteUrl}/core-drilling`,
-};
+const serviceJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Core Drilling',
+    serviceType: 'Concrete Core Drilling & Coring',
+    description:
+      'Precision diamond core drilling of perfectly round holes in concrete, brick, CMU block, and stone for pipes, cables, HVAC ventilation, and utility lines across Massachusetts.',
+    provider: { '@type': 'LocalBusiness', '@id': `${siteUrl}/#business` },
+    areaServed: [
+      'Agawam, MA',
+      'Springfield, MA',
+      'Northampton, MA',
+      'Worcester, MA',
+      'Boston, MA',
+      'Massachusetts',
+    ],
+    url: `${siteUrl}/core-drilling`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Core Drilling',
+        item: `${siteUrl}/core-drilling`,
+      },
+    ],
+  },
+];
 
 const faqItems: FaqItem[] = [
   {
     question: 'What hole diameters can you core drill?',
     icon: <Ruler />,
     answer:
-      'We drill perfectly round holes from about 1 inch up to 14 inches in diameter through concrete, brick, CMU block, and stone. Common sizes cover plumbing pipes, electrical conduit, HVAC vents, dryer vents, and anchor holes. If your project needs a size outside that range, call us and we will confirm what our rigs can handle.',
+      'We drill perfectly round holes from about 1 inch up to 14 inches in diameter through concrete, brick, CMU block, and stone. Common sizes cover plumbing pipes, electrical conduit, HVAC vents, dryer vents, and anchor holes. If your project needs a size outside that range, call us at (413) 666-2026 or email redcoreusa@gmail.com and we will confirm what our rigs can handle.',
   },
   {
     question: 'Can you drill through reinforced concrete with rebar?',
@@ -73,7 +132,7 @@ const faqItems: FaqItem[] = [
     question: 'What areas do you serve for core drilling?',
     icon: <MapPin />,
     answer:
-      'We are based in Agawam, MA and serve Springfield, West Springfield, Westfield, Chicopee, Holyoke, and the rest of Western Massachusetts, as well as nearby northern Connecticut. Call 413-666-2026 for a free estimate.',
+      'We are based in Agawam, MA and provide core drilling across Springfield, West Springfield, Westfield, Chicopee, Holyoke, Northampton, Easthampton, Pittsfield, Worcester, Greater Boston, and all of Massachusetts, as well as northern Connecticut. Call 413-666-2026 for a free estimate.',
   },
 ];
 
@@ -91,6 +150,10 @@ export default async function CoreDrillingPage() {
             <span className="font-bold">Core</span>
             <br />
             <span className="font-bold">drilling</span>
+            <span className="sr-only">
+              {' '}
+              Services in Agawam, Springfield &amp; Massachusetts
+            </span>
           </>
         }
         description={
@@ -100,9 +163,10 @@ export default async function CoreDrillingPage() {
               structural openings.
             </p>
             <p className="mt-3">
-              We provide clean core drilling through concrete, CMU block, brick,
-              and masonry walls or floors for residential, commercial, and
-              industrial projects.
+              We provide clean diamond core drilling through concrete, CMU
+              block, brick, and masonry walls or floors for residential,
+              commercial, and industrial projects across Agawam, Springfield,
+              Worcester, and Massachusetts.
             </p>
             <p className="mt-3">
               For contractors, plumbers, electricians, HVAC installers,
@@ -112,12 +176,12 @@ export default async function CoreDrillingPage() {
         }
         image={{
           src: '/core-drilling-img.svg',
-          alt: 'Core drilling into concrete wall',
+          alt: 'Diamond core drilling into concrete foundation wall in Massachusetts',
         }}
         render_buttons={false}
       />
       <OurProjects projects={projects} />
-      {/* <FaqSection items={faqItems} /> */}
+      <FaqSection items={faqItems} />
       <OurServices />
     </>
   );

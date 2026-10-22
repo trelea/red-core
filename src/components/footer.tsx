@@ -53,6 +53,14 @@ const navLinks = [
   { label: 'Contacts', href: '/#contacts' },
 ];
 
+const serviceLinks = [
+  { label: 'Core Drilling', href: '/core-drilling' },
+  { label: 'Slab Cutting', href: '/slab-cutting' },
+  { label: 'Demolition & Cutting', href: '/demolition-cutting' },
+  { label: 'Wall Saw Cutting', href: '/wall-saw-cutting' },
+  { label: 'Concrete Restoration', href: '/concrete-restoration' },
+];
+
 const socialLinks = [
   {
     label: 'Facebook',
@@ -61,8 +69,13 @@ const socialLinks = [
   },
   {
     label: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/redcoreusa',
     path: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z',
+  },
+  {
+    label: 'Google Business Profile',
+    href: 'https://share.google/SCRHv9ju5q3mgFyGb',
+    path: 'M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z',
   },
 ];
 
@@ -342,8 +355,8 @@ export default function Footer() {
       className="rounded-t-[28px] bg-[#f4f4f4] text-black sm:rounded-t-[46px]"
     >
       <div className="container mx-auto px-[30px] py-12 sm:py-16 lg:px-12 lg:py-20 xl:px-[120px] 2xl:px-[160px]">
-        {/* form (right) takes one half, everything else (left) the other half */}
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-8 xl:gap-12">
+        {/* left side takes ~60% for the 3 info columns; form (right) takes ~40% */}
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1.4fr_0.9fr] lg:gap-8 xl:grid-cols-[1.45fr_0.85fr] xl:gap-12">
           {/* left side */}
           <div className="order-2 flex flex-col sm:order-none">
             <div className="flex flex-col gap-10">
@@ -352,48 +365,61 @@ export default function Footer() {
                 <Link href="/" className="inline-block">
                   <Image
                     src="/logo.svg"
-                    alt="Red Core Inc."
-                    width={280}
-                    height={39}
-                    className="h-[32px] w-auto sm:h-[36px] lg:h-[40px]"
+                    alt="REDCORE"
+                    width={344}
+                    height={57}
+                    unoptimized
+                    className="h-[28px] w-auto sm:h-[32px] lg:h-[34px] xl:h-[38px] min-[1440px]:h-[42px] 2xl:h-[45px]"
                     priority
                   />
                 </Link>
               </div>
 
               {/* container with metadata and services */}
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:gap-12">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1.25fr_0.75fr_1.05fr] sm:gap-6 lg:gap-8">
                 {/* left column — contact metadata */}
-                <ul className="flex min-w-0 flex-col gap-4 not-italic">
-                  <li className="flex items-start gap-2.5">
-                    <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#c70017]" />
-                    <span className="text-base leading-normal">
-                      Agawam, MA 01001
-                    </span>
-                  </li>
-                  <li>
-                    <a
-                      href="mailto:redcoreusa@gmail.com"
-                      onClick={() => trackEmailClick('footer')}
-                      className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
-                    >
-                      <MailIcon className="size-[17px] shrink-0 text-[#c70017]" />
-                      <span className="break-all">redcoreusa@gmail.com</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="tel:+14136662026"
-                      onClick={() => trackPhoneClick('footer')}
-                      className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
-                    >
-                      <PhoneIcon className="size-4 shrink-0 text-[#c70017]" />
-                      (413)-666-2026
-                    </a>
-                  </li>
-                </ul>
+                <address className="not-italic">
+                  <ul className="flex min-w-0 flex-col gap-4">
+                    <li className="flex items-start gap-2.5">
+                      <MapPinIcon className="mt-0.5 size-[19px] shrink-0 text-[#c70017]" />
+                      <a
+                        href="https://maps.app.goo.gl/NU1TtaE9qrRtK2o86"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-base leading-snug transition-colors hover:text-[#c70017]"
+                      >
+                        <span className="block whitespace-nowrap">
+                          321 Springfield St,
+                        </span>
+                        <span className="block whitespace-nowrap">
+                          Agawam, MA 01001
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="mailto:redcoreusa@gmail.com"
+                        onClick={() => trackEmailClick('footer')}
+                        className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
+                      >
+                        <MailIcon className="size-[17px] shrink-0 text-[#c70017]" />
+                        <span className="break-all">redcoreusa@gmail.com</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="tel:+14136662026"
+                        onClick={() => trackPhoneClick('footer')}
+                        className="flex items-center gap-2.5 text-base transition-colors hover:text-[#c70017]"
+                      >
+                        <PhoneIcon className="size-4 shrink-0 text-[#c70017]" />
+                        (413)-666-2026
+                      </a>
+                    </li>
+                  </ul>
+                </address>
 
-                {/* right column — services / navigation */}
+                {/* middle column — navigation */}
                 <ul className="flex flex-col gap-4">
                   {navLinks.map((link) => {
                     const id = link.href.replace('/#', '');
@@ -414,6 +440,20 @@ export default function Footer() {
                     );
                   })}
                 </ul>
+
+                {/* right column — direct service links */}
+                <ul className="flex flex-col gap-4">
+                  {serviceLinks.map((service) => (
+                    <li key={service.href}>
+                      <Link
+                        href={service.href}
+                        className="text-base text-black transition-colors hover:text-[#c70017]"
+                      >
+                        {service.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* follow us */}
@@ -425,7 +465,7 @@ export default function Footer() {
                       <a
                         href={social.href}
                         onClick={() =>
-                          trackSocialClick(social.label, social.href)
+                          trackSocialClick(social.label, social.href, 'footer')
                         }
                         target={social.href !== '#' ? '_blank' : undefined}
                         rel={
@@ -453,14 +493,14 @@ export default function Footer() {
             {/* copyright */}
             <div className="mt-12 lg:mt-auto lg:pt-12">
               <p className="text-base text-[#8a8989]">
-                Copyrights © Red Core Company {year}
+                Copyrights © REDCORE {year}
               </p>
             </div>
           </div>
 
           {/* right side — free consultation form */}
-          <div className="order-1 flex flex-col justify-center rounded-[19px] bg-[rgba(225,225,225,0.63)] p-6 sm:order-none sm:p-8 sm:px-10 lg:p-12">
-            <p className="text-2xl font-normal sm:text-3xl">Free consultation</p>
+          <div className="order-1 flex flex-col justify-center rounded-[19px] bg-[rgba(225,225,225,0.63)] p-6 sm:order-none sm:p-8 sm:px-10 lg:p-9 xl:p-10">
+            <h2 className="text-2xl font-normal sm:text-3xl">Free consultation</h2>
             <form
               ref={formRef}
               onFocus={handleFormFocus}

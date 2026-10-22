@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuoteDialog } from '@/components/quote-dialog-provider';
 import { cn } from '@/lib/utils';
 import { inter } from '@/lib/fonts';
@@ -11,7 +12,7 @@ const btnBase =
 
 /**
  * The hero's primary action buttons. Client-only because they open the quote
- * dialog and smooth-scroll to the projects section.
+ * dialog and link to the projects section.
  */
 export default function HeroActions() {
   const { openQuote } = useQuoteDialog();
@@ -30,15 +31,12 @@ export default function HeroActions() {
       >
         Get a quote
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          window.location.href = '/demolition-cutting#projects';
-        }}
+      <Link
+        href="/demolition-cutting#projects"
         className={cn(btnBase, 'bg-[#4F4F4F] hover:bg-[#3f3f3f]')}
       >
         Our projects
-      </button>
+      </Link>
     </div>
   );
 }

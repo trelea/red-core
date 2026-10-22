@@ -17,10 +17,10 @@ const services = [
   },
   {
     icon: '/icons/Slab-Cutting-icon.png',
-    title: 'Slab Cutting',
+    title: 'Slab / Asphalt Cutting',
     href: '/slab-cutting',
     description:
-      'Clean concrete slab cutting for trenches, openings, and utility access.',
+      'Concrete slab and asphalt cutting for trenches, openings, and utility access.',
   },
   {
     icon: '/icons/Demolition-Cutting-icon.png',
@@ -60,9 +60,9 @@ export default function OurServices() {
       className={cn(microgramma.variable, 'bg-white py-8 sm:py-16 lg:py-20')}
     >
       <div className="container mx-auto px-[30px] lg:px-12 xl:px-[120px] 2xl:px-[160px]">
-        <span className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
+        <h2 className="inline-flex items-center rounded-full bg-[#ededed] px-5 py-2.5 text-[15px] font-normal uppercase tracking-[0.18em] text-black">
           Our Services
-        </span>
+        </h2>
 
         <div
           id="services-cards"
@@ -120,6 +120,7 @@ export default function OurServices() {
                   className="mt-auto inline-flex h-[36px] w-[150px] items-center justify-center gap-[6px] rounded-full border-[0.93px] border-[#1E2C32]/30 px-[18px] text-[10px] font-semibold uppercase tracking-wide text-[#1E2C32] transition-colors hover:border-[#c70017] hover:bg-[#c70017] hover:text-white sm:h-[47px] sm:w-[196px] sm:gap-[7.47px] sm:px-[28px] sm:text-[12px] xl:h-[52px] xl:w-[216px] xl:text-[13px] 2xl:h-[58px] 2xl:w-[240px] 2xl:text-[14px]"
                 >
                   View services
+                  <span className="sr-only"> for {service.title}</span>
                   <ChevronRightIcon className="size-4" />
                 </Link>
               </div>
