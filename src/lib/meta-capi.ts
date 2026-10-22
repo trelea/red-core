@@ -8,7 +8,7 @@ const META_PIXEL_ID =
   '1120187307040000';
 const META_CAPI_ACCESS_TOKEN = process.env.META_CAPI_ACCESS_TOKEN || '';
 const META_TEST_EVENT_CODE = process.env.META_TEST_EVENT_CODE || '';
-const GRAPH_API_VERSION = 'v21.0';
+const GRAPH_API_VERSION = 'v25.0';
 
 export interface MetaUserDataInput {
   email?: string;
