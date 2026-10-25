@@ -724,7 +724,6 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
         params: options.params ?? {},
       },
     );
-    return eventId;
   }
   if (typeof window === 'undefined') return eventId;
 
@@ -903,6 +902,8 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     }
   }
 
+  // Cross-send 100%: every tracked event goes to both Pixel and CAPI.
+  // Deduplication relies on matching event_id (+ external_id/fbp fallback).
   if (options.skipCapiEndpoint) {
     return eventId;
   }
@@ -924,6 +925,7 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     phone: options.userData?.phone || sessionForm.phone || undefined,
     fbp: getCookie('_fbp'),
     fbc: getFbc(),
+    externalId: clientEnv.visitor_id,
   };
 
   if (options.metaStandardEvent) {

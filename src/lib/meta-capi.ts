@@ -20,6 +20,7 @@ export interface MetaUserDataInput {
   fbc?: string;
   clientIpAddress?: string;
   clientUserAgent?: string;
+  externalId?: string;
 }
 
 export interface MetaCapiEventInput {
@@ -191,7 +192,7 @@ export async function sendMetaCapiEvents(
     }
   }
 
-  if (IS_DEV) return;
+  if (IS_DEV && !META_TEST_EVENT_CODE) return;
 
   if (
     !META_TRACKING_ENABLED ||
@@ -216,6 +217,7 @@ export async function sendMetaCapiEvents(
       client_user_agent: user.clientUserAgent || reqMeta.clientUserAgent,
       fbp: user.fbp || reqMeta.fbp,
       fbc: user.fbc || reqMeta.fbc,
+      external_id: user.externalId ? [sha256(String(user.externalId))] : undefined,
       em: emailNorm ? [sha256(emailNorm)] : undefined,
       ph: phoneNorm ? [sha256(phoneNorm)] : undefined,
       fn: firstName ? [sha256(firstName)] : undefined,
