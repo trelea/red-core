@@ -374,7 +374,10 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     formData.append('eventId', eventId);
     formData.append(
       'clientContext',
-      JSON.stringify(getClientEnvironmentContext()),
+      JSON.stringify({
+        ...getClientEnvironmentContext(),
+        page_location: window.location.href,
+      }),
     );
     files.forEach((file) => formData.append('images', file));
 

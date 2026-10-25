@@ -26,6 +26,8 @@ export interface MetaCapiEventInput {
   eventName: string;
   eventId: string;
   eventSourceUrl?: string;
+  /** Unix timestamp (seconds) when the event actually occurred. Defaults to now. */
+  eventTime?: number;
   customData?: Record<string, unknown>;
   userData?: MetaUserDataInput;
 }
@@ -126,8 +128,38 @@ function normalizeEmail(value?: string): string | undefined {
 }
 
 function normalizePhone(value?: string): string | undefined {
-  const v = value?.replace(/\D/g, '');
+  let v = value?.replace(/\D/g, '');
+  if (!v) return undefined;
+  // Meta requires a country code. Assume US (1) for 10-digit numbers.
+  if (v.length === 10) v = `1${v}`;
   return v || undefined;
+}
+
+function normalizeCity(value?: string): string | undefined {
+  const v = value?.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  return v || undefined;
+}
+
+function normalizeState(value?: string): string | undefined {
+  if (!value) return undefined;
+  const v = value.trim().toLowerCase();
+  if (/^[a-z]{2}$/.test(v)) return v;
+  const cleaned = v.replace(/[^a-z0-9]/g, '');
+  return cleaned || undefined;
+}
+
+function normalizeCountry(value?: string): string | undefined {
+  if (!value) return undefined;
+  const v = value.trim().toLowerCase().replace(/[^a-z]/g, '');
+  return v ? v.slice(0, 2) : undefined;
+}
+
+function normalizeZip(value?: string): string | undefined {
+  if (!value) return undefined;
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return undefined;
+  // US: keep first 5 digits.
+  return digits.slice(0, 5);
 }
 
 function splitName(value?: string): { fn?: string; ln?: string } {
@@ -188,10 +220,22 @@ export async function sendMetaCapiEvents(
       ph: phoneNorm ? [sha256(phoneNorm)] : undefined,
       fn: firstName ? [sha256(firstName)] : undefined,
       ln: lastName ? [sha256(lastName)] : undefined,
-      ct: reqMeta.city || undefined,
-      st: reqMeta.region || undefined,
-      country: reqMeta.country || undefined,
-      zp: reqMeta.postalCode || undefined,
+      ct: (() => {
+        const n = normalizeCity(reqMeta.city);
+        return n ? [sha256(n)] : undefined;
+      })(),
+      st: (() => {
+        const n = normalizeState(reqMeta.region);
+        return n ? [sha256(n)] : undefined;
+      })(),
+      country: (() => {
+        const n = normalizeCountry(reqMeta.country);
+        return n ? [sha256(n)] : undefined;
+      })(),
+      zp: (() => {
+        const n = normalizeZip(reqMeta.postalCode);
+        return n ? [sha256(n)] : undefined;
+      })(),
     };
 
     Object.keys(userDataPayload).forEach((key) => {
@@ -199,6 +243,13 @@ export async function sendMetaCapiEvents(
         delete userDataPayload[key];
       }
     });
+
+    const filteredCustomData: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(evt.customData ?? {})) {
+      // PII belongs in user_data, not custom_data.
+      if (key === 'full_name' || key === 'phone' || key === 'email') continue;
+      filteredCustomData[key] = value;
+    }
 
     const customDataPayload: Record<string, unknown> = {
       client_ip: reqMeta.clientIpAddress,
@@ -209,7 +260,7 @@ export async function sendMetaCapiEvents(
       client_latitude: reqMeta.latitude,
       client_longitude: reqMeta.longitude,
       client_asn: reqMeta.asn,
-      ...(evt.customData ?? {}),
+      ...filteredCustomData,
     };
     if (user.fullName && !customDataPayload.full_name) {
       customDataPayload.full_name = user.fullName;
@@ -221,12 +272,22 @@ export async function sendMetaCapiEvents(
       customDataPayload.phone = user.phone;
     }
 
+    const resolvedEventSourceUrl =
+      evt.eventSourceUrl ||
+      (typeof evt.customData?.page_location === 'string'
+        ? (evt.customData.page_location as string)
+        : undefined) ||
+      (typeof filteredCustomData.page_location === 'string'
+        ? (filteredCustomData.page_location as string)
+        : undefined) ||
+      reqMeta.referer;
+
     return {
       event_name: evt.eventName,
-      event_time: nowSeconds,
+      event_time: evt.eventTime ? Math.floor(evt.eventTime) : nowSeconds,
       event_id: evt.eventId,
       action_source: 'website',
-      event_source_url: evt.eventSourceUrl || reqMeta.referer,
+      event_source_url: resolvedEventSourceUrl,
       user_data: userDataPayload,
       custom_data: customDataPayload,
     };

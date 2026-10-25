@@ -317,7 +317,10 @@ export default function Footer() {
           callbackDay,
           callbackTime,
           eventId,
-          clientContext: getClientEnvironmentContext(),
+          clientContext: {
+            ...getClientEnvironmentContext(),
+            page_location: window.location.href,
+          },
         }),
       });
 
@@ -393,9 +396,6 @@ export default function Footer() {
                         rel="noopener noreferrer"
                         className="text-base leading-snug transition-colors hover:text-[#c70017]"
                       >
-                        <span className="block whitespace-nowrap">
-                          321 Springfield St,
-                        </span>
                         <span className="block whitespace-nowrap">
                           Agawam, MA 01001
                         </span>
