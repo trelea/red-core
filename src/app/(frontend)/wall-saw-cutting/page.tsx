@@ -19,9 +19,9 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Wall Saw Cutting, Door & Egress Openings in MA',
+  title: 'Wall Saw Cutting & Egress Openings Across Massachusetts',
   description:
-    'Precision track wall saw cutting in Agawam, Springfield, West Springfield, Northampton & across Massachusetts. Clean reinforced concrete foundation cuts for egress windows, doorways, structural openings & wall removal.',
+    'Wall saw cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'wall saw cutting',
     'wall saw',
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/wall-saw-cutting`,
   },
   openGraph: {
-    title: 'Wall Saw Cutting, Door & Egress Openings in MA | REDCORE',
+    title: 'Wall Saw Cutting & Egress Openings Across Massachusetts | REDCORE',
     description:
-      'Heavy-duty concrete wall sawing for doorways, egress windows, and large structural openings across Agawam, Springfield, and Massachusetts.',
+      'Wall saw cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     url: `${siteUrl}/wall-saw-cutting`,
     images: [
       {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Wall Saw Cutting, Door & Egress Openings in MA | REDCORE',
     description:
-      'Precision concrete wall saw cutting for doorways, egress windows, and structural openings across Massachusetts.',
+      'Wall saw cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
 };
@@ -150,7 +150,7 @@ export default async function WallSawCuttingPage() {
             <span className="font-bold">cutting</span>
             <span className="sr-only">
               {' '}
-              for Concrete Door &amp; Egress Window Openings in Massachusetts
+              for Concrete Door &amp; Egress Window Openings Across Massachusetts
             </span>
           </>
         }
@@ -163,8 +163,7 @@ export default async function WallSawCuttingPage() {
             <p className="mt-3">
               We cut clean openings for doors, egress windows, access points,
               vents, utilities, and wall removal with controlled saw cutting and
-              minimal vibration across Agawam, Springfield, West Springfield,
-              Northampton, and Massachusetts.
+              minimal vibration across Massachusetts (serving Agawam, Springfield, West Springfield, Northampton, and beyond).
             </p>
             <p className="mt-3">
               For contractors, builders, homeowners, engineers, and commercial

@@ -29,7 +29,7 @@ export default function ConcreteRestorationPromo() {
       >
         <Image
           src="/concrete-restoration-img.jpg"
-          alt=""
+          alt="Concrete step polishing and restoration"
           fill
           sizes="(min-width: 768px) 40vw, 38vw"
           className="object-cover object-[35%_center]"

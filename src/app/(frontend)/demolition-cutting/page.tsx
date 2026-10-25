@@ -19,9 +19,9 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Concrete Demolition & Removal in Springfield & MA',
+  title: 'Concrete Demolition & Removal Across Massachusetts',
   description:
-    'Controlled concrete demolition, concrete removal & step removal in Springfield, Agawam, Lynnfield, and across Massachusetts. Selective wall, slab, stoop & interior masonry demolition with debris haul-away. Call 24/7: (413) 666-2026.',
+    'Demolition across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'concrete demolition',
     'concrete removal Springfield',
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/demolition-cutting`,
   },
   openGraph: {
-    title: 'Concrete Demolition & Removal in Springfield & MA | REDCORE',
+    title: 'Concrete Demolition & Removal Across Massachusetts | REDCORE',
     description:
-      'Controlled concrete demolition, step removal, and concrete removal without damaging surrounding structures. Serving Agawam, Springfield, and Massachusetts.',
+      'Demolition across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     url: `${siteUrl}/demolition-cutting`,
     images: [
       {
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Concrete Demolition & Removal in Springfield & MA | REDCORE',
     description:
-      'Controlled concrete demolition, step removal, and concrete slab removal across Springfield, Agawam, and Massachusetts.',
+      'Demolition across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
 };
@@ -151,7 +151,7 @@ export default async function DemolitionCuttingPage() {
             <span className="font-bold">&amp; cutting</span>
             <span className="sr-only">
               {' '}
-              and Concrete Removal in Springfield, Agawam &amp; Massachusetts
+              and Concrete Removal Across Massachusetts
             </span>
           </>
         }
@@ -163,8 +163,7 @@ export default async function DemolitionCuttingPage() {
             </p>
             <p className="mt-3">
               We remove walls, openings, damaged concrete sections, slabs,
-              concrete steps, stoops, and masonry areas safely and cleanly across
-              Springfield, Agawam, and Massachusetts.
+              concrete steps, stoops, and masonry areas safely and cleanly across Massachusetts (serving Springfield, Agawam, and beyond).
             </p>
             <p className="mt-3">
               For homeowners, contractors, property managers, remodelers, and

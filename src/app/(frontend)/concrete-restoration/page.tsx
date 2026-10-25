@@ -19,9 +19,9 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Concrete Restoration & Crack Repair in Springfield & MA',
+  title: 'Concrete Restoration & Crack Repair Across Massachusetts',
   description:
-    'Expert concrete restoration, crack repair, step repair, resurfacing & polishing in Agawam, Springfield, Lynnfield & across Massachusetts. Restore cracked, chipped, and spalled concrete steps, walkways, patios & floors without full replacement.',
+    'Concrete restoration across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'concrete restoration',
     'concrete restoration MA',
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/concrete-restoration`,
   },
   openGraph: {
-    title: 'Concrete Restoration & Crack Repair in Springfield & MA | REDCORE',
+    title: 'Concrete Restoration & Crack Repair Across Massachusetts | REDCORE',
     description:
-      'Repair, crack filling, resurfacing, and polishing of cracked, chipped, and worn concrete steps, walkways, floors, and patios across Massachusetts.',
+      'Concrete restoration across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     url: `${siteUrl}/concrete-restoration`,
     images: [
       {
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Concrete Restoration & Crack Repair in Springfield & MA | REDCORE',
     description:
-      'Professional concrete crack repair, step restoration, and resurfacing across Agawam, Springfield, and Massachusetts.',
+      'Concrete restoration across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
 };
@@ -130,7 +130,7 @@ const faqItems: FaqItem[] = [
     question: 'Do you restore both indoor and outdoor concrete in Massachusetts?',
     icon: <Sun />,
     answer:
-      'Yes. We restore exterior steps, walkways, driveways, and patios as well as interior floors in basements, garages, and commercial spaces across Agawam, Springfield, Lynnfield, and Massachusetts. Dust-controlled grinding keeps interior work clean.',
+      'Yes. We restore exterior steps, walkways, driveways, and patios as well as interior floors in basements, garages, and commercial spaces across all of Massachusetts (including Agawam, Springfield, and Lynnfield). Dust-controlled grinding keeps interior work clean.',
   },
 ];
 
@@ -150,7 +150,7 @@ export default async function ConcreteRestorationPage() {
             <span className="font-bold">restoration</span>
             <span className="sr-only">
               {' '}
-              and Concrete Crack &amp; Step Repair in Massachusetts
+              and Concrete Crack &amp; Step Repair Across Massachusetts
             </span>
           </>
         }
@@ -163,8 +163,7 @@ export default async function ConcreteRestorationPage() {
             <p className="mt-3">
               We perform concrete crack repair, fix chips, spalling, and worn
               edges, and grind, resurface, polish, and seal concrete for a
-              clean, durable finish across Agawam, Springfield, and
-              Massachusetts.
+              clean, durable finish across Massachusetts (serving Agawam, Springfield, and beyond).
             </p>
             <p className="mt-3">
               For homeowners, contractors, builders, local businesses, and

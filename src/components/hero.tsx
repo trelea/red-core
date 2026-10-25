@@ -36,11 +36,11 @@ export default function Hero({
       experts
       <span className="sr-only">
         {' '}
-        in Agawam, Springfield and Massachusetts
+        across Massachusetts
       </span>
     </>
   ),
-  description = 'Professional concrete cutting, core drilling, slab sawing, wall sawing, and controlled demolition across Agawam, Springfield, Boston, and Massachusetts with clean results, precise work, and reliable 24/7 scheduling.',
+  description = 'Professional concrete cutting, core drilling, slab sawing, wall sawing, and controlled demolition across Massachusetts with clean results, precise work, and reliable 24/7 scheduling. Headquartered in Agawam, MA.',
   image,
   imageStyle = 'illustration',
   render_desc = true,

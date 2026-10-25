@@ -54,7 +54,7 @@ export default function WhyChooseUs() {
                 <div className="flex flex-row items-center gap-4 sm:flex-col sm:items-start sm:gap-0">
                   <Image
                     src={feature.icon}
-                    alt=""
+                    alt={feature.title}
                     width={70}
                     height={70}
                     className="size-16 shrink-0 lg:size-[70px]"

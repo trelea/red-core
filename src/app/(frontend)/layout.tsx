@@ -32,11 +32,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default:
-      'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
+      'REDCORE | Concrete Cutting & Core Drilling Across Massachusetts',
     template: '%s | REDCORE',
   },
   description:
-    'REDCORE provides professional concrete cutting, core drilling, slab sawing, wall sawing, controlled demolition, and concrete restoration in Agawam, Springfield, Boston, and across Massachusetts & New England. 24/7 service & free estimates: (413) 666-2026.',
+    'REDCORE across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'REDCORE',
     'redcore',
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     title:
       'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
     description:
-      'Professional concrete cutting, core drilling, slab cutting, wall saw cutting, controlled demolition, and concrete restoration across Agawam, Springfield, Boston, and Massachusetts.',
+      'REDCORE concrete cutting, core drilling, sawing, demolition & restoration across Massachusetts. 24/7 free estimates: (413) 666-2026.',
     images: [
       {
         url: '/opengraph-image',
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
     title:
       'REDCORE | Concrete Cutting & Core Drilling in Springfield, Agawam & MA',
     description:
-      'Professional concrete cutting, core drilling, slab cutting, wall saw cutting, and controlled demolition across Massachusetts & New England.',
+      'REDCORE concrete cutting, core drilling, sawing, demolition & restoration across Massachusetts. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
   robots: {
@@ -150,7 +150,7 @@ const localBusinessJsonLd = {
   name: 'REDCORE',
   alternateName: ['REDCORE Concrete', 'Red Core'],
   description:
-    'Professional concrete cutting and core drilling services in Massachusetts and New England. Slab cutting, wall saw cutting, controlled demolition, and concrete restoration for residential and commercial projects.',
+    'REDCORE provides concrete cutting, core drilling, sawing, demolition & restoration across Massachusetts and New England for residential and commercial projects.',
   url: siteUrl,
   logo: `${siteUrl}/logo.svg`,
   image: `${siteUrl}/opengraph-image`,

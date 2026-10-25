@@ -19,9 +19,9 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Concrete Slab & Asphalt Cutting in Springfield, Agawam & MA',
+  title: 'Concrete Slab & Asphalt Cutting Across Massachusetts',
   description:
-    'Professional concrete slab cutting, asphalt saw cutting, flat sawing, trenching & slab removal in Agawam, Springfield, Holyoke, Pittsfield & across Massachusetts. Clean indoor electric & walk-behind saw cutting for plumbing trenches, drains, HVAC pads & utility access.',
+    'Slab cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'slab cutting',
     'concrete slab cutting',
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/slab-cutting`,
   },
   openGraph: {
-    title: 'Concrete Slab & Asphalt Cutting in Springfield, Agawam & MA | REDCORE',
+    title: 'Concrete Slab & Asphalt Cutting Across Massachusetts | REDCORE',
     description:
-      'Clean concrete slab cutting, flat sawing, plumbing trenches, and slab removal in Agawam, Springfield, and across Massachusetts.',
+      'Slab cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     url: `${siteUrl}/slab-cutting`,
     images: [
       {
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Concrete Slab & Asphalt Cutting in Springfield, Agawam & MA | REDCORE',
     description:
-      'Clean concrete slab cutting, trenching, and flat sawing for plumbing, drains, and utilities across Massachusetts.',
+      'Slab cutting across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
 };
@@ -155,8 +155,7 @@ export default async function SlabCuttingPage() {
             <span className="font-bold">cutting</span>
             <span className="sr-only">
               {' '}
-              &amp; Concrete Saw Cutting in Agawam, Springfield &amp;
-              Massachusetts
+              &amp; Concrete Saw Cutting Across Massachusetts
             </span>
           </>
         }
@@ -170,8 +169,7 @@ export default async function SlabCuttingPage() {
               We saw cut concrete floors and slabs, and asphalt for electrical
               lines, plumbing trenches, drainage, HVAC pads, slab removal,
               interior remodeling, driveway and parking lot repairs, and
-              commercial build-outs across Agawam, Springfield, and
-              Massachusetts.
+              commercial build-outs across Massachusetts (serving Agawam, Springfield, and beyond).
             </p>
             <p className="mt-3">
               For homeowners, contractors, builders, electricians, plumbers, and

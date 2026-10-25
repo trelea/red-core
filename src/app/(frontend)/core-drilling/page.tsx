@@ -19,9 +19,9 @@ const siteUrl =
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Core Drilling Services in Springfield, Agawam & MA',
+  title: 'Core Drilling Services Across Massachusetts',
   description:
-    'Precision diamond concrete core drilling and coring in Agawam, Springfield, Northampton, Worcester, and across Massachusetts. Clean 1"–14"+ holes in reinforced concrete, foundations & brick for HVAC, plumbing & electrical. 24/7 free quotes: (413) 666-2026.',
+    'Core drilling across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
   keywords: [
     'core drilling',
     'core drilling services near me',
@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/core-drilling`,
   },
   openGraph: {
-    title: 'Core Drilling Services in Springfield, Agawam & MA | REDCORE',
+    title: 'Core Drilling Services Across Massachusetts | REDCORE',
     description:
-      'Precision diamond core drilling of round holes in concrete, brick, and stone. Serving Agawam, Springfield, Northampton, Worcester, and Massachusetts.',
+      'Core drilling across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     url: `${siteUrl}/core-drilling`,
     images: [
       {
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Core Drilling Services in Springfield, Agawam & MA | REDCORE',
     description:
-      'Precision diamond core drilling in concrete, brick, and foundations across Agawam, Springfield, and Massachusetts.',
+      'Core drilling across Massachusetts. Concrete cutting, drilling, sawing, demolition & restoration. 24/7 free estimates: (413) 666-2026.',
     images: ['/opengraph-image'],
   },
 };
@@ -132,7 +132,7 @@ const faqItems: FaqItem[] = [
     question: 'What areas do you serve for core drilling?',
     icon: <MapPin />,
     answer:
-      'We are based in Agawam, MA and provide core drilling across Springfield, West Springfield, Westfield, Chicopee, Holyoke, Northampton, Easthampton, Pittsfield, Worcester, Greater Boston, and all of Massachusetts, as well as northern Connecticut. Call 413-666-2026 for a free estimate.',
+      'We serve all of Massachusetts (headquartered in Agawam, MA), including Springfield, West Springfield, Westfield, Chicopee, Holyoke, Northampton, Easthampton, Pittsfield, Worcester, and Greater Boston, plus northern Connecticut. Call 413-666-2026 for a free estimate.',
   },
 ];
 
@@ -152,7 +152,7 @@ export default async function CoreDrillingPage() {
             <span className="font-bold">drilling</span>
             <span className="sr-only">
               {' '}
-              Services in Agawam, Springfield &amp; Massachusetts
+              Services Across Massachusetts
             </span>
           </>
         }
@@ -165,8 +165,7 @@ export default async function CoreDrillingPage() {
             <p className="mt-3">
               We provide clean diamond core drilling through concrete, CMU
               block, brick, and masonry walls or floors for residential,
-              commercial, and industrial projects across Agawam, Springfield,
-              Worcester, and Massachusetts.
+              commercial, and industrial projects across Massachusetts (serving Agawam, Springfield, Worcester, and beyond).
             </p>
             <p className="mt-3">
               For contractors, plumbers, electricians, HVAC installers,

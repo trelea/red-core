@@ -153,7 +153,7 @@ export default async function OgImage() {
                 letterSpacing: "0.5px",
               }}
             >
-              Agawam, MA
+              Massachusetts
             </div>
           </div>
         </div>
