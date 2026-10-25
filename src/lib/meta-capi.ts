@@ -128,11 +128,35 @@ function normalizeEmail(value?: string): string | undefined {
   return v || undefined;
 }
 
-function normalizePhone(value?: string): string | undefined {
+const COUNTRY_CALLING_CODES: Record<string, string> = {
+  MD: '373',
+  US: '1',
+  CA: '1',
+  RO: '40',
+  RU: '7',
+  UA: '380',
+  DE: '49',
+  FR: '33',
+  GB: '44',
+  IT: '39',
+  ES: '34',
+  PL: '48',
+  TR: '90',
+  IN: '91',
+  BR: '55',
+};
+
+function normalizePhone(value?: string, country?: string): string | undefined {
   let v = value?.replace(/\D/g, '');
   if (!v) return undefined;
-  // Meta requires a country code. Assume US (1) for 10-digit numbers.
-  if (v.length === 10) v = `1${v}`;
+  const c = (country || '').trim().toUpperCase();
+  const code = COUNTRY_CALLING_CODES[c];
+  if (code) {
+    if (v.startsWith('0')) v = v.slice(1);
+    if (!v.startsWith(code)) v = `${code}${v}`;
+    return v || undefined;
+  }
+  // Unknown country: trust the user entered a full international number.
   return v || undefined;
 }
 
@@ -209,7 +233,7 @@ export async function sendMetaCapiEvents(
     const user = evt.userData ?? {};
 
     const emailNorm = normalizeEmail(user.email);
-    const phoneNorm = normalizePhone(user.phone);
+    const phoneNorm = normalizePhone(user.phone, reqMeta.country);
     const { fn: firstName, ln: lastName } = splitName(user.fullName);
 
     const userDataPayload: Record<string, unknown> = {
@@ -296,7 +320,8 @@ export async function sendMetaCapiEvents(
   });
 
   const body: Record<string, unknown> = { data };
-  if (META_TEST_EVENT_CODE) {
+  // Test event code is for local/dev testing only; never ship it to production.
+  if (IS_DEV && META_TEST_EVENT_CODE) {
     body.test_event_code = META_TEST_EVENT_CODE;
   }
 

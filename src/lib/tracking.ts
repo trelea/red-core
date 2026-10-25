@@ -597,9 +597,7 @@ export function getClientEnvironmentContext(): ClientEnvironmentContext {
 
   const max_touch_points =
     typeof navigator !== 'undefined' ? navigator.maxTouchPoints || 0 : 0;
-  const touch_support =
-    max_touch_points > 0 ||
-    (typeof window !== 'undefined' && 'ontouchstart' in window);
+  const touch_support = max_touch_points > 0;
 
   const language =
     typeof navigator !== 'undefined' ? navigator.language || '' : '';
@@ -757,6 +755,13 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
   const event_detail =
     eventSpecificEntries || `${options.event} | ${pagePath}`.slice(0, 100);
 
+  const isFormEvent =
+    options.event.includes('form_') ||
+    options.event === 'form_submission' ||
+    ['Lead', 'Contact', 'InitiateCheckout'].includes(
+      options.metaStandardEvent || '',
+    );
+
   const mergedForm = {
     full_name: (p.full_name as string | undefined) || sessionForm.full_name,
     phone: (p.phone as string | undefined) || sessionForm.phone,
@@ -771,93 +776,125 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
       (p.callback_time as string | undefined) || sessionForm.callback_time,
   };
 
-  const form_contact =
-    [mergedForm.full_name, mergedForm.phone, mergedForm.email]
-      .filter(Boolean)
-      .join(' | ')
-      .slice(0, 100) || 'none';
+  const form_contact = 'none';
 
-  const form_project =
-    [
-      mergedForm.service_name,
-      mergedForm.offer_name,
-      mergedForm.callback_day,
-      mergedForm.callback_time,
-    ]
-      .filter(Boolean)
-      .join(' | ')
-      .slice(0, 100) || 'none';
+  const form_project = isFormEvent
+    ? [
+        mergedForm.service_name,
+        mergedForm.offer_name,
+        mergedForm.callback_day,
+        mergedForm.callback_time,
+      ]
+        .filter(Boolean)
+        .join(' | ')
+        .slice(0, 100) || 'none'
+    : 'none';
 
-  const form_message = (mergedForm.message || 'none').slice(0, 100);
+  const form_message = isFormEvent
+    ? (mergedForm.message || 'none').slice(0, 100)
+    : 'none';
 
   const client_ip_value = (clientEnv.client_ip || '127.0.0.1').slice(0, 100);
 
-  const client_location =
-    [
-      clientEnv.client_country,
-      clientEnv.client_region,
-      clientEnv.client_city,
-      clientEnv.client_postal_code,
-      clientEnv.client_latitude && clientEnv.client_longitude
-        ? `${clientEnv.client_latitude},${clientEnv.client_longitude}`
-        : undefined,
-      clientEnv.client_asn ? `ASN:${clientEnv.client_asn}` : undefined,
-    ]
-      .filter(Boolean)
-      .join(' | ')
-      .slice(0, 100) || 'local';
+  const client_location = {
+    country: clientEnv.client_country,
+    region: clientEnv.client_region,
+    city: clientEnv.client_city,
+    postal_code: clientEnv.client_postal_code,
+    latitude: clientEnv.client_latitude,
+    longitude: clientEnv.client_longitude,
+    asn: clientEnv.client_asn,
+  };
 
-  const device_summary = `${clientEnv.device_type} | ${clientEnv.os_name} ${clientEnv.os_version} | ${clientEnv.browser_name} ${clientEnv.browser_version} | ${clientEnv.device_model} | ${clientEnv.cpu_architecture || clientEnv.platform}`.slice(
-    0,
-    100,
-  );
+  const device = {
+    type: clientEnv.device_type,
+    os: clientEnv.os_name,
+    os_version: clientEnv.os_version,
+    browser: clientEnv.browser_name,
+    browser_version: clientEnv.browser_version,
+    model: clientEnv.device_model,
+    vendor: clientEnv.device_vendor,
+    platform: clientEnv.platform,
+    cpu_architecture: clientEnv.cpu_architecture,
+  };
 
-  const hardware_summary = `cores:${clientEnv.cpu_cores ?? '?'} | ram:${clientEnv.device_memory_gb ?? '?'}GB | touch:${clientEnv.max_touch_points}(${clientEnv.touch_support}) | bat:${clientEnv.battery_level_percent ?? '?'}%(chg:${clientEnv.battery_charging ?? '?'}) | bot:${clientEnv.is_automated_webdriver}`.slice(
-    0,
-    100,
-  );
+  const hardware = {
+    cpu_cores: clientEnv.cpu_cores,
+    ram_gb: clientEnv.device_memory_gb,
+    touch_points: clientEnv.max_touch_points,
+    touch_support: clientEnv.touch_support,
+    battery_level: clientEnv.battery_level_percent,
+    battery_charging: clientEnv.battery_charging,
+    bot: clientEnv.is_automated_webdriver,
+    gpu_vendor: clientEnv.gpu_vendor,
+    gpu_renderer: clientEnv.gpu_renderer,
+  };
 
-  const gpu_info =
-    [clientEnv.gpu_vendor, clientEnv.gpu_renderer]
-      .filter(Boolean)
-      .join(' | ')
-      .slice(0, 100) || 'unknown_gpu';
+  const display = {
+    screen: clientEnv.screen_resolution,
+    available: clientEnv.screen_available_resolution,
+    viewport: clientEnv.viewport_size,
+    dpr: clientEnv.device_pixel_ratio,
+    color_depth: clientEnv.color_depth,
+    color_scheme: clientEnv.color_scheme_preference,
+    orientation: clientEnv.screen_orientation,
+  };
 
-  const display_summary = `scr:${clientEnv.screen_resolution} | avail:${clientEnv.screen_available_resolution} | vp:${clientEnv.viewport_size} | dpr:${clientEnv.device_pixel_ratio} | ${clientEnv.color_depth ?? 24}bit | ${clientEnv.color_scheme_preference}`.slice(
-    0,
-    100,
-  );
+  const network = {
+    type: clientEnv.connection_effective_type || clientEnv.connection_type,
+    downlink_mbps: clientEnv.connection_downlink_mbps,
+    rtt_ms: clientEnv.connection_rtt_ms,
+    save_data: clientEnv.connection_save_data,
+    online: clientEnv.online_status,
+  };
 
-  const network_summary = `type:${clientEnv.connection_effective_type || clientEnv.connection_type || 'net'} | dl:${clientEnv.connection_downlink_mbps ?? '?'}Mbps | rtt:${clientEnv.connection_rtt_ms ?? '?'}ms | save:${clientEnv.connection_save_data ?? false} | online:${clientEnv.online_status}`.slice(
-    0,
-    100,
-  );
+  const visitor = {
+    id: clientEnv.visitor_id,
+    session_id: clientEnv.session_id,
+    visits: clientEnv.visit_count,
+    is_returning: clientEnv.is_returning_visitor,
+    timezone: clientEnv.timezone,
+    language: clientEnv.language,
+    referrer: clientEnv.initial_referrer,
+    landing_page: clientEnv.landing_page,
+  };
 
-  const visitor_summary = `v:${clientEnv.visitor_id.slice(0, 12)} | s:${clientEnv.session_id.slice(0, 12)} | visits:${clientEnv.visit_count} | ${clientEnv.timezone} | ${clientEnv.language} | ref:${clientEnv.initial_referrer}`.slice(
-    0,
-    100,
-  );
+  // Compact flat summaries (kept for GTM/GA4 backward compatibility)
+  const device_summary = `${clientEnv.device_type} | ${clientEnv.os_name} ${clientEnv.os_version} | ${clientEnv.browser_name} ${clientEnv.browser_version} | ${clientEnv.device_model}`.slice(0, 100);
+  const hardware_summary = `cores:${clientEnv.cpu_cores ?? '?'} | ram:${clientEnv.device_memory_gb ?? '?'}GB | touch:${clientEnv.max_touch_points} | bot:${clientEnv.is_automated_webdriver}`.slice(0, 100);
+  const gpu_info = [clientEnv.gpu_vendor, clientEnv.gpu_renderer].filter(Boolean).join(' | ').slice(0, 100) || 'unknown_gpu';
+  const display_summary = `scr:${clientEnv.screen_resolution} | vp:${clientEnv.viewport_size} | dpr:${clientEnv.device_pixel_ratio}`.slice(0, 100);
+  const network_summary = `type:${clientEnv.connection_effective_type || clientEnv.connection_type || 'net'} | dl:${clientEnv.connection_downlink_mbps ?? '?'}Mbps | rtt:${clientEnv.connection_rtt_ms ?? '?'}ms | online:${clientEnv.online_status}`.slice(0, 100);
+  const visitor_summary = `v:${clientEnv.visitor_id.slice(0, 12)} | s:${clientEnv.session_id.slice(0, 12)} | visits:${clientEnv.visit_count} | ${clientEnv.timezone} | ${clientEnv.language}`.slice(0, 100);
+  const client_location_summary = [clientEnv.client_country, clientEnv.client_region, clientEnv.client_city, clientEnv.client_postal_code].filter(Boolean).join(' | ').slice(0, 100) || 'local';
 
   // Full payload for GTM dataLayer, Console, and Server CAPI
   const baseParams: Record<string, unknown> = {
     event_detail,
-    form_contact,
-    form_project,
-    form_message,
     client_location,
+    device,
+    hardware,
+    display,
+    network,
+    visitor,
+    // flat (for GA4/GTM backward compat)
+    client_location_summary,
     device_summary,
     hardware_summary,
     gpu_info,
     display_summary,
     network_summary,
     visitor_summary,
-    ...sessionForm,
     ...p,
     page_path: pagePath,
     page_location: pageUrl,
-    ...clientEnv,
     client_ip: client_ip_value,
   };
+
+  // Only include form fields when they have real values (form/conversion events).
+  if (form_contact !== 'none') baseParams.form_contact = form_contact;
+  if (form_project !== 'none') baseParams.form_project = form_project;
+  if (form_message !== 'none') baseParams.form_message = form_message;
 
   // 1. GTM dataLayer push -> Google Ads & GA4
   window.dataLayer = window.dataLayer || [];
@@ -918,11 +955,21 @@ export function trackUnifiedEvent(options: UnifiedEventOptions): string {
     userData?: Record<string, string | undefined>;
   }> = [];
 
+  const isConversion =
+    options.metaStandardEvent === 'Lead' ||
+    options.metaStandardEvent === 'Contact' ||
+    options.event === 'form_submission';
+
   const userPayload = {
-    fullName:
-      options.userData?.fullName || sessionForm.full_name || undefined,
-    email: options.userData?.email || sessionForm.email || undefined,
-    phone: options.userData?.phone || sessionForm.phone || undefined,
+    fullName: isConversion
+      ? options.userData?.fullName || sessionForm.full_name || undefined
+      : undefined,
+    email: isConversion
+      ? options.userData?.email || sessionForm.email || undefined
+      : undefined,
+    phone: isConversion
+      ? options.userData?.phone || sessionForm.phone || undefined
+      : undefined,
     fbp: getCookie('_fbp'),
     fbc: getFbc(),
     externalId: clientEnv.visitor_id,
@@ -1214,9 +1261,6 @@ export function trackFormConversion(
     skipCapiEndpoint: false,
     params: {
       form_type: formType,
-      full_name: details?.userData?.fullName || undefined,
-      phone: details?.userData?.phone || undefined,
-      email: details?.userData?.email || undefined,
       service_name: details?.service || undefined,
       offer_name: details?.offer || undefined,
       message: details?.message || undefined,
