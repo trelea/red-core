@@ -196,6 +196,13 @@ function splitName(value?: string): { fn?: string; ln?: string } {
   };
 }
 
+function generateServerEventId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `evt_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export async function sendMetaCapiEvents(
   events: MetaCapiEventInput[],
   request?: Request,
@@ -311,7 +318,7 @@ export async function sendMetaCapiEvents(
     return {
       event_name: evt.eventName,
       event_time: evt.eventTime ? Math.floor(evt.eventTime) : nowSeconds,
-      event_id: evt.eventId,
+      event_id: evt.eventId || generateServerEventId(),
       action_source: 'website',
       event_source_url: resolvedEventSourceUrl,
       user_data: userDataPayload,

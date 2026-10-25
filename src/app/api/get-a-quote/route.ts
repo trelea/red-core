@@ -1,6 +1,7 @@
 import { GetAQuoteTemplate } from '@/components/get-a-quote.template';
 import { ConfirmationTemplate } from '@/components/confirmation.template';
 import { Resend } from 'resend';
+import { sendMetaCapiEvents } from '@/lib/meta-capi';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -90,8 +91,84 @@ export async function POST(request: Request) {
       console.error('Confirmation email error:', confirmation.error);
     }
 
-    // Option A: CAPI is sent client-side (with server fallback via /api/track).
-    // No duplicate server-side CAPI call here.
+    // Server-side Meta CAPI with matching event_id (dedupes with browser Pixel).
+    try {
+      const pageUrl =
+        (clientContext && typeof clientContext.page_location === 'string'
+          ? clientContext.page_location
+          : undefined) || request.url;
+      await sendMetaCapiEvents(
+        [
+          {
+            eventName: 'Lead',
+            eventId,
+            eventSourceUrl: pageUrl,
+            customData: {
+              form_type: 'quote',
+              service_name: service || undefined,
+              offer_name: offer || undefined,
+              message: message || undefined,
+              callback_day: callbackDay,
+              callback_time: callbackTime,
+              currency: 'USD',
+              page_location: pageUrl,
+            },
+            userData: {
+              fullName: fullName || undefined,
+              email: email || undefined,
+              phone: phone || undefined,
+              externalId:
+                typeof clientContext?.visitor_id === 'string'
+                  ? clientContext.visitor_id
+                  : undefined,
+              fbp:
+                typeof clientContext?.fbp === 'string'
+                  ? clientContext.fbp
+                  : undefined,
+              fbc:
+                typeof clientContext?.fbc === 'string'
+                  ? clientContext.fbc
+                  : undefined,
+            },
+          },
+          {
+            eventName: 'form_submission',
+            eventId: `${eventId}_custom`,
+            eventSourceUrl: pageUrl,
+            customData: {
+              form_type: 'quote',
+              service_name: service || undefined,
+              offer_name: offer || undefined,
+              message: message || undefined,
+              callback_day: callbackDay,
+              callback_time: callbackTime,
+              currency: 'USD',
+              page_location: pageUrl,
+            },
+            userData: {
+              fullName: fullName || undefined,
+              email: email || undefined,
+              phone: phone || undefined,
+              externalId:
+                typeof clientContext?.visitor_id === 'string'
+                  ? clientContext.visitor_id
+                  : undefined,
+              fbp:
+                typeof clientContext?.fbp === 'string'
+                  ? clientContext.fbp
+                  : undefined,
+              fbc:
+                typeof clientContext?.fbc === 'string'
+                  ? clientContext.fbc
+                  : undefined,
+            },
+          },
+        ],
+        request,
+      );
+    } catch {
+      // Ignore CAPI errors; do not fail the form submission.
+    }
 
     return Response.json({ success: true, id: data?.id });
   } catch (error) {
