@@ -1,6 +1,5 @@
 import { GetAQuoteTemplate } from '@/components/get-a-quote.template';
 import { ConfirmationTemplate } from '@/components/confirmation.template';
-import { sendMetaCapiEvents } from '@/lib/meta-capi';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -91,37 +90,8 @@ export async function POST(request: Request) {
       console.error('Confirmation email error:', confirmation.error);
     }
 
-    // Server-side Meta CAPI Lead + form_submission (plain form data + full device context)
-    const sharedCustomData = {
-      ...clientContext,
-      form_type: 'quote',
-      full_name: fullName,
-      phone,
-      email,
-      service_name: service || undefined,
-      offer_name: offer || undefined,
-      message: message || undefined,
-      callback_day: callbackDay,
-      callback_time: callbackTime,
-      currency: 'USD',
-    };
-    await sendMetaCapiEvents(
-      [
-        {
-          eventName: 'Lead',
-          eventId,
-          customData: sharedCustomData,
-          userData: { fullName, email, phone },
-        },
-        {
-          eventName: 'form_submission',
-          eventId: `${eventId}_custom`,
-          customData: sharedCustomData,
-          userData: { fullName, email, phone },
-        },
-      ],
-      request,
-    );
+    // Option A: CAPI is sent client-side (with server fallback via /api/track).
+    // No duplicate server-side CAPI call here.
 
     return Response.json({ success: true, id: data?.id });
   } catch (error) {

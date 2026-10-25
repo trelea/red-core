@@ -1210,8 +1210,8 @@ export function trackFormConversion(
     metaStandardEvent: 'Lead',
     eventId: details?.eventId,
     userData: details?.userData,
-    // Server API routes send CAPI with full form data; skip duplicate client send.
-    skipCapiEndpoint: true,
+    // Option A: client sends directly; server route no longer sends CAPI (avoid duplicates).
+    skipCapiEndpoint: false,
     params: {
       form_type: formType,
       full_name: details?.userData?.fullName || undefined,
