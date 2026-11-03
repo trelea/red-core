@@ -7,10 +7,12 @@ interface GetAQuoteTemplateProps {
   phone: string;
   email: string;
   offer: string;
-  service: string;
+  location: string;
   message: string;
   callbackDay: string;
   callbackTime: string;
+  ipAddress?: string;
+  ipLocation?: string;
   imageCount?: number;
 }
 
@@ -30,10 +32,12 @@ export function GetAQuoteTemplate({
   phone,
   email,
   offer,
-  service,
+  location,
   message,
   callbackDay,
   callbackTime,
+  ipAddress,
+  ipLocation,
   imageCount = 0,
 }: GetAQuoteTemplateProps) {
   return (
@@ -106,7 +110,11 @@ export function GetAQuoteTemplate({
                           <Field label="Email">
                             <a href={`mailto:${email}`} style={{ color: '#1E2C32', textDecoration: 'none' }}>{email}</a>
                           </Field>
-                          <Field label="Service">{service || '—'}</Field>
+                          <Field label="Location">{location || '—'}</Field>
+                          <Field label="IP Location (detected)">{ipLocation || '—'}</Field>
+                          {ipAddress && (
+                            <Field label="IP Address">{ipAddress}</Field>
+                          )}
                           <Field label="Special Offer">{offer || '—'}</Field>
                           {message && (
                             <tr>

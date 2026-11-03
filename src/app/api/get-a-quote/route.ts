@@ -2,6 +2,7 @@ import { GetAQuoteTemplate } from '@/components/get-a-quote.template';
 import { ConfirmationTemplate } from '@/components/confirmation.template';
 import { Resend } from 'resend';
 import { sendMetaCapiEvents } from '@/lib/meta-capi';
+import { resolveIpLocation } from '@/lib/ip-location';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -13,7 +14,10 @@ export async function POST(request: Request) {
     const phone = formData.get('phone') as string;
     const email = formData.get('email') as string;
     const offer = formData.get('offer') as string;
-    const service = formData.get('service') as string;
+    const location =
+      (formData.get('location') as string) ||
+      (formData.get('service') as string) ||
+      '';
     const message = formData.get('message') as string;
     const callbackDay = formData.get('callbackDay') as string;
     const callbackTime = formData.get('callbackTime') as string;
@@ -28,6 +32,8 @@ export async function POST(request: Request) {
       }
     }
     const files = formData.getAll('images') as File[];
+
+    const { ip, location: ipLocation } = await resolveIpLocation(request);
 
     if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
       return Response.json(
@@ -64,10 +70,12 @@ export async function POST(request: Request) {
         phone,
         email,
         offer,
-        service,
+        location,
         message,
         callbackDay,
         callbackTime,
+        ipAddress: ip,
+        ipLocation,
         imageCount: attachments.length,
       }),
       attachments,
@@ -105,7 +113,7 @@ export async function POST(request: Request) {
             eventSourceUrl: pageUrl,
             customData: {
               form_type: 'quote',
-              service_name: service || undefined,
+              location: location || undefined,
               offer_name: offer || undefined,
               message: message || undefined,
               callback_day: callbackDay,
@@ -137,7 +145,7 @@ export async function POST(request: Request) {
             eventSourceUrl: pageUrl,
             customData: {
               form_type: 'quote',
-              service_name: service || undefined,
+              location: location || undefined,
               offer_name: offer || undefined,
               message: message || undefined,
               callback_day: callbackDay,

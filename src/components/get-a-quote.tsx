@@ -51,17 +51,9 @@ interface CapturedFields {
   phone: string;
   email: string;
   offer: string;
-  service: string;
+  location: string;
   message: string;
 }
-
-const SERVICE_OPTIONS = [
-  'Concrete Openings & Wall Sawing',
-  'Core Drilling',
-  'Slab / Asphalt Cutting',
-  'Demolition & Cutting',
-  'Concrete Restoration',
-];
 
 const OFFER_OPTIONS = [
   'Concrete Openings & Wall Sawing — $1,000 Flat / Special Offer',
@@ -91,7 +83,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
   const minuteInputRef = useRef<HTMLInputElement>(null);
 
   const [offer, setOffer] = useState('');
-  const [service, setService] = useState('');
+  const [location, setLocation] = useState('');
 
   const [callbackOpen, setCallbackOpen] = useState(false);
   const [captured, setCaptured] = useState<CapturedFields | null>(null);
@@ -159,7 +151,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     if (phone) filled.push('phone');
     if (email) filled.push('email');
     if (offer) filled.push('offer');
-    if (service) filled.push('service');
+    if (location) filled.push('location');
     if (message) filled.push('message');
     if (files.length > 0) filled.push('photos');
 
@@ -170,7 +162,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
         phone: phone || undefined,
         email: email || undefined,
         offer: offer || undefined,
-        service: service || undefined,
+        service: location || undefined,
         message: message || undefined,
       },
     };
@@ -237,7 +229,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     window.addEventListener('pagehide', handlePageHide);
     return () => window.removeEventListener('pagehide', handlePageHide);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offer, service, files.length, captured]);
+  }, [offer, location, files.length, captured]);
 
   const today = useMemo(() => {
     const d = new Date();
@@ -260,7 +252,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     formRef.current?.reset();
     setFiles([]);
     setOffer('');
-    setService('');
+    setLocation('');
     setCaptured(null);
     resetCallbackState();
   }
@@ -303,12 +295,19 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
       offer,
-      service,
+      location,
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
     };
     setCaptured(nextCaptured);
     reachedCallbackStepRef.current = true;
-    trackFormCallbackStepOpen('quote', nextCaptured);
+    trackFormCallbackStepOpen('quote', {
+      fullName: nextCaptured.fullName,
+      phone: nextCaptured.phone,
+      email: nextCaptured.email,
+      offer: nextCaptured.offer,
+      service: nextCaptured.location,
+      message: nextCaptured.message,
+    });
     setCallbackOpen(true);
   }
 
@@ -367,7 +366,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
     formData.append('phone', captured.phone);
     formData.append('email', captured.email);
     formData.append('offer', captured.offer);
-    formData.append('service', captured.service);
+    formData.append('location', captured.location);
     formData.append('message', captured.message);
     formData.append('callbackDay', callbackDay);
     formData.append('callbackTime', callbackTime);
@@ -392,7 +391,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
         openedAtRef.current = null;
         setStatus('success');
         trackFormConversion('quote', {
-          service: captured.service,
+          service: captured.location,
           offer: captured.offer,
           message: captured.message,
           callbackDay,
@@ -543,31 +542,26 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   </SelectContent>
                 </Select>
 
-                <Select
-                  value={service}
-                  onValueChange={(val) => {
+                <Input
+                  id="location"
+                  name="location"
+                  type="text"
+                  placeholder="City or State / Location"
+                  value={location}
+                  onChange={(e) => {
                     handleFormFocus();
-                    setService(val);
-                    trackFormFieldChange('quote', 'service', val);
+                    setLocation(e.target.value);
                   }}
-                >
-                  <SelectTrigger
-                    aria-label="Select service"
-                    className={cn(
-                      fieldClass,
-                      'w-full justify-between data-[placeholder]:text-black/45 [&>svg]:opacity-60',
-                    )}
-                  >
-                    <SelectValue placeholder="Select service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SERVICE_OPTIONS.map((opt) => (
-                      <SelectItem key={opt} value={opt}>
-                        {opt}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  onBlur={(e) =>
+                    e.target.value.trim() &&
+                    trackFormFieldChange(
+                      'quote',
+                      'location',
+                      e.target.value.trim(),
+                    )
+                  }
+                  className={fieldClass}
+                />
               </div>
 
               {/* Right column: message + actions */}

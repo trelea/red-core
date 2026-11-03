@@ -1118,7 +1118,7 @@ export function trackFormFieldChange(
       updateSessionFormContext({ email: fieldValue });
     else if (fieldName === 'offer')
       updateSessionFormContext({ offer_name: fieldValue });
-    else if (fieldName === 'service')
+    else if (fieldName === 'service' || fieldName === 'location')
       updateSessionFormContext({ service_name: fieldValue });
     else if (fieldName === 'message')
       updateSessionFormContext({ message: fieldValue });
