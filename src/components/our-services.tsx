@@ -39,18 +39,18 @@ const services = [
     // same visual size as the other icons.
     iconClassName: 'p-2.5 sm:p-2 lg:p-2.5',
   },
-  {
-    // "-v2" busts browser/CDN caches: the optimized responses for the old
-    // (blurry) file are cached for up to 31 days under the old URL.
-    icon: '/icons/Concrete-Restoration-icon-v2.png',
-    title: 'Concrete Restoration',
-    href: '/concrete-restoration',
-    description:
-      'Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete.',
-    // Wide (landscape) artwork letterboxes inside the square frame and reads
-    // smaller than the others; scale it up a touch to match.
-    iconClassName: 'scale-105 sm:scale-[1.15] lg:scale-[1.18]',
-  },
+  // {
+  //   // "-v2" busts browser/CDN caches: the optimized responses for the old
+  //   // (blurry) file are cached for up to 31 days under the old URL.
+  //   icon: '/icons/Concrete-Restoration-icon-v2.png',
+  //   title: 'Concrete Restoration',
+  //   href: '/concrete-restoration',
+  //   description:
+  //     'Repair, resurfacing, and refinishing of cracked, chipped, and worn concrete.',
+  //   // Wide (landscape) artwork letterboxes inside the square frame and reads
+  //   // smaller than the others; scale it up a touch to match.
+  //   iconClassName: 'scale-105 sm:scale-[1.15] lg:scale-[1.18]',
+  // },
 ];
 
 export default function OurServices() {
