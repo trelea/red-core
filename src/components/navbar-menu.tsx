@@ -30,7 +30,7 @@ const serviceSubLinks = [
   { label: 'Slab Cutting', href: '/slab-cutting' },
   { label: 'Demolition & Cutting', href: '/demolition-cutting' },
   { label: 'Wall Saw Cutting', href: '/wall-saw-cutting' },
-  { label: 'Concrete Restoration', href: '/concrete-restoration' },
+  // { label: 'Concrete Restoration', href: '/concrete-restoration' },
 ];
 
 const mobileRowClass =
