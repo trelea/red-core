@@ -11,7 +11,6 @@ interface GetAQuoteTemplateProps {
   message: string;
   callbackDay: string;
   callbackTime: string;
-  ipAddress?: string;
   ipLocation?: string;
   imageCount?: number;
 }
@@ -36,7 +35,6 @@ export function GetAQuoteTemplate({
   message,
   callbackDay,
   callbackTime,
-  ipAddress,
   ipLocation,
   imageCount = 0,
 }: GetAQuoteTemplateProps) {
@@ -112,9 +110,6 @@ export function GetAQuoteTemplate({
                           </Field>
                           <Field label="Location">{location || '—'}</Field>
                           <Field label="IP Location (detected)">{ipLocation || '—'}</Field>
-                          {ipAddress && (
-                            <Field label="IP Address">{ipAddress}</Field>
-                          )}
                           <Field label="Special Offer">{offer || '—'}</Field>
                           {message && (
                             <tr>

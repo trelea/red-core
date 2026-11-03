@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     }
     const files = formData.getAll('images') as File[];
 
-    const { ip, location: ipLocation } = await resolveIpLocation(request);
+    const { location: ipLocation } = await resolveIpLocation(request);
 
     if (!fullName || !phone || !email || !callbackDay || !callbackTime) {
       return Response.json(
@@ -74,7 +74,6 @@ export async function POST(request: Request) {
         message,
         callbackDay,
         callbackTime,
-        ipAddress: ip,
         ipLocation,
         imageCount: attachments.length,
       }),

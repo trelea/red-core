@@ -546,7 +546,7 @@ export default function GetAQuoteDialog({ open, onOpenChange }: GetAQuoteDialogP
                   id="location"
                   name="location"
                   type="text"
-                  placeholder="City or State / Location"
+                  placeholder="City or Full address"
                   value={location}
                   onChange={(e) => {
                     handleFormFocus();
